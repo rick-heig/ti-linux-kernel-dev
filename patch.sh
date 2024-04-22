@@ -131,7 +131,7 @@ wpanusb () {
 			rm -rf ./wpanusb || true
 		fi
 
-		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb --depth=1
+		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb.git --depth=1
 		cd ./wpanusb
 			wpanusb_hash=$(git rev-parse HEAD)
 		cd -
@@ -304,6 +304,7 @@ k3_makefile_patch_cleanup_overlays () {
 	echo "DTC_FLAGS_k3-j721s2-common-proc-board += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j721s2-evm-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j722s-beagley-ai += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j722s-beagley-ai-evt += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j722s-evm += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j722s-evm-fpdlink-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j722s-evm-v3link-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
@@ -385,6 +386,7 @@ beagleboard_dtbs () {
 		#device="k3-j721e-beagleboneai64-no-shared-mem.dtb" ; k3_dtb_makefile_append
 
 		device="k3-j722s-beagley-ai.dtb" ; k3_dtb_makefile_append
+		device="k3-j722s-beagley-ai-evt.dtb" ; k3_dtb_makefile_append
 
 		device="k3-j722s-beagley-ai-csi0-imx219" ; k3_dtbo_makefile_append
 		device="k3-j722s-beagley-ai-csi0-ov5640" ; k3_dtbo_makefile_append
@@ -489,14 +491,12 @@ patch_backports () {
 }
 
 backports () {
-	backport_tag="v5.10.213"
-
 	subsystem="uio"
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
-		pre_backports
+		unset backport_tag
 
-		cp -v ~/linux-src/drivers/uio/uio_pruss.c ./drivers/uio/
+		cp -v ../patches/drivers/ti/uio/uio_pruss.c ./drivers/uio/
 
 		post_backports
 		exit 2
@@ -530,6 +530,7 @@ drivers () {
 	dir 'mikrobus'
 	dir 'drivers/android'
 	dir 'fixes'
+	dir 'drivers/cc33xx'
 
 	#cd KERNEL/
 	#git checkout v5.10-rc1 -b tmp
