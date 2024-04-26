@@ -1,11 +1,11 @@
-From b2f16d7a4a9e7b07dc5d5bdb1c2ddb13080c00a3 Mon Sep 17 00:00:00 2001
+From 4605e0cfd1b00770ec3d7b764972b40fec05ac61 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Wed, 24 Apr 2024 15:59:27 -0500
+Date: Fri, 26 Apr 2024 15:17:12 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/39cbb134d63c568581bdd7cdd476c0477999dd84
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/3544656b6e44f6557be78f4246c61c6407b9f82f
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -117,9 +117,9 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  .../ti/k3-j722s-beagley-ai-csi0-ov5640.dtso   |   84 +
  .../ti/k3-j722s-beagley-ai-csi1-imx219.dtso   |  103 +
  ...-j722s-beagley-ai-dsi-rpi-7inch-panel.dtso |  135 +
- .../boot/dts/ti/k3-j722s-beagley-ai-evt.dts   | 1254 +++++++++
+ .../boot/dts/ti/k3-j722s-beagley-ai-evt.dts   | 1255 +++++++++
  ...s-beagley-ai-lincolntech-185lcd-panel.dtso |  117 +
- .../arm64/boot/dts/ti/k3-j722s-beagley-ai.dts | 1241 +++++++++
+ .../arm64/boot/dts/ti/k3-j722s-beagley-ai.dts | 1242 +++++++++
  arch/arm64/boot/dts/ti/k3-j722s-evm.dts       |   16 +-
  arch/arm64/boot/dts/ti/k3-j722s.dtsi          |    5 +-
  arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi    |   18 +-
@@ -134,7 +134,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  include/dt-bindings/mailbox/miv-ihc.h         |   17 +
  include/dt-bindings/pinctrl/omap.h            |    8 +-
  include/uapi/linux/input-event-codes.h        |    5 +
- 126 files changed, 14807 insertions(+), 861 deletions(-)
+ 126 files changed, 14809 insertions(+), 861 deletions(-)
  create mode 100644 arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-ADC-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-BBBW-WL1835-00A0.dtso
@@ -16675,10 +16675,10 @@ index 000000000000..9dacb8083163
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts
 new file mode 100644
-index 000000000000..09394a300ddb
+index 000000000000..ec1d3eb8cf0f
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts
-@@ -0,0 +1,1254 @@
+@@ -0,0 +1,1255 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * https://beagley-ai.org/
@@ -17886,6 +17886,7 @@ index 000000000000..09394a300ddb
 +	num-lanes = <1>;
 +	max-link-speed = <3>;
 +	reset-gpios = <&mcu_gpio0 6 GPIO_ACTIVE_HIGH>;
++	enable-gpios = <&mcu_gpio0 8 GPIO_ACTIVE_HIGH>; /* Extra GPIO for pwr_en for BeagleY AI */
 +};
 +
 +&dss1 {
@@ -18058,10 +18059,10 @@ index 000000000000..17f5967c2e80
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai.dts b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai.dts
 new file mode 100644
-index 000000000000..88f04f69b121
+index 000000000000..12b2894017cb
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai.dts
-@@ -0,0 +1,1241 @@
+@@ -0,0 +1,1242 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * https://beagley-ai.org/
@@ -19256,6 +19257,7 @@ index 000000000000..88f04f69b121
 +	num-lanes = <1>;
 +	max-link-speed = <3>;
 +	reset-gpios = <&mcu_gpio0 6 GPIO_ACTIVE_HIGH>;
++	enable-gpios = <&mcu_gpio0 8 GPIO_ACTIVE_HIGH>; /* Extra GPIO for pwr_en for BeagleY AI */
 +};
 +
 +&dss1 {

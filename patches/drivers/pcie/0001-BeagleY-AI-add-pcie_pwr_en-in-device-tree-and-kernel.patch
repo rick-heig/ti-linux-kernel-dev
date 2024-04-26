@@ -1,0 +1,34 @@
+From 31c744bad1de1ba03531f38bdd7187c6c81932d0 Mon Sep 17 00:00:00 2001
+From: Takuma Fujiwara <t-fujiwara1@ti.com>
+Date: Thu, 25 Apr 2024 19:56:51 -0500
+Subject: [PATCH] BeagleY-AI: add pcie_pwr_en in device tree and kernel driver
+
+---
+ drivers/pci/controller/cadence/pci-j721e-host.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/pci/controller/cadence/pci-j721e-host.c b/drivers/pci/controller/cadence/pci-j721e-host.c
+index 36b1cafca7d3..885624851149 100644
+--- a/drivers/pci/controller/cadence/pci-j721e-host.c
++++ b/drivers/pci/controller/cadence/pci-j721e-host.c
+@@ -371,6 +371,17 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto err_get_sync;
+ 
++	/*
++	 * Enable PCIE_PWR_EN for X1001 hat for NVMe SSD for BeagleY AI
++	 */
++	gpiod = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_HIGH);
++	if (IS_ERR(gpiod)) {
++		ret = PTR_ERR(gpiod);
++		if (ret != -EPROBE_DEFER)
++			dev_err(dev, "Failed to get enable GPIO\n");
++		goto err_get_sync;
++	}
++
+ 	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(gpiod)) {
+ 		ret = PTR_ERR(gpiod);
+-- 
+2.39.2
+

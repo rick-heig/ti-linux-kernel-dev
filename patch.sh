@@ -532,6 +532,7 @@ drivers () {
 	dir 'fixes'
 	dir 'drivers/cc33xx'
 	dir 'it66121'
+	dir 'drivers/pcie'
 
 	#cd KERNEL/
 	#git checkout v5.10-rc1 -b tmp
