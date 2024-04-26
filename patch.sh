@@ -533,6 +533,7 @@ drivers () {
 	dir 'drivers/cc33xx'
 	dir 'it66121'
 	dir 'drivers/pcie'
+	dir 'drivers/gasket'
 
 	#cd KERNEL/
 	#git checkout v5.10-rc1 -b tmp
