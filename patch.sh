@@ -303,7 +303,7 @@ k3_makefile_patch_cleanup_overlays () {
 	echo "DTC_FLAGS_k3-j721e-sk-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j721s2-common-proc-board += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j721s2-evm-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j722s-beagley-ai += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-am67a-beagley-ai += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j722s-beagley-ai-evt += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j722s-evm += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j722s-evm-fpdlink-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
@@ -385,14 +385,14 @@ beagleboard_dtbs () {
 		#device="k3-am625-pocketbeagle2.dtb" ; k3_dtb_makefile_append
 		#device="k3-j721e-beagleboneai64-no-shared-mem.dtb" ; k3_dtb_makefile_append
 
-		device="k3-j722s-beagley-ai.dtb" ; k3_dtb_makefile_append
+		device="k3-am67a-beagley-ai.dtb" ; k3_dtb_makefile_append
 		device="k3-j722s-beagley-ai-evt.dtb" ; k3_dtb_makefile_append
 
-		device="k3-j722s-beagley-ai-csi0-imx219" ; k3_dtbo_makefile_append
-		device="k3-j722s-beagley-ai-csi0-ov5640" ; k3_dtbo_makefile_append
-		device="k3-j722s-beagley-ai-csi1-imx219" ; k3_dtbo_makefile_append
-		device="k3-j722s-beagley-ai-dsi-rpi-7inch-panel" ; k3_dtbo_makefile_append
-		device="k3-j722s-beagley-ai-lincolntech-185lcd-panel" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-csi0-imx219" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-csi0-ov5640" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-csi1-imx219" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-dsi-rpi-7inch-panel" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-lincolntech-185lcd-panel" ; k3_dtbo_makefile_append
 		k3_makefile_patch_cleanup_overlays
 
 		${git_bin} add -f arch/arm/boot/dts/
