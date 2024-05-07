@@ -1,11 +1,11 @@
-From 29113f22e1e4a3bc02d4676818b3b9ba43ee310e Mon Sep 17 00:00:00 2001
+From d191d08aedad5b4b0bf429f163a82a1e4e4a034b Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Mon, 6 May 2024 15:49:03 -0500
+Date: Tue, 7 May 2024 09:39:27 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/81f31b8b590417f1f6de4510dc806b1b2e1db411
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/f3e526990e0240bc591bc0781fcd5c72293728f9
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -16032,7 +16032,7 @@ index 000000000000..0d9290f3f3e4
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
 new file mode 100644
-index 000000000000..8970550e041a
+index 000000000000..3a5afd847f5c
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
 @@ -0,0 +1,1243 @@
@@ -16281,14 +16281,14 @@ index 000000000000..8970550e041a
 +		type = "d";
 +		port {
 +			hdmi_connector_in: endpoint {
-+				remote-endpoint = <&it66121hdmitx_out>;
++				remote-endpoint = <&it66122_out>;
 +			};
 +		};
 +	};
 +
 +	sound0: sound {
 +		compatible = "simple-audio-card";
-+		simple-audio-card,name = "it66121 HDMI";
++		simple-audio-card,name = "it66122 HDMI";
 +		simple-audio-card,format = "i2s";
 +		simple-audio-card,bitclock-master = <&hdmi_dailink_master>;
 +		simple-audio-card,frame-master = <&hdmi_dailink_master>;
@@ -16299,7 +16299,7 @@ index 000000000000..8970550e041a
 +		};
 +
 +		simple-audio-card,codec {
-+			sound-dai = <&it66121hdmitx>;
++			sound-dai = <&it66122>;
 +		};
 +	};
 +
@@ -16950,8 +16950,8 @@ index 000000000000..8970550e041a
 +	clock-frequency = <100000>;
 +	bootph-all;
 +
-+	it66121hdmitx: hdmitx@4c {
-+		compatible = "ite,it66121";
++	it66122: bridge-hdmi@4c {
++		compatible = "ite,it66122";
 +		reg = <0x4c>;
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hdmi_gpio_pins_default>;
@@ -16963,7 +16963,7 @@ index 000000000000..8970550e041a
 +		interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
 +		#sound-dai-cells = <0>;
 +
-+		hdmi_tx_ports: ports {
++		ports {
 +			#address-cells = <1>;
 +			#size-cells = <0>;
 +
@@ -16975,7 +16975,7 @@ index 000000000000..8970550e041a
 +			port@0 {
 +				reg = <0>;
 +
-+				it66121hdmitx_in: endpoint {
++				it66122_in: endpoint {
 +					bus-width = <24>;
 +					remote-endpoint = <&dss1_dpi0_out>;
 +				};
@@ -16984,7 +16984,7 @@ index 000000000000..8970550e041a
 +			port@1 {
 +				reg = <1>;
 +
-+				it66121hdmitx_out: endpoint {
++				it66122_out: endpoint {
 +					remote-endpoint = <&hdmi_connector_in>;
 +				};
 +			};
@@ -17257,7 +17257,7 @@ index 000000000000..8970550e041a
 +		reg = <0>;
 +
 +		dss1_dpi0_out: endpoint {
-+			remote-endpoint = <&it66121hdmitx_in>;
++			remote-endpoint = <&it66122_in>;
 +		};
 +	};
 +};
