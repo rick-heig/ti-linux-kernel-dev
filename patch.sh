@@ -279,6 +279,7 @@ k3_makefile_patch_cleanup_overlays () {
 	echo "" >> arch/arm64/boot/dts/ti/Makefile
 	echo "#Enable support for device-tree overlays" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-am62-lp-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-am625-beaglemod += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-am625-beagleplay += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-am625-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-am625-sk-lpmdemo += -@" >> arch/arm64/boot/dts/ti/Makefile
@@ -385,6 +386,7 @@ beagleboard_dtbs () {
 		#device="k3-am625-pocketbeagle2.dtb" ; k3_dtb_makefile_append
 		#device="k3-j721e-beagleboneai64-no-shared-mem.dtb" ; k3_dtb_makefile_append
 
+		device="k3-am625-beaglemod.dtb" ; k3_dtb_makefile_append
 		device="k3-am67a-beagley-ai.dtb" ; k3_dtb_makefile_append
 		device="k3-j722s-beagley-ai-evt.dtb" ; k3_dtb_makefile_append
 
@@ -392,6 +394,7 @@ beagleboard_dtbs () {
 		device="k3-am67a-beagley-ai-csi0-ov5640" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-csi1-imx219" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-dsi-rpi-7inch-panel" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-hdmi-dss0-dpi1" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-lincolntech-185lcd-panel" ; k3_dtbo_makefile_append
 		k3_makefile_patch_cleanup_overlays
 
