@@ -1,11 +1,11 @@
-From bba3bbcb2446acf5ae533de302661aba53e9f92b Mon Sep 17 00:00:00 2001
+From dd2bd2ff63ef71ca135183bcc7bacb39f3a7bb1e Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Thu, 9 May 2024 22:16:56 -0500
+Date: Fri, 10 May 2024 13:44:54 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/203d2df70c58fe0ac72f38cec7a49e42b5831816
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/d518599b33ef4b4cd6fc396b716da9a902dfaeed
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -111,7 +111,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  ...-am67a-beagley-ai-dsi-rpi-7inch-panel.dtso |  135 +
  .../k3-am67a-beagley-ai-hdmi-dss0-dpi1.dtso   |   53 +
  ...a-beagley-ai-lincolntech-185lcd-panel.dtso |  117 +
- .../dts/ti/k3-am67a-beagley-ai-pinmux.dtsi    |  616 +++++
+ .../dts/ti/k3-am67a-beagley-ai-pinmux.dtsi    |  600 +++++
  .../arm64/boot/dts/ti/k3-am67a-beagley-ai.dts | 1243 +++++++++
  arch/arm64/boot/dts/ti/k3-am69-sk.dts         |   14 +-
  .../boot/dts/ti/k3-j721e-beagleboneai64.dts   |  113 +-
@@ -137,7 +137,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  include/dt-bindings/mailbox/miv-ihc.h         |   17 +
  include/dt-bindings/pinctrl/omap.h            |    8 +-
  include/uapi/linux/input-event-codes.h        |    5 +
- 129 files changed, 15727 insertions(+), 861 deletions(-)
+ 129 files changed, 15711 insertions(+), 861 deletions(-)
  create mode 100644 arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-ADC-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-BBBW-WL1835-00A0.dtso
@@ -16073,10 +16073,10 @@ index 000000000000..5ab69c2069d8
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
 new file mode 100644
-index 000000000000..1f23ce1171fc
+index 000000000000..3efe62fab5d6
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
-@@ -0,0 +1,616 @@
+@@ -0,0 +1,600 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * https://beagley-ai.org/
@@ -16142,7 +16142,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_03_gpio>;
 +		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_03";
++		gpio-line-names = "HAT_IO_02";
 +	};
 +
 +	hat-05-gpio {
@@ -16150,7 +16150,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_05_gpio>;
 +		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_05";
++		gpio-line-names = "HAT_IO_03";
 +	};
 +
 +	hat-uart-ttyAMA0 {
@@ -16168,7 +16168,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_08_gpio>;
 +		gpios = <&main_gpio1 14 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_08";
++		gpio-line-names = "HAT_IO_14";
 +	};
 +
 +	hat-08-uart-txd0 {
@@ -16184,7 +16184,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_10_gpio>;
 +		gpios = <&main_gpio1 13 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_10";
++		gpio-line-names = "HAT_IO_15";
 +	};
 +
 +	hat-10-uart1-rxd {
@@ -16200,7 +16200,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_11_gpio>;
 +		gpios = <&main_gpio1 8 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_11";
++		gpio-line-names = "HAT_IO_17";
 +	};
 +
 +	hat-12-gpio {
@@ -16208,7 +16208,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_12_gpio>;
 +		gpios = <&main_gpio1 11 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_12";
++		gpio-line-names = "HAT_IO_18";
 +	};
 +
 +	hat-13-gpio {
@@ -16216,7 +16216,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_13_gpio>;
 +		gpios = <&main_gpio0 33 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_13";
++		gpio-line-names = "HAT_IO_27";
 +	};
 +
 +	hat-15-gpio {
@@ -16224,7 +16224,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_15_gpio>;
 +		gpios = <&main_gpio0 41 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_15";
++		gpio-line-names = "HAT_IO_22";
 +	};
 +
 +	hat-16-gpio {
@@ -16232,7 +16232,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_16_gpio>;
 +		gpios = <&mcu_gpio0 7 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_16";
++		gpio-line-names = "HAT_IO_23";
 +	};
 +
 +	hat-18-gpio {
@@ -16240,7 +16240,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_18_gpio>;
 +		gpios = <&mcu_gpio0 10 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_18";
++		gpio-line-names = "HAT_IO_24";
 +	};
 +
 +	hat-19-gpio {
@@ -16248,7 +16248,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_19_gpio>;
 +		gpios = <&mcu_gpio0 3 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_19";
++		gpio-line-names = "HAT_IO_10";
 +	};
 +
 +	hat-21-gpio {
@@ -16256,7 +16256,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_21_gpio>;
 +		gpios = <&mcu_gpio0 4 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_21";
++		gpio-line-names = "HAT_IO_09";
 +	};
 +
 +	hat-22-gpio {
@@ -16264,7 +16264,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_22_gpio>;
 +		gpios = <&main_gpio0 42 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_22";
++		gpio-line-names = "HAT_IO_25";
 +	};
 +
 +	hat-23-gpio {
@@ -16272,15 +16272,15 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_23_gpio>;
 +		gpios = <&mcu_gpio0 2 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_23";
++		gpio-line-names = "HAT_IO_11";
 +	};
 +
 +	hat-24-gpio {
 +		compatible = "gpio-single";
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_24_gpio>;
-+		gpios = <&mcu_gpio0 7 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_24";
++		gpios = <&mcu_gpio0 0 GPIO_ACTIVE_HIGH>;
++		gpio-line-names = "HAT_IO_08";
 +	};
 +
 +	hat-26-gpio {
@@ -16288,23 +16288,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_26_gpio>;
 +		gpios = <&mcu_gpio0 9 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_26";
-+	};
-+
-+	hat-27-gpio {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_27_gpio>;
-+		gpios = <&mcu_gpio0 20 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_27";
-+	};
-+
-+	hat-28-gpio {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_28_gpio>;
-+		gpios = <&mcu_gpio0 19 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_28";
++		gpio-line-names = "HAT_IO_07";
 +	};
 +
 +	hat-29-gpio {
@@ -16312,7 +16296,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_29_gpio>;
 +		gpios = <&main_gpio1 15 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_29";
++		gpio-line-names = "HAT_IO_05";
 +	};
 +
 +	hat-31-gpio {
@@ -16320,7 +16304,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_31_gpio>;
 +		gpios = <&main_gpio1 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_31";
++		gpio-line-names = "HAT_IO_16";
 +	};
 +
 +	hat-32-gpio {
@@ -16328,7 +16312,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_32_gpio>;
 +		gpios = <&main_gpio1 16 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_32";
++		gpio-line-names = "HAT_IO_12";
 +	};
 +
 +	hat-33-gpio {
@@ -16336,7 +16320,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_33_gpio>;
 +		gpios = <&main_gpio1 18 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_33";
++		gpio-line-names = "HAT_IO_13";
 +	};
 +
 +	hat-35-gpio {
@@ -16344,7 +16328,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_35_gpio>;
 +		gpios = <&main_gpio1 12 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_35";
++		gpio-line-names = "HAT_IO_19";
 +	};
 +
 +	hat-36-gpio {
@@ -16352,7 +16336,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_36_gpio>;
 +		gpios = <&main_gpio1 7 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_36";
++		gpio-line-names = "HAT_IO_16";
 +	};
 +
 +	hat-37-gpio {
@@ -16360,7 +16344,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_37_gpio>;
 +		gpios = <&main_gpio0 36 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_37";
++		gpio-line-names = "HAT_IO_26";
 +	};
 +
 +	hat-38-gpio {
@@ -16368,7 +16352,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_38_gpio>;
 +		gpios = <&main_gpio1 10 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_38";
++		gpio-line-names = "HAT_IO_20";
 +	};
 +
 +	hat-40-gpio {
@@ -16376,7 +16360,7 @@ index 000000000000..1f23ce1171fc
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_40_gpio>;
 +		gpios = <&main_gpio1 9 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "HAT_GPIO_40";
++		gpio-line-names = "HAT_IO_21";
 +	};
 +
 +};
