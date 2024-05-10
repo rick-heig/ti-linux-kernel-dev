@@ -538,6 +538,7 @@ drivers () {
 	dir 'drivers/ite-it66121-hpd'
 	dir 'drivers/pcie'
 	dir 'drivers/gasket'
+	dir 'drivers/davinci-mcasp'
 
 	#cd KERNEL/
 	#git checkout v5.10-rc1 -b tmp
