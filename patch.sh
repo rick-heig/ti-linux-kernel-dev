@@ -270,6 +270,7 @@ k3_dtb_makefile_append () {
 k3_dtbo_makefile_append () {
 	echo "dtb-\$(CONFIG_ARCH_K3) += $device.dtbo" >> arch/arm64/boot/dts/ti/Makefile
 	cp -v ../${work_dir}/src/arm64/overlays/${device}.dts arch/arm64/boot/dts/ti/${device}.dtso
+	sed -i -e 's:ti/k3-pinctrl.h:k3-pinctrl.h:g' arch/arm64/boot/dts/ti/${device}.dtso
 }
 
 k3_makefile_patch_cleanup_overlays () {
@@ -390,11 +391,26 @@ beagleboard_dtbs () {
 		device="k3-am67a-beagley-ai.dtb" ; k3_dtb_makefile_append
 		device="k3-j722s-beagley-ai-evt.dtb" ; k3_dtb_makefile_append
 
+		device="k3-am625-beaglemod-audio" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-can0" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-can1" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-csi0-ov5640" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-eeprom" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-eth" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-hdmi" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-lt-lcd185" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-ospi-flash" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-rs485-1" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-rs485-2" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-rtc" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-wl1835" ; k3_dtbo_makefile_append
+
 		device="k3-am67a-beagley-ai-csi0-imx219" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-csi0-ov5640" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-csi1-imx219" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-dsi-rpi-7inch-panel" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-hdmi-dss0-dpi1" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-i2c-arm" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-lincolntech-185lcd-panel" ; k3_dtbo_makefile_append
 		k3_makefile_patch_cleanup_overlays
 
