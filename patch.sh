@@ -398,6 +398,7 @@ beagleboard_dtbs () {
 		device="k3-am625-beaglemod-eeprom" ; k3_dtbo_makefile_append
 		device="k3-am625-beaglemod-eth" ; k3_dtbo_makefile_append
 		device="k3-am625-beaglemod-hdmi" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-io-expand" ; k3_dtbo_makefile_append
 		device="k3-am625-beaglemod-lt-lcd185" ; k3_dtbo_makefile_append
 		device="k3-am625-beaglemod-ospi-flash" ; k3_dtbo_makefile_append
 		device="k3-am625-beaglemod-rs485-1" ; k3_dtbo_makefile_append

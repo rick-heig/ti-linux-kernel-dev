@@ -1,11 +1,11 @@
-From aa95978934f67855f3a9550e4a3d87ea2ba8e25b Mon Sep 17 00:00:00 2001
+From eab256cab46d9eef02bb10310a5bad0f5b7bb184 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Tue, 14 May 2024 17:17:43 -0500
+Date: Wed, 15 May 2024 14:14:14 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/279c26cf9c06d4361b4fed71cf47f6e4550b47f6
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/935ca119db5100b0085bf9be93e4fc68fc316f51
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -88,26 +88,27 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  arch/arm/boot/dts/twl4030.dtsi                |    2 +-
  arch/arm/boot/dts/twl6030.dtsi                |    4 +-
  arch/arm/boot/dts/twl6030_omap4.dtsi          |    4 +-
- arch/arm64/boot/dts/ti/Makefile               |   27 +
+ arch/arm64/boot/dts/ti/Makefile               |   28 +
  arch/arm64/boot/dts/ti/k3-am62-main.dtsi      |   24 +-
  arch/arm64/boot/dts/ti/k3-am62-mcu.dtsi       |    5 +-
  arch/arm64/boot/dts/ti/k3-am62-thermal.dtsi   |    5 +-
  arch/arm64/boot/dts/ti/k3-am62-wakeup.dtsi    |   16 +-
  arch/arm64/boot/dts/ti/k3-am62.dtsi           |    7 +-
- .../boot/dts/ti/k3-am625-beaglemod-audio.dtso |  115 +
- .../boot/dts/ti/k3-am625-beaglemod-can0.dtso  |   33 +
- .../boot/dts/ti/k3-am625-beaglemod-can1.dtso  |   33 +
- .../ti/k3-am625-beaglemod-csi0-ov5640.dtso    |  122 +
- .../dts/ti/k3-am625-beaglemod-eeprom.dtso     |   33 +
- .../boot/dts/ti/k3-am625-beaglemod-eth.dtso   |   94 +
- .../boot/dts/ti/k3-am625-beaglemod-hdmi.dtso  |  189 ++
- .../dts/ti/k3-am625-beaglemod-lt-lcd185.dtso  |  254 ++
- .../dts/ti/k3-am625-beaglemod-ospi-flash.dtso |   90 +
+ .../boot/dts/ti/k3-am625-beaglemod-audio.dtso |   94 +
+ .../boot/dts/ti/k3-am625-beaglemod-can0.dtso  |   42 +
+ .../boot/dts/ti/k3-am625-beaglemod-can1.dtso  |   42 +
+ .../ti/k3-am625-beaglemod-csi0-ov5640.dtso    |  110 +
+ .../dts/ti/k3-am625-beaglemod-eeprom.dtso     |   27 +
+ .../boot/dts/ti/k3-am625-beaglemod-eth.dtso   |  103 +
+ .../boot/dts/ti/k3-am625-beaglemod-hdmi.dtso  |  177 ++
+ .../dts/ti/k3-am625-beaglemod-io-expand.dtso  |   33 +
+ .../dts/ti/k3-am625-beaglemod-lt-lcd185.dtso  |  215 ++
+ .../dts/ti/k3-am625-beaglemod-ospi-flash.dtso |   99 +
  .../dts/ti/k3-am625-beaglemod-rs485-1.dtso    |   36 +
  .../dts/ti/k3-am625-beaglemod-rs485-2.dtso    |   36 +
- .../boot/dts/ti/k3-am625-beaglemod-rtc.dtso   |   38 +
- .../dts/ti/k3-am625-beaglemod-wl1835.dtso     |  119 +
- arch/arm64/boot/dts/ti/k3-am625-beaglemod.dts |  346 +++
+ .../boot/dts/ti/k3-am625-beaglemod-rtc.dtso   |   33 +
+ .../dts/ti/k3-am625-beaglemod-wl1835.dtso     |  101 +
+ arch/arm64/boot/dts/ti/k3-am625-beaglemod.dts |  441 ++++
  .../arm64/boot/dts/ti/k3-am625-beagleplay.dts |  478 ++--
  arch/arm64/boot/dts/ti/k3-am625-sk.dts        |   17 +-
  arch/arm64/boot/dts/ti/k3-am625.dtsi          |    4 +-
@@ -151,7 +152,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  include/dt-bindings/mailbox/miv-ihc.h         |   17 +
  include/dt-bindings/pinctrl/omap.h            |    8 +-
  include/uapi/linux/input-event-codes.h        |    5 +
- 143 files changed, 17200 insertions(+), 861 deletions(-)
+ 144 files changed, 17252 insertions(+), 861 deletions(-)
  create mode 100644 arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-ADC-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-BBBW-WL1835-00A0.dtso
@@ -199,6 +200,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  create mode 100644 arch/arm64/boot/dts/ti/k3-am625-beaglemod-eeprom.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am625-beaglemod-eth.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am625-beaglemod-hdmi.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am625-beaglemod-io-expand.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am625-beaglemod-lt-lcd185.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am625-beaglemod-ospi-flash.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am625-beaglemod-rs485-1.dtso
@@ -13710,10 +13712,10 @@ index 64e38c7c8be7..5730e46b0067 100644
  			OMAP4_IOPAD(0x19e, WAKEUP_EN | PIN_INPUT_PULLUP | MUX_MODE0)	/* sys_nirq1.sys_nirq1 */
  		>;
 diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-index 808d649ec243..117145e66961 100644
+index 808d649ec243..f95e116e8b24 100644
 --- a/arch/arm64/boot/dts/ti/Makefile
 +++ b/arch/arm64/boot/dts/ti/Makefile
-@@ -170,8 +170,33 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
+@@ -170,8 +170,34 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
  			 k3-v3link-imx219-0-2.dtbo \
  			 k3-v3link-imx219-0-3.dtbo
  
@@ -13727,6 +13729,7 @@ index 808d649ec243..117145e66961 100644
 +dtb-$(CONFIG_ARCH_K3) += k3-am625-beaglemod-eeprom.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am625-beaglemod-eth.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am625-beaglemod-hdmi.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am625-beaglemod-io-expand.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am625-beaglemod-lt-lcd185.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am625-beaglemod-ospi-flash.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am625-beaglemod-rs485-1.dtbo
@@ -13747,7 +13750,7 @@ index 808d649ec243..117145e66961 100644
  DTC_FLAGS_k3-am625-beagleplay += -@
  DTC_FLAGS_k3-am625-sk += -@
  DTC_FLAGS_k3-am625-sk-lpmdemo += -@
-@@ -196,6 +221,8 @@ DTC_FLAGS_k3-j721e-sk += -@
+@@ -196,6 +222,8 @@ DTC_FLAGS_k3-j721e-sk += -@
  DTC_FLAGS_k3-j721e-sk-fusion += -@
  DTC_FLAGS_k3-j721s2-common-proc-board += -@
  DTC_FLAGS_k3-j721s2-evm-fusion += -@
@@ -14009,10 +14012,10 @@ index 982fc1dce728..60684214f8e2 100644
  			#size-cells = <2>;
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-audio.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-audio.dtso
 new file mode 100644
-index 000000000000..ef7ed7836351
+index 000000000000..a266b7cc4c63
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-audio.dtso
-@@ -0,0 +1,115 @@
+@@ -0,0 +1,94 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -14022,6 +14025,15 @@ index 000000000000..ef7ed7836351
 +/plugin/;
 +
 +#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am625-beaglemod-audio.kernel = __TIMESTAMP__;
++	};
++};
 +
 +&{/} {
 +	tlv320aic3104_mclk: tlv320aic3104_mclk {
@@ -14067,17 +14079,6 @@ index 000000000000..ef7ed7836351
 +	};
 +};
 +
-+&main_pmx0 {
-+	mcasp_codec_pins_default: mcasp-codec-pins-default {
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x0090, PIN_INPUT, 2) /* (M24) GPMC0_BE0n_CLE.MCASP1_ACLKX */
-+			AM62X_IOPAD(0x0098, PIN_INPUT, 2) /* (U23) GPMC0_WAIT0.MCASP1_AFSX */
-+			AM62X_IOPAD(0x008c, PIN_INPUT, 2) /* (L25) GPMC0_WEn.MCASP1_AXR0 */
-+			AM62X_IOPAD(0x0088, PIN_OUTPUT, 2) /* (L24) GPMC0_OEn_REn.MCASP1_AXR1 */
-+		>;
-+	};
-+};
-+
 +&mcu_pmx0 {
 +	wkup_i2c0_pins_default: wkup-i2c0-pins-default {
 +		pinctrl-single,pins = <
@@ -14088,9 +14089,6 @@ index 000000000000..ef7ed7836351
 +};
 +
 +&wkup_i2c0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&wkup_i2c0_pins_default>;
-+	clock-frequency = <400000>;
 +	#address-cells = <1>;
 +	#size-cells = <0>;
 +	status = "okay";
@@ -14111,29 +14109,13 @@ index 000000000000..ef7ed7836351
 +
 +&mcasp1 {
 +	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mcasp_codec_pins_default>;
-+
-+	#sound-dai-cells = <0>;
-+
-+	op-mode = <0>;          /* MCASP_IIS_MODE */
-+	tdm-slots = <2>;
-+
-+	serial-dir = <  /* 0: INACTIVE, 1: TX, 2: RX */
-+	       2 1 0 0
-+	       0 0 0 0
-+	       0 0 0 0
-+	       0 0 0 0
-+	>;
-+	tx-num-evt = <32>;
-+	rx-num-evt = <32>;
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-can0.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-can0.dtso
 new file mode 100644
-index 000000000000..736ee89041a9
+index 000000000000..a0478b3e30b2
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-can0.dtso
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,42 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -14143,6 +14125,15 @@ index 000000000000..736ee89041a9
 +/plugin/;
 +
 +#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am625-beaglemod-can0.kernel = __TIMESTAMP__;
++	};
++};
 +
 +&{/} {
 +	transceiver1: can-phy1 {
@@ -14169,10 +14160,10 @@ index 000000000000..736ee89041a9
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-can1.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-can1.dtso
 new file mode 100644
-index 000000000000..1969de28822e
+index 000000000000..b6864e2cc8fe
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-can1.dtso
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,42 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -14182,6 +14173,15 @@ index 000000000000..1969de28822e
 +/plugin/;
 +
 +#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am625-beaglemod-can1.kernel = __TIMESTAMP__;
++	};
++};
 +
 +&{/} {
 +	transceiver2: can-phy2 {
@@ -14208,10 +14208,10 @@ index 000000000000..1969de28822e
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-csi0-ov5640.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-csi0-ov5640.dtso
 new file mode 100644
-index 000000000000..f103d5f95fa9
+index 000000000000..d25b71e3efa8
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-csi0-ov5640.dtso
-@@ -0,0 +1,122 @@
+@@ -0,0 +1,110 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -14278,20 +14278,8 @@ index 000000000000..f103d5f95fa9
 +	};
 +};
 +
-+&mcu_pmx0 {
-+	wkup_i2c0_pins_default: wkup-i2c0-pins-default {
-+		pinctrl-single,pins = <
-+			AM62X_MCU_IOPAD(0x004c, PIN_INPUT_PULLUP, 0) /* (B9) WKUP_I2C0_SCL */
-+			AM62X_MCU_IOPAD(0x0050, PIN_INPUT_PULLUP, 0) /* (A9) WKUP_I2C0_SDA */
-+		>;
-+	};
-+};
-+
 +&wkup_i2c0 {
 +	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&wkup_i2c0_pins_default>;
-+	clock-frequency = <400000>;
 +	#address-cells = <1>;
 +	#size-cells = <0>;
 +
@@ -14336,10 +14324,10 @@ index 000000000000..f103d5f95fa9
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-eeprom.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-eeprom.dtso
 new file mode 100644
-index 000000000000..6a9f96ae12ca
+index 000000000000..606b60bc7d00
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-eeprom.dtso
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,27 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -14348,22 +14336,16 @@ index 000000000000..6a9f96ae12ca
 +/dts-v1/;
 +/plugin/;
 +
-+#include "k3-pinctrl.h"
-+
-+&main_pmx0 {
-+	main_i2c1_pins_default: main-i2c1-pins-default {
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x01e8, PIN_INPUT_PULLUP, 0) /* (B17) I2C1_SCL */
-+			AM62X_IOPAD(0x01ec, PIN_INPUT_PULLUP, 0) /* (A17) I2C1_SDA */
-+			AM62X_IOPAD(0x01a4, PIN_INPUT, 7) /* (B20) MCASP0_ACLKX.GPIO1_11 */
-+		>;
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am625-beaglemod-external-eeprom.kernel = __TIMESTAMP__;
 +	};
 +};
 +
 +&main_i2c1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_i2c1_pins_default>;
-+	clock-frequency = <10000>;
 +	status = "okay";
 +	#address-cells = <1>;
 +	#size-cells = <0>;
@@ -14375,10 +14357,10 @@ index 000000000000..6a9f96ae12ca
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-eth.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-eth.dtso
 new file mode 100644
-index 000000000000..c65461d8f111
+index 000000000000..e8c64cc5e7ff
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-eth.dtso
-@@ -0,0 +1,94 @@
+@@ -0,0 +1,103 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -14389,6 +14371,15 @@ index 000000000000..c65461d8f111
 +
 +#include "k3-pinctrl.h"
 +#include <dt-bindings/gpio/gpio.h>
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am625-beaglemod-eth.kernel = __TIMESTAMP__;
++	};
++};
 +
 +&{/} {
 +	mdio0: bitbang-mdio {
@@ -14475,10 +14466,10 @@ index 000000000000..c65461d8f111
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-hdmi.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-hdmi.dtso
 new file mode 100644
-index 000000000000..f9df07484c77
+index 000000000000..e27ca97013ee
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-hdmi.dtso
-@@ -0,0 +1,189 @@
+@@ -0,0 +1,177 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -14490,6 +14481,15 @@ index 000000000000..f9df07484c77
 +#include "k3-pinctrl.h"
 +#include <dt-bindings/gpio/gpio.h>
 +#include <dt-bindings/interrupt-controller/irq.h>
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am625-beaglemod-hdmi.kernel = __TIMESTAMP__;
++	};
++};
 +
 +&{/} {
 +	hdmi0: connector {
@@ -14553,14 +14553,6 @@ index 000000000000..f9df07484c77
 +			AM62X_IOPAD(0x00f4, PIN_OUTPUT, 0) /* (AA21) VOUT0_DATA15 */
 +			AM62X_IOPAD(0x005c, PIN_OUTPUT, 1) /* (R24) GPMC0_AD8.VOUT0_DATA16 */
 +			AM62X_IOPAD(0x0060, PIN_OUTPUT, 1) /* (R25) GPMC0_AD9.VOUT0_DATA17 */
-+		>;
-+	};
-+
-+	mcasp_hdmi_pins_default: mcasp-hdmi-default-pins {
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x0090, PIN_INPUT, 2) /* (M24) GPMC0_BE0n_CLE.MCASP1_ACLKX */
-+			AM62X_IOPAD(0x0098, PIN_INPUT, 2) /* (U23) GPMC0_WAIT0.MCASP1_AFSX */
-+			AM62X_IOPAD(0x007c, PIN_INPUT, 2) /* (P25) GPMC0_CLK.MCASP1_AXR3 */
 +		>;
 +	};
 +};
@@ -14653,27 +14645,53 @@ index 000000000000..f9df07484c77
 +
 +&mcasp1 {
 +	status = "okay";
-+	#sound-dai-cells = <0>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mcasp_hdmi_pins_default>;
 +	auxclk-fs-ratio = <2177>;
-+	op-mode = <0>;          /* MCASP_IIS_MODE */
-+	tdm-slots = <2>;
-+	serial-dir = <  /* 0: INACTIVE, 1: TX, 2: RX */
-+	       0 0 0 1
-+	       0 0 0 0
-+	       0 0 0 0
-+	       0 0 0 0
-+	>;
-+	tx-num-evt = <32>;
-+	rx-num-evt = <32>;
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-io-expand.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-io-expand.dtso
+new file mode 100644
+index 000000000000..edae98c3a784
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-io-expand.dtso
+@@ -0,0 +1,33 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
++ */
++
++/dts-v1/;
++/plugin/;
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++        overlays {
++                k3-am625-beaglemod-io-expand.kernel = __TIMESTAMP__;
++        };
++};
++
++&main_i2c1 {
++	status = "okay";
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	pca953x: pca@21 {
++		compatible = "nxp,pca9535";
++		reg = <0x21>;
++		status = "okay";
++
++		gpio-controller;
++		#gpio-cells = <2>;
++		//We don't use interrupt here?
++		//Because all the expand IO are output.
++	};
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-lt-lcd185.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-lt-lcd185.dtso
 new file mode 100644
-index 000000000000..24c21e17fd11
+index 000000000000..f4363df0b476
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-lt-lcd185.dtso
-@@ -0,0 +1,254 @@
+@@ -0,0 +1,215 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -14810,13 +14828,6 @@ index 000000000000..24c21e17fd11
 +		>;
 +	};
 +
-+	main_i2c1_pins_default: main-i2c1-pins-default {
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x01e8, PIN_INPUT_PULLUP, 0) /* (B17) I2C1_SCL */
-+			AM62X_IOPAD(0x01ec, PIN_INPUT_PULLUP, 0) /* (A17) I2C1_SDA */
-+		>;
-+	};
-+
 +	level_shift_oe_pins_default: level-shift-oe-pins-default {
 +		pinctrl-single,pins = <
 +			AM62X_IOPAD(0x0084, PIN_OUTPUT, 7) /* (L23) GPMC0_ADVn_ALE.GPIO0_32 */
@@ -14836,15 +14847,6 @@ index 000000000000..24c21e17fd11
 +
 +&main_gpio1 {
 +	status = "okay";
-+};
-+
-+&mcu_pmx0 {
-+	mcu_i2c0_pins_default: i2c-qwiic-pins-default {
-+		pinctrl-single,pins = <
-+			AM62X_MCU_IOPAD(0x0044, PIN_INPUT, 0) /* (A8) MCU_I2C0_SCL */
-+			AM62X_MCU_IOPAD(0x0048, PIN_INPUT, 0) /* (D10) MCU_I2C0_SDA */
-+		>;
-+	};
 +};
 +
 +&dss {
@@ -14874,11 +14876,8 @@ index 000000000000..24c21e17fd11
 +};
 +
 +&mcu_i2c0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mcu_i2c0_pins_default>;
 +	#address-cells = <1>;
 +	#size-cells = <0>;
-+	clock-frequency = <100000>;
 +	status = "okay";
 +
 +	eeprom@57 {
@@ -14905,35 +14904,15 @@ index 000000000000..24c21e17fd11
 +	};
 +};
 +
-+&main_i2c1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_i2c1_pins_default>;
-+	clock-frequency = <10000>;
-+	status = "okay";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	pca953x: pca@21 {
-+		compatible = "nxp,pca9535";
-+		reg = <0x21>;
-+		status = "okay";
-+
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		//We don't use interrupt here?
-+		//Because all the expand IO are output.
-+	};
-+};
-+
 +&epwm0 {
 +	status = "okay";
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-ospi-flash.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-ospi-flash.dtso
 new file mode 100644
-index 000000000000..0e7d3a92c7d1
+index 000000000000..761c6f540cbd
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-ospi-flash.dtso
-@@ -0,0 +1,90 @@
+@@ -0,0 +1,99 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -14943,6 +14922,15 @@ index 000000000000..0e7d3a92c7d1
 +/plugin/;
 +
 +#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am625-beaglemod-ospi-flash.kernel = __TIMESTAMP__;
++	};
++};
 +
 +&main_pmx0 {
 +        ospi0_pins_default: ospi0-pins-default {
@@ -15110,10 +15098,10 @@ index 000000000000..fab71c0f2f5c
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-rtc.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-rtc.dtso
 new file mode 100644
-index 000000000000..48f8343303c8
+index 000000000000..28066c510704
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-rtc.dtso
-@@ -0,0 +1,38 @@
+@@ -0,0 +1,33 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -15122,21 +15110,16 @@ index 000000000000..48f8343303c8
 +/dts-v1/;
 +/plugin/;
 +
-+#include "k3-pinctrl.h"
-+
-+&main_pmx0 {
-+	main_i2c1_pins_default: main-i2c1-pins-default {
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x01e8, PIN_INPUT_PULLUP, 0) /* (B17) I2C1_SCL */
-+			AM62X_IOPAD(0x01ec, PIN_INPUT_PULLUP, 0) /* (A17) I2C1_SDA */
-+		>;
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am625-beaglemod-external-rtc.kernel = __TIMESTAMP__;
 +	};
 +};
 +
 +&main_i2c1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_i2c1_pins_default>;
-+	clock-frequency = <10000>;
 +	status = "okay";
 +	#address-cells = <1>;
 +	#size-cells = <0>;
@@ -15154,10 +15137,10 @@ index 000000000000..48f8343303c8
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod-wl1835.dtso b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-wl1835.dtso
 new file mode 100644
-index 000000000000..28c70bb86415
+index 000000000000..a4b2ee29cc5b
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod-wl1835.dtso
-@@ -0,0 +1,119 @@
+@@ -0,0 +1,101 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2022 Texas Instruments Incorporated - https://www.ti.com/
@@ -15169,6 +15152,15 @@ index 000000000000..28c70bb86415
 +#include "k3-pinctrl.h"
 +#include <dt-bindings/gpio/gpio.h>
 +#include <dt-bindings/interrupt-controller/irq.h>
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am625-beaglemod-wl1835.kernel = __TIMESTAMP__;
++	};
++};
 +
 +&{/} {
 +	wlan_en: regulator-3 {
@@ -15197,13 +15189,6 @@ index 000000000000..28c70bb86415
 +		>;
 +	};
 +
-+	main_i2c1_pins_default: main-i2c1-pins-default {
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x01e8, PIN_INPUT_PULLUP, 0) /* (B17) I2C1_SCL */
-+			AM62X_IOPAD(0x01ec, PIN_INPUT_PULLUP, 0) /* (A17) I2C1_SDA */
-+		>;
-+	};
-+
 +	wifi_wlirq_pins_default: wifi-wlirq-pins-default {
 +		pinctrl-single,pins = <
 +			AM62X_IOPAD(0x0124, PIN_INPUT, 7) /* (A23) MMC2_SDCD.GPIO0_71 */
@@ -15219,26 +15204,6 @@ index 000000000000..28c70bb86415
 +			AM62X_MCU_IOPAD(0x0014, PIN_INPUT, 0) /* (B5) MCU_UART0_RXD */
 +			AM62X_MCU_IOPAD(0x0018, PIN_OUTPUT, 0) /* (A5) MCU_UART0_TXD */
 +		>;
-+	};
-+};
-+
-+&main_i2c1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_i2c1_pins_default>;
-+	clock-frequency = <10000>;
-+	status = "okay";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	pca953x: pca@21 {
-+		compatible = "nxp,pca9535";
-+		reg = <0x21>;
-+		status = "okay";
-+
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		//We don't use interrupt here?
-+		//Because all the expand IO are output.
 +	};
 +};
 +
@@ -15279,10 +15244,10 @@ index 000000000000..28c70bb86415
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beaglemod.dts b/arch/arm64/boot/dts/ti/k3-am625-beaglemod.dts
 new file mode 100644
-index 000000000000..699efa83c404
+index 000000000000..13e3a7efa48f
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am625-beaglemod.dts
-@@ -0,0 +1,346 @@
+@@ -0,0 +1,441 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
 +/dts-v1/;
@@ -15504,6 +15469,39 @@ index 000000000000..699efa83c404
 +			AM62X_IOPAD(0x01f4, PIN_INPUT_PULLUP, 0) /* (D16) EXTINTn */
 +		>;
 +	};
++
++	mcasp1_pins_default: mcasp1-pins-default {
++		pinctrl-single,pins = <
++			AM62X_IOPAD(0x0090, PIN_INPUT, 2) /* (M24) GPMC0_BE0n_CLE.MCASP1_ACLKX */
++			AM62X_IOPAD(0x0098, PIN_INPUT, 2) /* (U23) GPMC0_WAIT0.MCASP1_AFSX */
++			AM62X_IOPAD(0x008c, PIN_INPUT, 2) /* (L25) GPMC0_WEn.MCASP1_AXR0 */
++			AM62X_IOPAD(0x0088, PIN_OUTPUT, 2) /* (L24) GPMC0_OEn_REn.MCASP1_AXR1 */
++			AM62X_IOPAD(0x007c, PIN_INPUT, 2) /* (P25) GPMC0_CLK.MCASP1_AXR3 */
++		>;
++	};
++
++	main_i2c1_pins_default: main-i2c1-pins-default {
++		pinctrl-single,pins = <
++			AM62X_IOPAD(0x01e8, PIN_INPUT_PULLUP, 0) /* (B17) I2C1_SCL */
++			AM62X_IOPAD(0x01ec, PIN_INPUT_PULLUP, 0) /* (A17) I2C1_SDA */
++		>;
++	};
++};
++
++&mcu_pmx0 {
++	wkup_i2c0_pins_default: wkup-i2c0-pins-default {
++		pinctrl-single,pins = <
++			AM62X_MCU_IOPAD(0x004c, PIN_INPUT_PULLUP, 0) /* (B9) WKUP_I2C0_SCL */
++			AM62X_MCU_IOPAD(0x0050, PIN_INPUT_PULLUP, 0) /* (A9) WKUP_I2C0_SDA */
++		>;
++	};
++
++	mcu_i2c0_pins_default: i2c-qwiic-pins-default {
++		pinctrl-single,pins = <
++			AM62X_MCU_IOPAD(0x0044, PIN_INPUT, 0) /* (A8) MCU_I2C0_SCL */
++			AM62X_MCU_IOPAD(0x0048, PIN_INPUT, 0) /* (D10) MCU_I2C0_SDA */
++		>;
++	};
 +};
 +
 +&sdhci0 {
@@ -15548,6 +15546,11 @@ index 000000000000..699efa83c404
 +	pinctrl-0 = <&local_i2c_pins_default>;
 +	clock-frequency = <400000>;
 +	status = "okay";
++
++	eeprom@50 {
++		compatible = "atmel,24c32";
++		reg = <0x50>;
++	};
 +
 +	tps65219: pmic@30 {
 +		compatible = "ti,tps65219";
@@ -15629,6 +15632,64 @@ index 000000000000..699efa83c404
 +		};
 +	};
 +};
++
++&main_i2c1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&main_i2c1_pins_default>;
++	clock-frequency = <10000>;
++	status = "disabled";
++};
++
++&mcu_i2c0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&mcu_i2c0_pins_default>;
++	clock-frequency = <100000>;
++	status = "disabled";
++};
++
++&wkup_i2c0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&wkup_i2c0_pins_default>;
++	clock-frequency = <400000>;
++	status = "disabled";
++};
++
++&mcasp1 {
++	status = "disabled";
++	pinctrl-names = "default";
++	pinctrl-0 = <&mcasp1_pins_default>;
++
++	#sound-dai-cells = <0>;
++
++	op-mode = <0>;          /* MCASP_IIS_MODE */
++	tdm-slots = <2>;
++
++	serial-dir = <  /* 0: INACTIVE, 1: TX, 2: RX */
++	       2 1 0 1
++	       0 0 0 0
++	       0 0 0 0
++	       0 0 0 0
++	>;
++	tx-num-evt = <32>;
++	rx-num-evt = <32>;
++};
++
++&usbss0 {
++       status = "okay";
++};
++
++&usb0 {
++       dr_mode = "peripheral";
++};
++
++&usbss1 {
++       status = "okay";
++};
++
++&usb1 {
++       dr_mode = "host";
++};
+\ No newline at end of file
 diff --git a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
 index b3328ae24b5f..785501b657d3 100644
 --- a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
@@ -17512,7 +17573,7 @@ index 000000000000..5ab69c2069d8
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
 new file mode 100644
-index 000000000000..e0bfed1acd69
+index 000000000000..68f1e7c1128a
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
 @@ -0,0 +1,800 @@
@@ -17723,7 +17784,7 @@ index 000000000000..e0bfed1acd69
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_24_gpio>;
 +		gpios = <&mcu_gpio0 0 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO08";
++		gpio-line-names = "GPIO8";
 +	};
 +
 +	hat-26-gpio {
@@ -17755,7 +17816,7 @@ index 000000000000..e0bfed1acd69
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&hat_31_gpio>;
 +		gpios = <&main_gpio1 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO16";
++		gpio-line-names = "GPIO6";
 +	};
 +
 +	hat-31-pwm {
