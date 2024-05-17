@@ -293,4 +293,9 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 
 ./scripts/config --enable CONFIG_GPIO_AGGREGATOR
 
+#cc33xx ble
+./scripts/config --disable CONFIG_BT_BNEP
+./scripts/config --disable CONFIG_BT_HCIBTSDIO
+./scripts/config --disable CONFIG_BT_TI
+
 cd ${DIR}/
