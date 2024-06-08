@@ -410,12 +410,19 @@ beagleboard_dtbs () {
 		device="k3-am67a-beagley-ai-csi0-ov5640" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-csi1-imx219" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-dsi-rpi-7inch-panel" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-hat-gpio" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-hdmi-dss0-dpi1" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-i2c-arm" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-lincolntech-185lcd-panel" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-mikroe-eth" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-mikroe-microsd" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-spi0-1cs" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-spi0-2cs" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-spidev0" ; k3_dtbo_makefile_append
+		device="k3-j721e-edgeai-apps" ; k3_dtbo_makefile_append
+		device="k3-j721e-vision-apps" ; k3_dtbo_makefile_append
+		device="k3-j722s-edgeai-apps" ; k3_dtbo_makefile_append
+		device="k3-j722s-vision-apps" ; k3_dtbo_makefile_append
 		k3_makefile_patch_cleanup_overlays
 
 		${git_bin} add -f arch/arm/boot/dts/
