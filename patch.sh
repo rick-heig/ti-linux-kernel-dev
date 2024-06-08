@@ -270,7 +270,7 @@ k3_dtb_makefile_append () {
 k3_dtbo_makefile_append () {
 	echo "dtb-\$(CONFIG_ARCH_K3) += $device.dtbo" >> arch/arm64/boot/dts/ti/Makefile
 	cp -v ../${work_dir}/src/arm64/overlays/${device}.dts arch/arm64/boot/dts/ti/${device}.dtso
-	sed -i -e 's:ti/k3-pinctrl.h:k3-pinctrl.h:g' arch/arm64/boot/dts/ti/${device}.dtso
+	sed -i -e 's:ti/k3-:k3-:g' arch/arm64/boot/dts/ti/${device}.dtso
 }
 
 k3_makefile_patch_cleanup_overlays () {
@@ -566,6 +566,7 @@ drivers () {
 	dir 'drivers/pcie'
 	dir 'drivers/gasket'
 	dir 'drivers/davinci-mcasp'
+	dir 'drivers/gpio-aggregator'
 
 	#cd KERNEL/
 	#git checkout v5.10-rc1 -b tmp
