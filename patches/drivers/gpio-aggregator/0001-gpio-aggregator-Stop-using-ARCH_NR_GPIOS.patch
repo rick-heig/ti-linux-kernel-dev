@@ -1,0 +1,62 @@
+From c2e795869b4fdc7b1128b830929b042f12597583 Mon Sep 17 00:00:00 2001
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Date: Fri, 2 Sep 2022 14:42:02 +0200
+Subject: [PATCH] gpio: aggregator: Stop using ARCH_NR_GPIOS
+
+ARCH_NR_GPIOS is used locally in aggr_parse() as the maximum number
+of GPIOs to be aggregated together by the driver since
+commit ec75039d5550 ("gpio: aggregator: Use bitmap_parselist() for
+parsing GPIO offsets").
+
+Don't rely on the total possible number of GPIOs in the system but
+define a local arbitrary macro for that, set to 512 which should be
+large enough as it is also the default value for ARCH_NR_GPIOS.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+ drivers/gpio/gpio-aggregator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
+index 0cb2664085cf..6d17d262ad91 100644
+--- a/drivers/gpio/gpio-aggregator.c
++++ b/drivers/gpio/gpio-aggregator.c
+@@ -23,6 +23,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/string.h>
+ 
++#define AGGREGATOR_MAX_GPIOS 512
+ 
+ /*
+  * GPIO Aggregator sysfs interface
+@@ -64,7 +65,7 @@ static int aggr_parse(struct gpio_aggregator *aggr)
+ 	unsigned int i, n = 0;
+ 	int error = 0;
+ 
+-	bitmap = bitmap_alloc(ARCH_NR_GPIOS, GFP_KERNEL);
++	bitmap = bitmap_alloc(AGGREGATOR_MAX_GPIOS, GFP_KERNEL);
+ 	if (!bitmap)
+ 		return -ENOMEM;
+ 
+@@ -84,13 +85,13 @@ static int aggr_parse(struct gpio_aggregator *aggr)
+ 		}
+ 
+ 		/* GPIO chip + offset(s) */
+-		error = bitmap_parselist(offsets, bitmap, ARCH_NR_GPIOS);
++		error = bitmap_parselist(offsets, bitmap, AGGREGATOR_MAX_GPIOS);
+ 		if (error) {
+ 			pr_err("Cannot parse %s: %d\n", offsets, error);
+ 			goto free_bitmap;
+ 		}
+ 
+-		for_each_set_bit(i, bitmap, ARCH_NR_GPIOS) {
++		for_each_set_bit(i, bitmap, AGGREGATOR_MAX_GPIOS) {
+ 			error = aggr_add_gpio(aggr, name, i, &n);
+ 			if (error)
+ 				goto free_bitmap;
+-- 
+2.39.2
+
