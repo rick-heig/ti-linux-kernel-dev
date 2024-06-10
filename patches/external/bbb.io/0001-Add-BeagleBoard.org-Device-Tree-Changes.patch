@@ -1,11 +1,11 @@
-From 22d820aa87f8d7d731f839a117690a204abc3c2f Mon Sep 17 00:00:00 2001
+From b6d098dd322cdf423a9ac33025a2fe5955d4e3ca Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Fri, 7 Jun 2024 22:55:50 -0500
+Date: Mon, 10 Jun 2024 14:05:51 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/617232085d6b60fa05253592c8399089fa93a981
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/db3ec8f883a119db334ee32e8f7406a7ff2e1b56
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -123,17 +123,17 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  .../ti/k3-am67a-beagley-ai-csi0-ov5640.dtso   |   84 +
  .../ti/k3-am67a-beagley-ai-csi1-imx219.dtso   |  103 +
  ...-am67a-beagley-ai-dsi-rpi-7inch-panel.dtso |  135 +
- .../dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso  |   65 +
+ .../dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso  |   62 +
  .../k3-am67a-beagley-ai-hdmi-dss0-dpi1.dtso   |   53 +
- .../dts/ti/k3-am67a-beagley-ai-i2c-arm.dtso   |   18 +
+ .../dts/ti/k3-am67a-beagley-ai-i2c-arm.dtso   |   27 +
  ...a-beagley-ai-lincolntech-185lcd-panel.dtso |  117 +
  .../ti/k3-am67a-beagley-ai-mikroe-eth.dtso    |   51 +
  .../k3-am67a-beagley-ai-mikroe-microsd.dtso   |   50 +
- .../dts/ti/k3-am67a-beagley-ai-pinmux.dtsi    | 1850 +++++++++++++
+ .../dts/ti/k3-am67a-beagley-ai-pinmux.dtsi    | 1765 +++++++++++++
  .../dts/ti/k3-am67a-beagley-ai-spi0-1cs.dtso  |   46 +
  .../dts/ti/k3-am67a-beagley-ai-spi0-2cs.dtso  |   53 +
  .../dts/ti/k3-am67a-beagley-ai-spidev0.dtso   |   55 +
- .../arm64/boot/dts/ti/k3-am67a-beagley-ai.dts | 1254 +++++++++
+ .../arm64/boot/dts/ti/k3-am67a-beagley-ai.dts | 1275 +++++++++
  arch/arm64/boot/dts/ti/k3-am69-sk.dts         |   14 +-
  .../boot/dts/ti/k3-j721e-beagleboneai64.dts   |  113 +-
  .../dts/ti/k3-j721e-common-proc-board.dts     |   11 +-
@@ -146,7 +146,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  arch/arm64/boot/dts/ti/k3-j721e-thermal.dtsi  |    5 +-
  .../boot/dts/ti/k3-j721e-vision-apps.dtso     |   49 +
  arch/arm64/boot/dts/ti/k3-j721e.dtsi          |    4 +-
- .../boot/dts/ti/k3-j722s-beagley-ai-evt.dts   | 1268 +++++++++
+ .../boot/dts/ti/k3-j722s-beagley-ai-evt.dts   | 1289 ++++++++++
  .../boot/dts/ti/k3-j722s-edgeai-apps.dtso     |   11 +
  arch/arm64/boot/dts/ti/k3-j722s-evm.dts       |   16 +-
  .../boot/dts/ti/k3-j722s-rtos-memory-map.dtsi |  175 ++
@@ -164,7 +164,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  include/dt-bindings/mailbox/miv-ihc.h         |   17 +
  include/dt-bindings/pinctrl/omap.h            |    8 +-
  include/uapi/linux/input-event-codes.h        |    5 +
- 156 files changed, 19244 insertions(+), 861 deletions(-)
+ 156 files changed, 19207 insertions(+), 861 deletions(-)
  create mode 100644 arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-ADC-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-BBBW-WL1835-00A0.dtso
@@ -17383,10 +17383,10 @@ index 000000000000..0e025287b708
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso
 new file mode 100644
-index 000000000000..d1ef2f807317
+index 000000000000..7ddb122d68f4
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso
-@@ -0,0 +1,65 @@
+@@ -0,0 +1,62 @@
 +/dts-v1/;
 +/plugin/;
 +
@@ -17400,6 +17400,9 @@ index 000000000000..d1ef2f807317
 +};
 +
 +&main_pmx0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&main_hat_gpio0_pins_default>, <&main_hat_gpio1_pins_default>;
++
 +	main_hat_gpio0_pins_default: main-hat-gpio0-default-pins {
 +		pinctrl-single,pins = <
 +			J722S_IOPAD(0x0088, PIN_INPUT, 7) /* (N22) GPMC0_OEn_REn.GPIO0_33 */
@@ -17428,6 +17431,9 @@ index 000000000000..d1ef2f807317
 +};
 +
 +&mcu_pmx0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&mcu_hat_gpio0_pins_default>;
++
 +	mcu_hat_gpio0_pins_default: mcu-hat-gpio0-default-pins {
 +		pinctrl-single,pins = <
 +			J722S_MCU_IOPAD(0x0000, PIN_INPUT, 7) /* (C12) MCU_SPI0_CS0.MCU_GPIO0_0 */
@@ -17437,22 +17443,12 @@ index 000000000000..d1ef2f807317
 +			J722S_MCU_IOPAD(0x001c, PIN_INPUT, 7) /* (B5) MCU_UART0_CTSn.MCU_GPIO0_7 */
 +			J722S_MCU_IOPAD(0x0024, PIN_INPUT, 7) /* (B3) WKUP_UART0_RXD.MCU_GPIO0_9 */
 +			J722S_MCU_IOPAD(0x0028, PIN_INPUT, 7) /* (C8) WKUP_UART0_TXD.MCU_GPIO0_10 */
-+			J722S_MCU_IOPAD(0x0044, PIN_INPUT, 7) /* (B13) MCU_I2C0_SCL.MCU_GPIO0_17 */
-+			J722S_MCU_IOPAD(0x0048, PIN_INPUT, 7) /* (E11) MCU_I2C0_SDA.MCU_GPIO0_18 */
++			// Normally /dev/i2c-1
++			//J722S_MCU_IOPAD(0x0044, PIN_INPUT, 7) /* (B13) MCU_I2C0_SCL.MCU_GPIO0_17 */
++			//J722S_MCU_IOPAD(0x0048, PIN_INPUT, 7) /* (E11) MCU_I2C0_SDA.MCU_GPIO0_18 */
 +		>;
 +	};
 +};
-+
-+&{/} {
-+	hat_gpio: hat-gpio {
-+		status = "okay";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&main_hat_gpio0_pins_default>,
-+			    <&main_hat_gpio1_pins_default>,
-+			    <&mcu_hat_gpio0_pins_default>;
-+	};
-+};
-\ No newline at end of file
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hdmi-dss0-dpi1.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hdmi-dss0-dpi1.dtso
 new file mode 100644
 index 000000000000..1fb55a918bfe
@@ -17515,10 +17511,10 @@ index 000000000000..1fb55a918bfe
 \ No newline at end of file
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-i2c-arm.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-i2c-arm.dtso
 new file mode 100644
-index 000000000000..5b478ac8e96a
+index 000000000000..d8a7d19222d8
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-i2c-arm.dtso
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,27 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * DT Overlay for I2C connections within the expansion header.
@@ -17530,12 +17526,21 @@ index 000000000000..5b478ac8e96a
 +/dts-v1/;
 +/plugin/;
 +
-+&mcu_i2c0 {
-+    status = "okay";
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++ */
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-i2c-arm.kernel = __TIMESTAMP__;
++	};
 +};
 +
-+&wkup_i2c0 {
-+    status = "okay";
++&mcu_i2c0 {
++	symlink = "hat/mcu_i2c0";
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&mcu_i2c0_pins_default>;
++	clock-frequency = <400000>;
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-lincolntech-185lcd-panel.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-lincolntech-185lcd-panel.dtso
 new file mode 100644
@@ -17775,10 +17780,10 @@ index 000000000000..a2703fffca05
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
 new file mode 100644
-index 000000000000..6394eb00313d
+index 000000000000..0083b3336e13
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
-@@ -0,0 +1,1850 @@
+@@ -0,0 +1,1765 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * https://beagley-ai.org/
@@ -17790,145 +17795,6 @@ index 000000000000..6394eb00313d
 +#include <dt-bindings/gpio/gpio.h>
 +
 +/ {
-+	hat-rpi-gpio {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_03_gpio>,
-+			<&hat_05_gpio>,
-+			<&hat_07_gpio>,
-+			<&hat_29_gpio>,
-+			<&hat_31_gpio>,
-+			<&hat_26_gpio>,
-+			<&hat_24_gpio>,
-+			<&hat_21_gpio>,
-+			<&hat_19_gpio>,
-+			<&hat_23_gpio>,
-+			<&hat_32_gpio>,
-+			<&hat_33_gpio>,
-+			<&hat_08_gpio>,
-+			<&hat_10_gpio>,
-+			<&hat_36_gpio>,
-+			<&hat_11_gpio>,
-+			<&hat_12_gpio>,
-+			<&hat_35_gpio>,
-+			<&hat_38_gpio>,
-+			<&hat_40_gpio>,
-+			<&hat_15_gpio>,
-+			<&hat_16_gpio>,
-+			<&hat_18_gpio>,
-+			<&hat_22_gpio>,
-+			<&hat_37_gpio>,
-+			<&hat_13_gpio>;
-+
-+		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>,
-+			<&mcu_gpio0 17 GPIO_ACTIVE_HIGH>,
-+			<&mcu_gpio0 38 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 15 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 17 GPIO_ACTIVE_HIGH>,
-+			<&mcu_gpio0 9 GPIO_ACTIVE_HIGH>,
-+			<&mcu_gpio0 0 GPIO_ACTIVE_HIGH>,
-+			<&mcu_gpio0 4 GPIO_ACTIVE_HIGH>,
-+			<&mcu_gpio0 3 GPIO_ACTIVE_HIGH>,
-+			<&mcu_gpio0 2 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 16 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 18 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 14 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 13 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 7 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 8 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 11 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 12 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 10 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio1 9 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio0 41 GPIO_ACTIVE_HIGH>,
-+			<&mcu_gpio0 7 GPIO_ACTIVE_HIGH>,
-+			<&mcu_gpio0 10 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio0 42 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio0 36 GPIO_ACTIVE_HIGH>,
-+			<&main_gpio0 33 GPIO_ACTIVE_HIGH>;
-+
-+		gpio-line-names = "GPIO2",
-+				"GPIO3",
-+				"GPIO4",
-+				"GPIO5",
-+				"GPIO6",
-+				"GPIO7",
-+				"GPIO8",
-+				"GPIO9",
-+				"GPIO10",
-+				"GPIO11",
-+				"GPIO12",
-+				"GPIO13",
-+				"GPIO14",
-+				"GPIO15",
-+				"GPIO16",
-+				"GPIO17",
-+				"GPIO18",
-+				"GPIO19",
-+				"GPIO20",
-+				"GPIO21",
-+				"GPIO22",
-+				"GPIO23",
-+				"GPIO24",
-+				"GPIO25",
-+				"GPIO26",
-+				"GPIO27";
-+	};
-+
-+	hat-03-gpio {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_03_gpio>;
-+		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO2";
-+		beagle-gpio-pi = "GPIO2";
-+	};
-+
-+	hat-03-gpio-pu {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_03_gpio_pu>;
-+		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO2";
-+		beagle-gpio-pi = "GPIO2";
-+	};
-+
-+	hat-03-gpio-pd {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_03_gpio_pd>;
-+		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO2";
-+		beagle-gpio-pi = "GPIO2";
-+	};
-+
-+	hat-05-gpio {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_05_gpio>;
-+		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO3";
-+		beagle-gpio-pi = "GPIO3";
-+	};
-+
-+	hat-05-gpio-pu {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_05_gpio_pu>;
-+		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO3";
-+		beagle-gpio-pi = "GPIO3";
-+	};
-+
-+	hat-05-gpio-pd {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_05_gpio_pd>;
-+		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO3";
-+		beagle-gpio-pi = "GPIO3";
-+	};
-+
 +	hat-07-gpio {
 +		compatible = "gpio-single";
 +		pinctrl-names = "default";
@@ -18753,6 +18619,60 @@ index 000000000000..6394eb00313d
 +};
 +
 +&main_pmx0 {
++	hat-03-gpio {
++		compatible = "gpio-single";
++		pinctrl-names = "default";
++		pinctrl-0 = <&hat_03_gpio>;
++		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
++		gpio-line-names = "GPIO2";
++		beagle-gpio-pi = "GPIO2";
++	};
++
++	hat-03-gpio-pu {
++		compatible = "gpio-single";
++		pinctrl-names = "default";
++		pinctrl-0 = <&hat_03_gpio_pu>;
++		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
++		gpio-line-names = "GPIO2";
++		beagle-gpio-pi = "GPIO2";
++	};
++
++	hat-03-gpio-pd {
++		compatible = "gpio-single";
++		pinctrl-names = "default";
++		pinctrl-0 = <&hat_03_gpio_pd>;
++		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
++		gpio-line-names = "GPIO2";
++		beagle-gpio-pi = "GPIO2";
++	};
++
++	hat-05-gpio {
++		compatible = "gpio-single";
++		pinctrl-names = "default";
++		pinctrl-0 = <&hat_05_gpio>;
++		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
++		gpio-line-names = "GPIO3";
++		beagle-gpio-pi = "GPIO3";
++	};
++
++	hat-05-gpio-pu {
++		compatible = "gpio-single";
++		pinctrl-names = "default";
++		pinctrl-0 = <&hat_05_gpio_pu>;
++		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
++		gpio-line-names = "GPIO3";
++		beagle-gpio-pi = "GPIO3";
++	};
++
++	hat-05-gpio-pd {
++		compatible = "gpio-single";
++		pinctrl-names = "default";
++		pinctrl-0 = <&hat_05_gpio_pd>;
++		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
++		gpio-line-names = "GPIO3";
++		beagle-gpio-pi = "GPIO3";
++	};
++
 +	hat_07_uart6_rxd: hat-07-uart6-rxd-pins {
 +		pinctrl-single,pins = <
 +			J722S_IOPAD(0x09C, PIN_INPUT, 3) /* (W26) GPMC0_WAIT1.UART6_RXD */
@@ -19803,10 +19723,10 @@ index 000000000000..c169e45c6a34
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
 new file mode 100644
-index 000000000000..1175978a01e3
+index 000000000000..5d0239352c7a
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
-@@ -0,0 +1,1254 @@
+@@ -0,0 +1,1275 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * https://beagley-ai.org/
@@ -19841,6 +19761,7 @@ index 000000000000..1175978a01e3
 +		spi0 = &spi_gpio;
 +		usb0 = &usb0;
 +		usb1 = &usb1;
++		i2c1 = &mcu_i2c0;
 +	};
 +
 +	chosen {
@@ -20032,17 +19953,19 @@ index 000000000000..1175978a01e3
 +		pinctrl-0 = <&led_pins_default>;
 +
 +		led-0 {
-+			label = "j722s-evm:red:pwr";
++			// red PWR
++			label = "PWR";
 +			gpios = <&main_gpio0 11 GPIO_ACTIVE_LOW>;
 +			linux,default-trigger = "default-off";
-+			default-state = "on";
++			default-state = "off";
 +		};
 +
 +		led-1 {
-+			label = "j722s-evm:green:disk-activity";
++			// Green ACT
++			label = "ACT";
 +			gpios = <&main_gpio0 12 GPIO_ACTIVE_HIGH>;
-+			function = LED_FUNCTION_DISK_ACTIVITY;
-+			linux,default-trigger = "mmc1";
++			function = LED_FUNCTION_HEARTBEAT;
++			linux,default-trigger = "heartbeat";
 +			default-state = "on";
 +		};
 +	};
@@ -20587,6 +20510,14 @@ index 000000000000..1175978a01e3
 +		>;
 +	};
 +
++	mcu_i2c0_pins_default: mcu-i2c0-default-pins {
++		pinctrl-single,pins = <
++			J722S_MCU_IOPAD(0x0044, PIN_OUTPUT, 0) /* (B13) MCU_I2C0_SCL */
++			J722S_MCU_IOPAD(0x0048, PIN_OUTPUT, 0) /* (E11) MCU_I2C0_SDA */
++		>;
++		bootph-all;
++	};
++
 +	mcu_oldi_backlight_default_pins: mcu-backlight-default-pins {
 +		pinctrl-single,pins = <
 +			J722S_MCU_IOPAD(0x002c, PIN_OUTPUT, 7) /* (C4) WKUP_UART0_CTSn.MCU_GPIO0_11 */
@@ -20624,9 +20555,19 @@ index 000000000000..1175978a01e3
 +	bootph-all;
 +};
 +
++&mcu_i2c0 {
++	symlink = "hat/mcu_i2c0";
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&mcu_i2c0_pins_default>;
++	clock-frequency = <400000>;
++	bootph-all;
++};
++
 +&wkup_i2c0 {
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&wkup_i2c0_pins_default>;
++	symlink = "hat/wkup_i2c0";
 +	clock-frequency = <100000>;
 +	status = "okay";
 +	bootph-all;
@@ -20725,7 +20666,7 @@ index 000000000000..1175978a01e3
 +};
 +
 +&main_i2c1 {
-+	symlink = "play/main_i2c1";
++	symlink = "hat/main_i2c1";
 +	status = "okay";
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&main_i2c1_pins_default>;
@@ -22453,10 +22394,10 @@ index 154eff06e7b7..05e96924448c 100644
  #include <dt-bindings/interrupt-controller/irq.h>
 diff --git a/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts
 new file mode 100644
-index 000000000000..b5915bff6cb9
+index 000000000000..fc9298ccc4c4
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts
-@@ -0,0 +1,1268 @@
+@@ -0,0 +1,1289 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * https://beagley-ai.org/
@@ -22493,6 +22434,7 @@ index 000000000000..b5915bff6cb9
 +		spi0 = &spi_gpio;
 +		usb0 = &usb0;
 +		usb1 = &usb1;
++		i2c1 = &mcu_i2c0;
 +	};
 +
 +	chosen {
@@ -22684,17 +22626,19 @@ index 000000000000..b5915bff6cb9
 +		pinctrl-0 = <&led_pins_default>;
 +
 +		led-0 {
-+			label = "j722s-evm:red:pwr";
++			// red PWR
++			label = "PWR";
 +			gpios = <&main_gpio0 11 GPIO_ACTIVE_LOW>;
 +			linux,default-trigger = "default-off";
-+			default-state = "on";
++			default-state = "off";
 +		};
 +
 +		led-1 {
-+			label = "j722s-evm:green:disk-activity";
++			// Green ACT
++			label = "ACT";
 +			gpios = <&main_gpio0 12 GPIO_ACTIVE_HIGH>;
-+			function = LED_FUNCTION_DISK_ACTIVITY;
-+			linux,default-trigger = "mmc1";
++			function = LED_FUNCTION_HEARTBEAT;
++			linux,default-trigger = "heartbeat";
 +			default-state = "on";
 +		};
 +	};
@@ -23246,6 +23190,14 @@ index 000000000000..b5915bff6cb9
 +		>;
 +	};
 +
++	mcu_i2c0_pins_default: mcu-i2c0-default-pins {
++		pinctrl-single,pins = <
++			J722S_MCU_IOPAD(0x0044, PIN_OUTPUT, 0) /* (B13) MCU_I2C0_SCL */
++			J722S_MCU_IOPAD(0x0048, PIN_OUTPUT, 0) /* (E11) MCU_I2C0_SDA */
++		>;
++		bootph-all;
++	};
++
 +	mcu_oldi_backlight_default_pins: mcu-backlight-default-pins {
 +		pinctrl-single,pins = <
 +			J722S_MCU_IOPAD(0x002c, PIN_OUTPUT, 7) /* (C4) WKUP_UART0_CTSn.MCU_GPIO0_11 */
@@ -23283,9 +23235,19 @@ index 000000000000..b5915bff6cb9
 +	bootph-all;
 +};
 +
++&mcu_i2c0 {
++	symlink = "hat/mcu_i2c0";
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&mcu_i2c0_pins_default>;
++	clock-frequency = <400000>;
++	bootph-all;
++};
++
 +&wkup_i2c0 {
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&wkup_i2c0_pins_default>;
++	symlink = "hat/wkup_i2c0";
 +	clock-frequency = <100000>;
 +	status = "okay";
 +	bootph-all;
@@ -23388,7 +23350,7 @@ index 000000000000..b5915bff6cb9
 +};
 +
 +&main_i2c1 {
-+	symlink = "play/main_i2c1";
++	symlink = "hat/main_i2c1";
 +	status = "okay";
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&main_i2c1_pins_default>;
