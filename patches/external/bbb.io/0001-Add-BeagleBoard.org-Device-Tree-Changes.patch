@@ -1,11 +1,11 @@
-From b6d098dd322cdf423a9ac33025a2fe5955d4e3ca Mon Sep 17 00:00:00 2001
+From d869056504dc7deeb01f1ab6c1214e8b1d0b9656 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Mon, 10 Jun 2024 14:05:51 -0500
+Date: Tue, 11 Jun 2024 16:25:17 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/db3ec8f883a119db334ee32e8f7406a7ff2e1b56
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/7770684b9399cbe00342e158a17e12238a73c43f
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -17780,7 +17780,7 @@ index 000000000000..a2703fffca05
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
 new file mode 100644
-index 000000000000..0083b3336e13
+index 000000000000..c87a0cb4450d
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
 @@ -0,0 +1,1765 @@
@@ -18619,59 +18619,59 @@ index 000000000000..0083b3336e13
 +};
 +
 +&main_pmx0 {
-+	hat-03-gpio {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_03_gpio>;
-+		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO2";
-+		beagle-gpio-pi = "GPIO2";
-+	};
++//	hat-03-gpio {
++//		compatible = "gpio-single";
++//		pinctrl-names = "default";
++//		pinctrl-0 = <&hat_03_gpio>;
++//		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
++//		gpio-line-names = "GPIO2";
++//		beagle-gpio-pi = "GPIO2";
++//	};
 +
-+	hat-03-gpio-pu {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_03_gpio_pu>;
-+		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO2";
-+		beagle-gpio-pi = "GPIO2";
-+	};
++//	hat-03-gpio-pu {
++//		compatible = "gpio-single";
++//		pinctrl-names = "default";
++//		pinctrl-0 = <&hat_03_gpio_pu>;
++//		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
++//		gpio-line-names = "GPIO2";
++//		beagle-gpio-pi = "GPIO2";
++//	};
 +
-+	hat-03-gpio-pd {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_03_gpio_pd>;
-+		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO2";
-+		beagle-gpio-pi = "GPIO2";
-+	};
++//	hat-03-gpio-pd {
++//		compatible = "gpio-single";
++//		pinctrl-names = "default";
++//		pinctrl-0 = <&hat_03_gpio_pd>;
++//		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
++//		gpio-line-names = "GPIO2";
++//		beagle-gpio-pi = "GPIO2";
++//	};
 +
-+	hat-05-gpio {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_05_gpio>;
-+		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO3";
-+		beagle-gpio-pi = "GPIO3";
-+	};
++//	hat-05-gpio {
++//		compatible = "gpio-single";
++//		pinctrl-names = "default";
++//		pinctrl-0 = <&hat_05_gpio>;
++//		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
++//		gpio-line-names = "GPIO3";
++//		beagle-gpio-pi = "GPIO3";
++//	};
 +
-+	hat-05-gpio-pu {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_05_gpio_pu>;
-+		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO3";
-+		beagle-gpio-pi = "GPIO3";
-+	};
++//	hat-05-gpio-pu {
++//		compatible = "gpio-single";
++//		pinctrl-names = "default";
++//		pinctrl-0 = <&hat_05_gpio_pu>;
++//		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
++//		gpio-line-names = "GPIO3";
++//		beagle-gpio-pi = "GPIO3";
++//	};
 +
-+	hat-05-gpio-pd {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_05_gpio_pd>;
-+		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO3";
-+		beagle-gpio-pi = "GPIO3";
-+	};
++//	hat-05-gpio-pd {
++//		compatible = "gpio-single";
++//		pinctrl-names = "default";
++//		pinctrl-0 = <&hat_05_gpio_pd>;
++//		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
++//		gpio-line-names = "GPIO3";
++//		beagle-gpio-pi = "GPIO3";
++//	};
 +
 +	hat_07_uart6_rxd: hat-07-uart6-rxd-pins {
 +		pinctrl-single,pins = <
