@@ -1,11 +1,11 @@
-From d869056504dc7deeb01f1ab6c1214e8b1d0b9656 Mon Sep 17 00:00:00 2001
+From 0230db97f38f8df7a3968baf766db5f62860e9b5 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Tue, 11 Jun 2024 16:25:17 -0500
+Date: Fri, 14 Jun 2024 17:28:09 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/7770684b9399cbe00342e158a17e12238a73c43f
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/9df62e18798dcfe102da772dd3753f06605d0eee
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -19723,7 +19723,7 @@ index 000000000000..c169e45c6a34
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
 new file mode 100644
-index 000000000000..5d0239352c7a
+index 000000000000..2c783931f37d
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
 @@ -0,0 +1,1275 @@
@@ -20512,8 +20512,8 @@ index 000000000000..5d0239352c7a
 +
 +	mcu_i2c0_pins_default: mcu-i2c0-default-pins {
 +		pinctrl-single,pins = <
-+			J722S_MCU_IOPAD(0x0044, PIN_OUTPUT, 0) /* (B13) MCU_I2C0_SCL */
-+			J722S_MCU_IOPAD(0x0048, PIN_OUTPUT, 0) /* (E11) MCU_I2C0_SDA */
++			J722S_MCU_IOPAD(0x0044, PIN_INPUT_PULLUP, 0) /* (B13) MCU_I2C0_SCL */
++			J722S_MCU_IOPAD(0x0048, PIN_INPUT_PULLUP, 0) /* (E11) MCU_I2C0_SDA */
 +		>;
 +		bootph-all;
 +	};
@@ -20560,7 +20560,7 @@ index 000000000000..5d0239352c7a
 +	status = "okay";
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&mcu_i2c0_pins_default>;
-+	clock-frequency = <400000>;
++	clock-frequency = <100000>;
 +	bootph-all;
 +};
 +
@@ -22394,7 +22394,7 @@ index 154eff06e7b7..05e96924448c 100644
  #include <dt-bindings/interrupt-controller/irq.h>
 diff --git a/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts
 new file mode 100644
-index 000000000000..fc9298ccc4c4
+index 000000000000..2d54564dbfbc
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts
 @@ -0,0 +1,1289 @@
@@ -23192,8 +23192,8 @@ index 000000000000..fc9298ccc4c4
 +
 +	mcu_i2c0_pins_default: mcu-i2c0-default-pins {
 +		pinctrl-single,pins = <
-+			J722S_MCU_IOPAD(0x0044, PIN_OUTPUT, 0) /* (B13) MCU_I2C0_SCL */
-+			J722S_MCU_IOPAD(0x0048, PIN_OUTPUT, 0) /* (E11) MCU_I2C0_SDA */
++			J722S_MCU_IOPAD(0x0044, PIN_INPUT_PULLUP, 0) /* (B13) MCU_I2C0_SCL */
++			J722S_MCU_IOPAD(0x0048, PIN_INPUT_PULLUP, 0) /* (E11) MCU_I2C0_SDA */
 +		>;
 +		bootph-all;
 +	};
