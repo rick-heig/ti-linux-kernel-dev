@@ -438,17 +438,14 @@ patch_backports () {
 }
 
 backports () {
-	backport_tag="v5.10.213"
-
 	subsystem="uio"
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
-		pre_backports
+		unset backport_tag
 
-		cp -v ~/linux-src/drivers/uio/uio_pruss.c ./drivers/uio/
+		cp -v ../patches/drivers/ti/uio/uio_pruss.c ./drivers/uio/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 		dir 'drivers/ti/uio'
@@ -463,31 +460,28 @@ backports () {
 
 		cp -v ~/linux-rpi/drivers/input/touchscreen/edt-ft5x06.c ./drivers/input/touchscreen/
 
-		post_rpibackports
-	else
+	#	post_rpibackports
+	#else
 		patch_backports
 	fi
 }
 
 drivers () {
 	dir 'boris'
-	dir 'drivers/sdhci-omap'
-	dir 'soc/ti/pcie'
+	dir 'pcie'
 	dir 'mikrobus'
 	dir 'drivers/android'
 
-#	#cd KERNEL/
-#	#git checkout v5.10-rc1 -b tmp
-#	#git pull --no-edit https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git topic/overlays-v5.10-rc1
-#	#mkdir ../patches/overlays
-#	#git format-patch -12 -o ../patches/overlays/
-#	#https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/log/?h=topic/overlays-v5.10-rc1
-#	#../
-#	#dir 'overlays'
+	#cd KERNEL/
+	#git checkout v5.10-rc1 -b tmp
+	#git pull --no-edit https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git topic/overlays-v5.10-rc1
+	#mkdir ../patches/overlays
+	#git format-patch -12 -o ../patches/overlays/
+	#https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/log/?h=topic/overlays-v5.10-rc1
+	#../
+	#dir 'overlays'
 
 #	dir 'drivers/eqep'
-
-#	#dir 'fixes'
 
 #	dir 'tusb322'
 #	dir 'drivers/ti/uio'
@@ -497,7 +491,6 @@ drivers () {
 #	dir 'drm-bridge'
 
 #	dir 'tiam62x'
-##	dir 'android'
 #	dir 'ti-edgeai'
 #	dir 'lincolntech'
 #	dir 'tidss'
@@ -517,7 +510,7 @@ packaging () {
 	echo "Update: package scripts"
 	#do_backport="enable"
 	if [ "x${do_backport}" = "xenable" ] ; then
-		backport_tag="v6.6.22"
+		backport_tag="v6.6.34"
 
 		subsystem="bindeb-pkg"
 		#regenerate="enable"
