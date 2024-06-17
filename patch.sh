@@ -438,19 +438,6 @@ patch_backports () {
 }
 
 backports () {
-	subsystem="uio"
-	#regenerate="enable"
-	if [ "x${regenerate}" = "xenable" ] ; then
-		unset backport_tag
-
-		cp -v ../patches/drivers/ti/uio/uio_pruss.c ./drivers/uio/
-
-		post_backports
-	else
-		patch_backports
-		dir 'drivers/ti/uio'
-	fi
-
 	backport_tag="rpi-6.6.y"
 
 	subsystem="edt-ft5x06"
@@ -484,7 +471,6 @@ drivers () {
 #	dir 'drivers/eqep'
 
 #	dir 'tusb322'
-#	dir 'drivers/ti/uio'
 #	dir 'rpi-panel'
 #	dir 'panel-simple'
 
