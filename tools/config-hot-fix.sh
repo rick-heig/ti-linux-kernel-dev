@@ -277,6 +277,7 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 ./scripts/config --module CONFIG_VIDEO_OV5645
 ./scripts/config --module CONFIG_VIDEO_IMX219
 ./scripts/config --module CONFIG_VIDEO_IMX390
+./scripts/config --module CONFIG_VIDEO_OX05B1S
 
 #enable MIKROBUS
 ./scripts/config --enable CONFIG_SPI_OMAP24XX
@@ -289,5 +290,15 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 #enable CONFIG_DYNAMIC_FTRACE
 ./scripts/config --enable CONFIG_FUNCTION_TRACER
 ./scripts/config --enable CONFIG_DYNAMIC_FTRACE
+
+./scripts/config --enable CONFIG_GPIO_AGGREGATOR
+
+#cc33xx ble
+./scripts/config --disable CONFIG_BT_BNEP
+./scripts/config --disable CONFIG_BT_HCIBTSDIO
+./scripts/config --disable CONFIG_BT_TI
+
+#Gone on Mainline, supporting 32bit only...
+./scripts/config --disable CONFIG_UIO_PRUSS
 
 cd ${DIR}/
