@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm 6.6.25 Kernel Configuration
+# Linux/arm 6.6.32 Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="arm-linux-gnueabi-gcc (GCC) 13.2.0"
 CONFIG_CC_IS_GCC=y
@@ -604,6 +604,7 @@ CONFIG_ARCH_HIBERNATION_POSSIBLE=y
 # end of Power management options
 
 CONFIG_AS_VFP_VMRS_FPINST=y
+CONFIG_CPU_MITIGATIONS=y
 
 #
 # General architecture-dependent options
@@ -1291,6 +1292,7 @@ CONFIG_BRCMSTB_GISB_ARB=y
 # CONFIG_MOXTET is not set
 CONFIG_OMAP_INTERCONNECT=y
 CONFIG_OMAP_OCP2SCP=y
+CONFIG_TI_PWMSS=y
 CONFIG_TI_SYSC=y
 CONFIG_VEXPRESS_CONFIG=y
 # CONFIG_MHI_BUS is not set
@@ -3805,6 +3807,7 @@ CONFIG_V4L_MEM2MEM_DRIVERS=y
 #
 # Chips&Media media platform drivers
 #
+# CONFIG_VIDEO_E5010_JPEG_ENC is not set
 
 #
 # Intel media platform drivers
@@ -3962,6 +3965,7 @@ CONFIG_VIDEO_CAMERA_SENSOR=y
 # CONFIG_VIDEO_OV9282 is not set
 # CONFIG_VIDEO_OV9640 is not set
 # CONFIG_VIDEO_OV9650 is not set
+# CONFIG_VIDEO_OX05B1S is not set
 # CONFIG_VIDEO_RDACM20 is not set
 # CONFIG_VIDEO_RDACM21 is not set
 # CONFIG_VIDEO_RJ54N1 is not set
@@ -4345,6 +4349,7 @@ CONFIG_DRM_DISPLAY_HELPER=y
 CONFIG_DRM_DISPLAY_DP_HELPER=y
 # CONFIG_DRM_DP_AUX_CHARDEV is not set
 # CONFIG_DRM_DP_CEC is not set
+CONFIG_DRM_GEM_DMA_HELPER=m
 
 #
 # I2C encoder or helper chips
@@ -4385,7 +4390,7 @@ CONFIG_OMAP5_DSS_HDMI=y
 # CONFIG_OMAP2_DSS_DSI is not set
 CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=0
 CONFIG_OMAP2_DSS_SLEEP_AFTER_VENC_RESET=y
-# CONFIG_DRM_TILCDC is not set
+CONFIG_DRM_TILCDC=m
 # CONFIG_DRM_QXL is not set
 # CONFIG_DRM_VIRTIO_GPU is not set
 # CONFIG_DRM_FSL_DCU is not set
@@ -6648,8 +6653,8 @@ CONFIG_PWM_FSL_FTM=m
 # CONFIG_PWM_OMAP_DMTIMER is not set
 # CONFIG_PWM_PCA9685 is not set
 # CONFIG_PWM_SUNPLUS is not set
-# CONFIG_PWM_TIECAP is not set
-# CONFIG_PWM_TIEHRPWM is not set
+CONFIG_PWM_TIECAP=m
+CONFIG_PWM_TIEHRPWM=m
 # CONFIG_PWM_TWL is not set
 # CONFIG_PWM_TWL_LED is not set
 # CONFIG_PWM_XILINX is not set

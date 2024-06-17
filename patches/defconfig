@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm 6.6.25 Kernel Configuration
+# Linux/arm 6.6.32 Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="arm-linux-gnueabi-gcc (GCC) 13.2.0"
 CONFIG_CC_IS_GCC=y
@@ -624,6 +624,7 @@ CONFIG_ARCH_HIBERNATION_POSSIBLE=y
 # end of Power management options
 
 CONFIG_AS_VFP_VMRS_FPINST=y
+CONFIG_CPU_MITIGATIONS=y
 
 #
 # General architecture-dependent options
@@ -4417,6 +4418,7 @@ CONFIG_VIDEO_MUX=m
 #
 # Chips&Media media platform drivers
 #
+# CONFIG_VIDEO_E5010_JPEG_ENC is not set
 
 #
 # Intel media platform drivers
@@ -4586,6 +4588,7 @@ CONFIG_VIDEO_OV7670=m
 # CONFIG_VIDEO_OV9282 is not set
 # CONFIG_VIDEO_OV9640 is not set
 # CONFIG_VIDEO_OV9650 is not set
+# CONFIG_VIDEO_OX05B1S is not set
 # CONFIG_VIDEO_RDACM20 is not set
 # CONFIG_VIDEO_RDACM21 is not set
 # CONFIG_VIDEO_RJ54N1 is not set
@@ -8169,6 +8172,7 @@ CONFIG_CRYPTO_XXHASH=y
 CONFIG_CRYPTO_CRC32C=y
 CONFIG_CRYPTO_CRC32=y
 CONFIG_CRYPTO_CRCT10DIF=y
+# CONFIG_CRYPTO_CRC64_ISO3309 is not set
 CONFIG_CRYPTO_CRC64_ROCKSOFT=y
 # end of CRCs (cyclic redundancy checks)
 

@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm 6.6.25 Kernel Configuration
+# Linux/arm 6.6.32 Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="arm-linux-gnueabi-gcc (GCC) 13.2.0"
 CONFIG_CC_IS_GCC=y
@@ -828,6 +828,7 @@ CONFIG_ARCH_HIBERNATION_POSSIBLE=y
 # end of Power management options
 
 CONFIG_AS_VFP_VMRS_FPINST=y
+CONFIG_CPU_MITIGATIONS=y
 
 #
 # General architecture-dependent options
@@ -1562,6 +1563,7 @@ CONFIG_QCOM_EBI2=y
 CONFIG_SUNXI_RSB=y
 # CONFIG_TEGRA_ACONNECT is not set
 # CONFIG_TEGRA_GMI is not set
+CONFIG_TI_PWMSS=y
 CONFIG_TI_SYSC=y
 CONFIG_UNIPHIER_SYSTEM_BUS=y
 CONFIG_VEXPRESS_CONFIG=y
@@ -4760,6 +4762,7 @@ CONFIG_VIDEO_ATMEL_ISI=m
 # Chips&Media media platform drivers
 #
 # CONFIG_VIDEO_CODA is not set
+# CONFIG_VIDEO_E5010_JPEG_ENC is not set
 
 #
 # Intel media platform drivers
@@ -4969,6 +4972,7 @@ CONFIG_VIDEO_CAMERA_SENSOR=y
 # CONFIG_VIDEO_OV9282 is not set
 # CONFIG_VIDEO_OV9640 is not set
 # CONFIG_VIDEO_OV9650 is not set
+# CONFIG_VIDEO_OX05B1S is not set
 # CONFIG_VIDEO_RDACM20 is not set
 # CONFIG_VIDEO_RDACM21 is not set
 # CONFIG_VIDEO_RJ54N1 is not set
@@ -5466,7 +5470,7 @@ CONFIG_OMAP5_DSS_HDMI=y
 # CONFIG_OMAP2_DSS_DSI is not set
 CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=0
 CONFIG_OMAP2_DSS_SLEEP_AFTER_VENC_RESET=y
-# CONFIG_DRM_TILCDC is not set
+CONFIG_DRM_TILCDC=m
 # CONFIG_DRM_QXL is not set
 # CONFIG_DRM_VIRTIO_GPU is not set
 CONFIG_DRM_MSM=m
@@ -8790,8 +8794,8 @@ CONFIG_PWM_STM32_LP=m
 CONFIG_PWM_SUN4I=y
 # CONFIG_PWM_SUNPLUS is not set
 CONFIG_PWM_TEGRA=y
-# CONFIG_PWM_TIECAP is not set
-# CONFIG_PWM_TIEHRPWM is not set
+CONFIG_PWM_TIECAP=m
+CONFIG_PWM_TIEHRPWM=m
 # CONFIG_PWM_TWL is not set
 # CONFIG_PWM_TWL_LED is not set
 CONFIG_PWM_VT8500=y
