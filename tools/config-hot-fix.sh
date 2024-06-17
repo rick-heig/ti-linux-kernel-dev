@@ -301,4 +301,8 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 #Gone on Mainline, supporting 32bit only...
 ./scripts/config --disable CONFIG_UIO_PRUSS
 
+./scripts/config --module CONFIG_VIDEO_E5010_JPEG_ENC
+./scripts/config --module CONFIG_TI_EQEP
+./scripts/config --enable CONFIG_CRYPTO_DEV_TI_MCRC64
+
 cd ${DIR}/
