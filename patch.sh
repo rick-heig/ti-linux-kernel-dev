@@ -131,7 +131,7 @@ wpanusb () {
 			rm -rf ./wpanusb || true
 		fi
 
-		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb --depth=1
+		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb.git --depth=1
 		cd ./wpanusb
 			wpanusb_hash=$(git rev-parse HEAD)
 		cd -
@@ -479,6 +479,7 @@ post_backports () {
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
 }
 
 pre_rpibackports () {
@@ -506,6 +507,7 @@ post_rpibackports () {
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
 }
 
 patch_backports () {
@@ -540,7 +542,6 @@ backports () {
 		cp -v ~/linux-rpi/drivers/input/touchscreen/edt-ft5x06.c ./drivers/input/touchscreen/
 
 		post_rpibackports
-		exit 2
 	else
 		patch_backports
 	fi
@@ -590,7 +591,6 @@ packaging () {
 			cp -v ~/linux-src/scripts/package/* ./scripts/package/
 
 			post_backports
-			exit 2
 		else
 			patch_backports
 		fi
