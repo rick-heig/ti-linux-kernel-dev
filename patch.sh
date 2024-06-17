@@ -131,7 +131,7 @@ wpanusb () {
 			rm -rf ./wpanusb || true
 		fi
 
-		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb --depth=1
+		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb.git --depth=1
 		cd ./wpanusb
 			wpanusb_hash=$(git rev-parse HEAD)
 		cd -
@@ -161,45 +161,6 @@ wpanusb () {
 		exit 2
 	fi
 	dir 'external/wpanusb'
-}
-
-bcfserial () {
-	#regenerate="enable"
-	if [ "x${regenerate}" = "xenable" ] ; then
-		cd ../
-		if [ -d ./bcfserial ] ; then
-			rm -rf ./bcfserial || true
-		fi
-
-		${git_bin} clone https://openbeagle.org/beagleconnect/linux/bcfserial.git --depth=1
-		cd ./bcfserial
-			bcfserial_hash=$(git rev-parse HEAD)
-		cd -
-
-		cd ./KERNEL/
-
-		cp -v ../bcfserial/bcfserial.c drivers/net/ieee802154/
-
-		${git_bin} add .
-		${git_bin} commit -a -m 'merge: bcfserial: https://git.beagleboard.org/beagleconnect/linux/bcfserial.git' -m "https://openbeagle.org/beagleconnect/linux/bcfserial/-/commit/${bcfserial_hash}" -s
-		${git_bin} format-patch -1 -o ../patches/external/bcfserial/
-		echo "BCFSERIAL: https://openbeagle.org/beagleconnect/linux/bcfserial/-/commit/${bcfserial_hash}" > ../patches/external/git/BCFSERIAL
-
-		rm -rf ../bcfserial/ || true
-
-		${git_bin} reset --hard HEAD~1
-
-		start_cleanup
-
-		${git} "${DIR}/patches/external/bcfserial/0001-merge-bcfserial-https-git.beagleboard.org-beagleconn.patch"
-
-		wdir="external/bcfserial"
-		number=1
-		cleanup
-
-		exit 2
-	fi
-	dir 'external/bcfserial'
 }
 
 rt_cleanup () {
@@ -440,6 +401,7 @@ post_backports () {
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
 }
 
 pre_rpibackports () {
@@ -467,6 +429,7 @@ post_rpibackports () {
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
 }
 
 patch_backports () {
@@ -501,7 +464,6 @@ backports () {
 		cp -v ~/linux-rpi/drivers/input/touchscreen/edt-ft5x06.c ./drivers/input/touchscreen/
 
 		post_rpibackports
-		exit 2
 	else
 		patch_backports
 	fi
@@ -565,7 +527,6 @@ packaging () {
 			cp -v ~/linux-src/scripts/package/* ./scripts/package/
 
 			post_backports
-			exit 2
 		else
 			patch_backports
 		fi
