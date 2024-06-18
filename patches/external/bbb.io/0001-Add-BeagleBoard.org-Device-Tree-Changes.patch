@@ -1,11 +1,11 @@
-From 1b93804e36924a6114a97fead4a23e6e5fe2efcc Mon Sep 17 00:00:00 2001
+From ff4c034a4f4679cd625a2036cd09e93b703a5e52 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Tue, 18 Jun 2024 08:53:39 -0500
+Date: Tue, 18 Jun 2024 18:14:52 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/bba88602530005ed58d3fca46e83d9129c5ac6cf
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/ea0768fa6bfa44fa25472dbc1b205421cdf04ac2
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -88,7 +88,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  arch/arm/boot/dts/twl4030.dtsi                |    2 +-
  arch/arm/boot/dts/twl6030.dtsi                |    4 +-
  arch/arm/boot/dts/twl6030_omap4.dtsi          |    4 +-
- arch/arm64/boot/dts/ti/Makefile               |   38 +
+ arch/arm64/boot/dts/ti/Makefile               |   50 +
  arch/arm64/boot/dts/ti/k3-am62-main.dtsi      |   24 +-
  arch/arm64/boot/dts/ti/k3-am62-mcu.dtsi       |    5 +-
  arch/arm64/boot/dts/ti/k3-am62-thermal.dtsi   |    5 +-
@@ -112,8 +112,8 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  .../arm64/boot/dts/ti/k3-am625-beagleplay.dts |  478 ++--
  arch/arm64/boot/dts/ti/k3-am625-sk.dts        |   17 +-
  arch/arm64/boot/dts/ti/k3-am625.dtsi          |    4 +-
- arch/arm64/boot/dts/ti/k3-am62p-main.dtsi     |    5 +-
- arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi      |    4 +-
+ arch/arm64/boot/dts/ti/k3-am62p-main.dtsi     |   19 +-
+ arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi      |   14 +-
  arch/arm64/boot/dts/ti/k3-am62p-thermal.dtsi  |    5 +-
  arch/arm64/boot/dts/ti/k3-am62p-wakeup.dtsi   |    4 +-
  arch/arm64/boot/dts/ti/k3-am62p.dtsi          |    4 +-
@@ -123,17 +123,29 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  .../ti/k3-am67a-beagley-ai-csi0-ov5640.dtso   |   84 +
  .../ti/k3-am67a-beagley-ai-csi1-imx219.dtso   |  103 +
  ...-am67a-beagley-ai-dsi-rpi-7inch-panel.dtso |  135 +
- .../dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso  |   62 +
  .../k3-am67a-beagley-ai-hdmi-dss0-dpi1.dtso   |   53 +
  .../dts/ti/k3-am67a-beagley-ai-i2c-arm.dtso   |   27 +
  ...a-beagley-ai-lincolntech-185lcd-panel.dtso |  117 +
  .../ti/k3-am67a-beagley-ai-mikroe-eth.dtso    |   51 +
  .../k3-am67a-beagley-ai-mikroe-microsd.dtso   |   50 +
- .../dts/ti/k3-am67a-beagley-ai-pinmux.dtsi    | 1765 +++++++++++++
+ .../dts/ti/k3-am67a-beagley-ai-pinmux.dtsi    | 1555 +++++++++++
+ .../k3-am67a-beagley-ai-pwm-ecap0-gpio12.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-ecap1-gpio16.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-ecap1-gpio21.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-ecap2-gpio17.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-ecap2-gpio18.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-epwm0-gpio12.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-epwm0-gpio14.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-epwm0-gpio15.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-epwm0-gpio5.dtso  |   41 +
+ .../k3-am67a-beagley-ai-pwm-epwm1-gpio13.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-epwm1-gpio20.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-epwm1-gpio21.dtso |   41 +
+ .../k3-am67a-beagley-ai-pwm-epwm1-gpio6.dtso  |   41 +
  .../dts/ti/k3-am67a-beagley-ai-spi0-1cs.dtso  |   46 +
  .../dts/ti/k3-am67a-beagley-ai-spi0-2cs.dtso  |   53 +
  .../dts/ti/k3-am67a-beagley-ai-spidev0.dtso   |   55 +
- .../arm64/boot/dts/ti/k3-am67a-beagley-ai.dts | 1275 +++++++++
+ .../arm64/boot/dts/ti/k3-am67a-beagley-ai.dts | 1281 +++++++++
  arch/arm64/boot/dts/ti/k3-am69-sk.dts         |   14 +-
  .../boot/dts/ti/k3-j721e-beagleboneai64.dts   |  113 +-
  .../dts/ti/k3-j721e-common-proc-board.dts     |   11 +-
@@ -151,12 +163,12 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  arch/arm64/boot/dts/ti/k3-j722s-evm.dts       |   16 +-
  .../boot/dts/ti/k3-j722s-rtos-memory-map.dtsi |  175 ++
  .../boot/dts/ti/k3-j722s-vision-apps.dtso     |   35 +
- arch/arm64/boot/dts/ti/k3-j722s.dtsi          |   26 +-
+ arch/arm64/boot/dts/ti/k3-j722s.dtsi          |   30 +-
  arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi    |   18 +-
  .../boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi     |   10 +-
  arch/arm64/boot/dts/ti/k3-j784s4-thermal.dtsi |    5 +-
  arch/arm64/boot/dts/ti/k3-j784s4.dtsi         |    8 +-
- arch/arm64/boot/dts/ti/k3-pinctrl.h           |    4 +-
+ arch/arm64/boot/dts/ti/k3-pinctrl.h           |    6 +-
  include/dt-bindings/board/am335x-bone-pins.h  |  253 ++
  .../dt-bindings/clock/microchip,mpfs-clock.h  |    5 +
  include/dt-bindings/gpio/gpio.h               |    2 +-
@@ -164,7 +176,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  include/dt-bindings/mailbox/miv-ihc.h         |   17 +
  include/dt-bindings/pinctrl/omap.h            |    8 +-
  include/uapi/linux/input-event-codes.h        |    5 +
- 156 files changed, 19208 insertions(+), 861 deletions(-)
+ 168 files changed, 19517 insertions(+), 861 deletions(-)
  create mode 100644 arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-ADC-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-BBBW-WL1835-00A0.dtso
@@ -224,13 +236,25 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-csi0-ov5640.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-csi1-imx219.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-dsi-rpi-7inch-panel.dtso
- create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hdmi-dss0-dpi1.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-i2c-arm.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-lincolntech-185lcd-panel.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-mikroe-eth.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-mikroe-microsd.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap0-gpio12.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap1-gpio16.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap1-gpio21.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap2-gpio17.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap2-gpio18.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio12.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio14.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio15.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio5.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio13.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio20.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio21.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio6.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-spi0-1cs.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-spi0-2cs.dtso
  create mode 100644 arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-spidev0.dtso
@@ -13736,10 +13760,10 @@ index 64e38c7c8be7..5730e46b0067 100644
  			OMAP4_IOPAD(0x19e, WAKEUP_EN | PIN_INPUT_PULLUP | MUX_MODE0)	/* sys_nirq1.sys_nirq1 */
  		>;
 diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-index 808d649ec243..c4e0cc0291af 100644
+index 808d649ec243..ab586a308d15 100644
 --- a/arch/arm64/boot/dts/ti/Makefile
 +++ b/arch/arm64/boot/dts/ti/Makefile
-@@ -170,8 +170,44 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
+@@ -170,8 +170,56 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
  			 k3-v3link-imx219-0-2.dtbo \
  			 k3-v3link-imx219-0-3.dtbo
  
@@ -13764,12 +13788,24 @@ index 808d649ec243..c4e0cc0291af 100644
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-csi0-ov5640.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-csi1-imx219.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-dsi-rpi-7inch-panel.dtbo
-+dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-hat-gpio.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-hdmi-dss0-dpi1.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-i2c-arm.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-lincolntech-185lcd-panel.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-mikroe-eth.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-mikroe-microsd.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-ecap0-gpio12.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-ecap1-gpio16.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-ecap1-gpio21.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-ecap2-gpio17.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-ecap2-gpio18.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-epwm0-gpio12.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-epwm0-gpio14.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-epwm0-gpio15.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-epwm0-gpio5.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-epwm1-gpio13.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-epwm1-gpio20.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-epwm1-gpio21.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-pwm-epwm1-gpio6.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-spi0-1cs.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-spi0-2cs.dtbo
 +dtb-$(CONFIG_ARCH_K3) += k3-am67a-beagley-ai-spidev0.dtbo
@@ -13784,7 +13820,7 @@ index 808d649ec243..c4e0cc0291af 100644
  DTC_FLAGS_k3-am625-beagleplay += -@
  DTC_FLAGS_k3-am625-sk += -@
  DTC_FLAGS_k3-am625-sk-lpmdemo += -@
-@@ -196,6 +232,8 @@ DTC_FLAGS_k3-j721e-sk += -@
+@@ -196,6 +244,8 @@ DTC_FLAGS_k3-j721e-sk += -@
  DTC_FLAGS_k3-j721e-sk-fusion += -@
  DTC_FLAGS_k3-j721s2-common-proc-board += -@
  DTC_FLAGS_k3-j721s2-evm-fusion += -@
@@ -16732,7 +16768,7 @@ index 4193c2b3eed6..4014add6320d 100644
  
  /dts-v1/;
 diff --git a/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi
-index e46dc1d29f7e..394bc88b773d 100644
+index e46dc1d29f7e..455528ccc462 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi
 @@ -1,7 +1,7 @@
@@ -16745,7 +16781,43 @@ index e46dc1d29f7e..394bc88b773d 100644
   */
  
  &cbass_main {
-@@ -777,6 +777,7 @@ cpsw_port1: port@1 {
+@@ -257,7 +257,17 @@ main_pmx0: pinctrl@f4000 {
+ 		interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <1>;
++		pinctrl-single,gpio-range =
++			<&main_pmx0_range 0 32 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++			<&main_pmx0_range 33 92 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++			<&main_pmx0_range 137 5 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++			<&main_pmx0_range 143 3 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++			<&main_pmx0_range 149 2 (PIN_INPUT | PIN_GPIO_MUX_MODE)>;
+ 		bootph-all;
++
++		main_pmx0_range: gpio-range {
++			#pinctrl-single,gpio-range-cells = <3>;
++		};
+ 	};
+ 
+ 	main_esm: esm@420000 {
+@@ -576,6 +586,8 @@ main_gpio0: gpio@600000 {
+ 		power-domains = <&k3_pds 77 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 77 0>;
+ 		clock-names = "gpio";
++		gpio-ranges = <&main_pmx0 0 0 32>, <&main_pmx0 32 33 38>,
++				<&main_pmx0 70 72 22>;
+ 	};
+ 
+ 	main_gpio1: gpio@601000 {
+@@ -593,6 +605,8 @@ main_gpio1: gpio@601000 {
+ 		power-domains = <&k3_pds 78 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 78 0>;
+ 		clock-names = "gpio";
++		gpio-ranges = <&main_pmx0 0 94 32>, <&main_pmx0 42 137 5>,
++				<&main_pmx0 47 143 3>, <&main_pmx0 50 149 2>;
+ 	};
+ 
+ 	sdhci0: mmc@fa10000 {
+@@ -777,6 +791,7 @@ cpsw_port1: port@1 {
  				label = "port1";
  				phys = <&phy_gmii_sel 1>;
  				mac-address = [00 00 00 00 00 00];
@@ -16754,7 +16826,7 @@ index e46dc1d29f7e..394bc88b773d 100644
  
  			cpsw_port2: port@2 {
 diff --git a/arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi
-index 6c9f5d3bd756..120f7256dd10 100644
+index 6c9f5d3bd756..bbe0b190560f 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi
 @@ -1,7 +1,7 @@
@@ -16767,6 +16839,31 @@ index 6c9f5d3bd756..120f7256dd10 100644
   */
  
  &cbass_mcu {
+@@ -23,7 +23,15 @@ mcu_pmx0: pinctrl@4084000 {
+ 		#pinctrl-cells = <1>;
+ 		pinctrl-single,register-width = <32>;
+ 		pinctrl-single,function-mask = <0xffffffff>;
++		pinctrl-single,gpio-range =
++			<&mcu_pmx_range 0 21 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++			<&mcu_pmx_range 23 1 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++			<&mcu_pmx_range 32 2 (PIN_INPUT | PIN_GPIO_MUX_MODE)>;
+ 		bootph-all;
++
++		mcu_pmx_range: gpio-range {
++			#pinctrl-single,gpio-range-cells = <3>;
++		};
+ 	};
+ 
+ 	mcu_esm: esm@4100000 {
+@@ -149,6 +157,8 @@ mcu_gpio0: gpio@4201000 {
+ 		power-domains = <&k3_pds 79 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 79 0>;
+ 		clock-names = "gpio";
++		gpio-ranges = <&mcu_pmx0 0 0 21>, <&mcu_pmx0 21 23 1>,
++				<&mcu_pmx0 22 32 2>;
+ 	};
+ 
+ 	mcu_rti0: watchdog@4880000 {
 diff --git a/arch/arm64/boot/dts/ti/k3-am62p-thermal.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-thermal.dtsi
 index 85ce545633ea..c7486fb2a5b4 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62p-thermal.dtsi
@@ -17381,74 +17478,6 @@ index 000000000000..0e025287b708
 +		};
 +	};
 +};
-diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso
-new file mode 100644
-index 000000000000..7ddb122d68f4
---- /dev/null
-+++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hat-gpio.dtso
-@@ -0,0 +1,62 @@
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include "k3-pinctrl.h"
-+
-+&{/chosen} {
-+	overlays {
-+		k3-am67a-beagley-ai-hat-gpio.kernel = __TIMESTAMP__;
-+	};
-+};
-+
-+&main_pmx0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_hat_gpio0_pins_default>, <&main_hat_gpio1_pins_default>;
-+
-+	main_hat_gpio0_pins_default: main-hat-gpio0-default-pins {
-+		pinctrl-single,pins = <
-+			J722S_IOPAD(0x0088, PIN_INPUT, 7) /* (N22) GPMC0_OEn_REn.GPIO0_33 */
-+			J722S_IOPAD(0x0094, PIN_INPUT, 7) /* (P26) GPMC0_BE1n.GPIO0_36 */
-+			J722S_IOPAD(0x009c, PIN_INPUT, 7) /* (W26) GPMC0_WAIT1.GPIO0_38 */
-+			J722S_IOPAD(0x00a8, PIN_INPUT, 7) /* (R27) GPMC0_CSn0.GPIO0_41 */
-+			J722S_IOPAD(0x00ac, PIN_INPUT, 7) /* (P21) GPMC0_CSn1.GPIO0_42 */
-+		>;
-+	};
-+	main_hat_gpio1_pins_default: main-hat-gpio1-default-pins {
-+		pinctrl-single,pins = <
-+			J722S_IOPAD(0x0194, PIN_INPUT, 7) /* (A25) MCASP0_AXR3.GPIO1_7 */
-+			J722S_IOPAD(0x0198, PIN_INPUT, 7) /* (A26) MCASP0_AXR2.GPIO1_8 */
-+			J722S_IOPAD(0x019c, PIN_INPUT, 7) /* (B25) MCASP0_AXR1.GPIO1_9 */
-+			J722S_IOPAD(0x01a0, PIN_INPUT, 7) /* (F23) MCASP0_AXR0.GPIO1_10 */
-+			J722S_IOPAD(0x01a4, PIN_INPUT, 7) /* (D25) MCASP0_ACLKX.GPIO1_11 */
-+			J722S_IOPAD(0x01a8, PIN_INPUT, 7) /* (C26) MCASP0_AFSX.GPIO1_12 */
-+			J722S_IOPAD(0x01ac, PIN_INPUT, 7) /* (C27) MCASP0_AFSR.GPIO1_13 */
-+			J722S_IOPAD(0x01b0, PIN_INPUT, 7) /* (F24) MCASP0_ACLKR.GPIO1_14 */
-+			J722S_IOPAD(0x01b4, PIN_INPUT, 7) /* (B20) SPI0_CS0.GPIO1_15 */
-+			J722S_IOPAD(0x01b8, PIN_INPUT, 7) /* (C20) SPI0_CS1.GPIO1_16 */
-+			J722S_IOPAD(0x01bc, PIN_INPUT, 7) /* (D20) SPI0_CLK.GPIO1_17 */
-+			J722S_IOPAD(0x01c0, PIN_INPUT, 7) /* (E19) SPI0_D0.GPIO1_18 */
-+		>;
-+	};
-+};
-+
-+&mcu_pmx0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mcu_hat_gpio0_pins_default>;
-+
-+	mcu_hat_gpio0_pins_default: mcu-hat-gpio0-default-pins {
-+		pinctrl-single,pins = <
-+			J722S_MCU_IOPAD(0x0000, PIN_INPUT, 7) /* (C12) MCU_SPI0_CS0.MCU_GPIO0_0 */
-+			J722S_MCU_IOPAD(0x0008, PIN_INPUT, 7) /* (A9) MCU_SPI0_CLK.MCU_GPIO0_2 */
-+			J722S_MCU_IOPAD(0x000c, PIN_INPUT, 7) /* (B12) MCU_SPI0_D0.MCU_GPIO0_3 */
-+			J722S_MCU_IOPAD(0x0010, PIN_INPUT, 7) /* (C11) MCU_SPI0_D1.MCU_GPIO0_4 */
-+			J722S_MCU_IOPAD(0x001c, PIN_INPUT, 7) /* (B5) MCU_UART0_CTSn.MCU_GPIO0_7 */
-+			J722S_MCU_IOPAD(0x0024, PIN_INPUT, 7) /* (B3) WKUP_UART0_RXD.MCU_GPIO0_9 */
-+			J722S_MCU_IOPAD(0x0028, PIN_INPUT, 7) /* (C8) WKUP_UART0_TXD.MCU_GPIO0_10 */
-+			// Normally /dev/i2c-1
-+			//J722S_MCU_IOPAD(0x0044, PIN_INPUT, 7) /* (B13) MCU_I2C0_SCL.MCU_GPIO0_17 */
-+			//J722S_MCU_IOPAD(0x0048, PIN_INPUT, 7) /* (E11) MCU_I2C0_SDA.MCU_GPIO0_18 */
-+		>;
-+	};
-+};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hdmi-dss0-dpi1.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-hdmi-dss0-dpi1.dtso
 new file mode 100644
 index 000000000000..1fb55a918bfe
@@ -17780,10 +17809,10 @@ index 000000000000..a2703fffca05
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
 new file mode 100644
-index 000000000000..c87a0cb4450d
+index 000000000000..e2f58119272e
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pinmux.dtsi
-@@ -0,0 +1,1765 @@
+@@ -0,0 +1,1555 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * https://beagley-ai.org/
@@ -17831,18 +17860,6 @@ index 000000000000..c87a0cb4450d
 +		beagle-gpio-pi = "GPIO14";
 +	};
 +
-+	hat-08-pwm {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_08_pwm>;
-+		gpios = <&main_gpio1 14 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO14";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23000000";
-+		beagle-pwm-export = "1";
-+		beagle-gpio-pi = "GPIO14";
-+	};
-+
 +	hat-08-gpio {
 +		compatible = "gpio-single";
 +		pinctrl-names = "default";
@@ -17879,18 +17896,6 @@ index 000000000000..c87a0cb4450d
 +		beagle-gpio-pi = "GPIO15";
 +	};
 +
-+	hat-10-pwm {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_10_pwm>;
-+		gpios = <&main_gpio1 13 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO15";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23000000";
-+		beagle-pwm-export = "0";
-+		beagle-gpio-pi = "GPIO15";
-+	};
-+
 +	hat-10-gpio {
 +		compatible = "gpio-single";
 +		pinctrl-names = "default";
@@ -17918,18 +17923,6 @@ index 000000000000..c87a0cb4450d
 +		beagle-gpio-pi = "GPIO15";
 +	};
 +
-+	hat-11-pwm-ecap {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_11_pwm_ecap>;
-+		gpios = <&main_gpio1 8 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO17";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23120000";
-+		beagle-pwm-export = "0";
-+		beagle-gpio-pi = "GPIO17";
-+	};
-+
 +	hat-11-gpio {
 +		compatible = "gpio-single";
 +		pinctrl-names = "default";
@@ -17955,18 +17948,6 @@ index 000000000000..c87a0cb4450d
 +		gpios = <&main_gpio1 8 GPIO_ACTIVE_HIGH>;
 +		gpio-line-names = "GPIO17";
 +		beagle-gpio-pi = "GPIO17";
-+	};
-+
-+	hat-12-pwm-ecap {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_12_pwm_ecap>;
-+		gpios = <&main_gpio1 11 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO18";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23120000";
-+		beagle-pwm-export = "0";
-+		beagle-gpio-pi = "GPIO18";
 +	};
 +
 +	hat-12-gpio {
@@ -18266,18 +18247,6 @@ index 000000000000..c87a0cb4450d
 +		beagle-gpio-pi = "GPIO7";
 +	};
 +
-+	hat-29-pwm {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_29_pwm>;
-+		gpios = <&main_gpio1 15 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO5";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23000000";
-+		beagle-pwm-export = "0";
-+		beagle-gpio-pi = "GPIO5";
-+	};
-+
 +	hat-29-gpio {
 +		compatible = "gpio-single";
 +		pinctrl-names = "default";
@@ -18303,18 +18272,6 @@ index 000000000000..c87a0cb4450d
 +		gpios = <&main_gpio1 15 GPIO_ACTIVE_HIGH>;
 +		gpio-line-names = "GPIO5";
 +		beagle-gpio-pi = "GPIO5";
-+	};
-+
-+	hat-31-pwm {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_31_pwm>;
-+		gpios = <&main_gpio1 17 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO6";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23010000";
-+		beagle-pwm-export = "0";
-+		beagle-gpio-pi = "GPIO6";
 +	};
 +
 +	hat-31-gpio {
@@ -18344,30 +18301,6 @@ index 000000000000..c87a0cb4450d
 +		beagle-gpio-pi = "GPIO6";
 +	};
 +
-+	hat-32-pwm {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_32_pwm>;
-+		gpios = <&main_gpio1 16 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO12";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23000000";
-+		beagle-pwm-export = "1";
-+		beagle-gpio-pi = "GPIO12";
-+	};
-+
-+	hat-32-pwm-ecap {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_32_pwm_ecap>;
-+		gpios = <&main_gpio1 16 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO12";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23100000";
-+		beagle-pwm-export = "0";
-+		beagle-gpio-pi = "GPIO12";
-+	};
-+
 +	hat-32-gpio {
 +		compatible = "gpio-single";
 +		pinctrl-names = "default";
@@ -18393,18 +18326,6 @@ index 000000000000..c87a0cb4450d
 +		gpios = <&main_gpio1 16 GPIO_ACTIVE_HIGH>;
 +		gpio-line-names = "GPIO12";
 +		beagle-gpio-pi = "GPIO12";
-+	};
-+
-+	hat-33-pwm {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_33_pwm>;
-+		gpios = <&main_gpio1 18 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO13";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23010000";
-+		beagle-pwm-export = "1";
-+		beagle-gpio-pi = "GPIO13";
 +	};
 +
 +	hat-33-gpio {
@@ -18461,18 +18382,6 @@ index 000000000000..c87a0cb4450d
 +		beagle-gpio-pi = "GPIO19";
 +	};
 +
-+	hat-36-pwm-ecap {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_36_pwm_ecap>;
-+		gpios = <&main_gpio1 7 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO16";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23110000";
-+		beagle-pwm-export = "0";
-+		beagle-gpio-pi = "GPIO16";
-+	};
-+
 +	hat-36-gpio {
 +		compatible = "gpio-single";
 +		pinctrl-names = "default";
@@ -18527,18 +18436,6 @@ index 000000000000..c87a0cb4450d
 +		beagle-gpio-pi = "GPIO26";
 +	};
 +
-+	hat-38-pwm {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_38_pwm>;
-+		gpios = <&main_gpio1 10 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO20";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23010000";
-+		beagle-pwm-export = "1";
-+		beagle-gpio-pi = "GPIO20";
-+	};
-+
 +	hat-38-gpio {
 +		compatible = "gpio-single";
 +		pinctrl-names = "default";
@@ -18564,30 +18461,6 @@ index 000000000000..c87a0cb4450d
 +		gpios = <&main_gpio1 10 GPIO_ACTIVE_HIGH>;
 +		gpio-line-names = "GPIO20";
 +		beagle-gpio-pi = "GPIO20";
-+	};
-+
-+	hat-40-pwm-ecap {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_40_pwm_ecap>;
-+		gpios = <&main_gpio1 9 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO21";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23110000";
-+		beagle-pwm-export = "0";
-+		beagle-gpio-pi = "GPIO21";
-+	};
-+
-+	hat-40-pwm {
-+		compatible = "gpio-single";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&hat_40_pwm>;
-+		gpios = <&main_gpio1 9 GPIO_ACTIVE_HIGH>;
-+		gpio-line-names = "GPIO21";
-+		beagle-pwm-bus = "bus@f0000";
-+		beagle-pwm-address = "23010000";
-+		beagle-pwm-export = "0";
-+		beagle-gpio-pi = "GPIO21";
 +	};
 +
 +	hat-40-gpio {
@@ -18619,60 +18492,6 @@ index 000000000000..c87a0cb4450d
 +};
 +
 +&main_pmx0 {
-+//	hat-03-gpio {
-+//		compatible = "gpio-single";
-+//		pinctrl-names = "default";
-+//		pinctrl-0 = <&hat_03_gpio>;
-+//		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+//		gpio-line-names = "GPIO2";
-+//		beagle-gpio-pi = "GPIO2";
-+//	};
-+
-+//	hat-03-gpio-pu {
-+//		compatible = "gpio-single";
-+//		pinctrl-names = "default";
-+//		pinctrl-0 = <&hat_03_gpio_pu>;
-+//		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+//		gpio-line-names = "GPIO2";
-+//		beagle-gpio-pi = "GPIO2";
-+//	};
-+
-+//	hat-03-gpio-pd {
-+//		compatible = "gpio-single";
-+//		pinctrl-names = "default";
-+//		pinctrl-0 = <&hat_03_gpio_pd>;
-+//		gpios = <&mcu_gpio0 18 GPIO_ACTIVE_HIGH>;
-+//		gpio-line-names = "GPIO2";
-+//		beagle-gpio-pi = "GPIO2";
-+//	};
-+
-+//	hat-05-gpio {
-+//		compatible = "gpio-single";
-+//		pinctrl-names = "default";
-+//		pinctrl-0 = <&hat_05_gpio>;
-+//		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+//		gpio-line-names = "GPIO3";
-+//		beagle-gpio-pi = "GPIO3";
-+//	};
-+
-+//	hat-05-gpio-pu {
-+//		compatible = "gpio-single";
-+//		pinctrl-names = "default";
-+//		pinctrl-0 = <&hat_05_gpio_pu>;
-+//		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+//		gpio-line-names = "GPIO3";
-+//		beagle-gpio-pi = "GPIO3";
-+//	};
-+
-+//	hat-05-gpio-pd {
-+//		compatible = "gpio-single";
-+//		pinctrl-names = "default";
-+//		pinctrl-0 = <&hat_05_gpio_pd>;
-+//		gpios = <&mcu_gpio0 17 GPIO_ACTIVE_HIGH>;
-+//		gpio-line-names = "GPIO3";
-+//		beagle-gpio-pi = "GPIO3";
-+//	};
-+
 +	hat_07_uart6_rxd: hat-07-uart6-rxd-pins {
 +		pinctrl-single,pins = <
 +			J722S_IOPAD(0x09C, PIN_INPUT, 3) /* (W26) GPMC0_WAIT1.UART6_RXD */
@@ -19549,6 +19368,617 @@ index 000000000000..c87a0cb4450d
 +//	status = "okay";
 +//	clock-frequency = <100000>;
 +//};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap0-gpio12.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap0-gpio12.dtso
+new file mode 100644
+index 000000000000..87b7153607f6
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap0-gpio12.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO12 ecap0 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-ecap0-gpio12.kernel = __TIMESTAMP__;
++		hat-32.pin = "k3-am67a-beagley-ai-pwm-ecap0-gpio12";
++		hat-32.pin.beagle-pwm-bus = "bus@f0000";
++		hat-32.pin.beagle-pwm-address = "23100000";
++		hat-32.pin.beagle-pwm-export = "0";
++		hat-32.pin.beagle-gpio-pi = "GPIO12";
++	};
++};
++
++&main_pmx0 {
++	hat_32_pwm_ecap: hat-32-pwm-ecap-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x1B8, PIN_OUTPUT, 3) /* (C20) SPI0_CS1.ECAP0_IN_APWM_OUT */
++		>;
++	};
++};
++
++&ecap0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_32_pwm_ecap>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap1-gpio16.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap1-gpio16.dtso
+new file mode 100644
+index 000000000000..81e551f8710a
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap1-gpio16.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO16 ecap1 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-ecap1-gpio16.kernel = __TIMESTAMP__;
++		hat-36.pin = "k3-am67a-beagley-ai-pwm-ecap1-gpio16";
++		hat-36.pin.beagle-pwm-bus = "bus@f0000";
++		hat-36.pin.beagle-pwm-address = "23110000";
++		hat-36.pin.beagle-pwm-export = "0";
++		hat-36.pin.beagle-gpio-pi = "GPIO16";
++	};
++};
++
++&main_pmx0 {
++	hat_36_pwm_ecap: hat-36-pwm-ecap-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x194, PIN_OUTPUT, 5) /* (A25) MCASP0_AXR3.ECAP1_IN_APWM_OUT */
++		>;
++	};
++};
++
++&ecap1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_36_pwm_ecap>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap1-gpio21.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap1-gpio21.dtso
+new file mode 100644
+index 000000000000..8df9c9179b22
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap1-gpio21.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO21 ecap1 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-ecap1-gpio21.kernel = __TIMESTAMP__;
++		hat-40.pin = "k3-am67a-beagley-ai-pwm-ecap1-gpio21";
++		hat-40.pin.beagle-pwm-bus = "bus@f0000";
++		hat-40.pin.beagle-pwm-address = "23110000";
++		hat-40.pin.beagle-pwm-export = "0";
++		hat-40.pin.beagle-gpio-pi = "GPIO21";
++	};
++};
++
++&main_pmx0 {
++	hat_40_pwm_ecap: hat-40-pwm-ecap-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x19C, PIN_OUTPUT, 2) /* (B25) MCASP0_AXR1.ECAP1_IN_APWM_OUT */
++		>;
++	};
++};
++
++&ecap1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_40_pwm_ecap>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap2-gpio17.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap2-gpio17.dtso
+new file mode 100644
+index 000000000000..4571974eec24
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap2-gpio17.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO17 ecap2 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-ecap2-gpio17.kernel = __TIMESTAMP__;
++		hat-11.pin = "k3-am67a-beagley-ai-pwm-ecap2-gpio17";
++		hat-11.pin.beagle-pwm-bus = "bus@f0000";
++		hat-11.pin.beagle-pwm-address = "23120000";
++		hat-11.pin.beagle-pwm-export = "0";
++		hat-11.pin.beagle-gpio-pi = "GPIO17";
++	};
++};
++
++&main_pmx0 {
++	hat_11_pwm_ecap: hat-11-pwm-ecap-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x198, PIN_OUTPUT, 5) /* (A26) MCASP0_AXR2.ECAP2_IN_APWM_OUT */
++		>;
++	};
++};
++
++&ecap2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_11_pwm_ecap>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap2-gpio18.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap2-gpio18.dtso
+new file mode 100644
+index 000000000000..ea94ae23795d
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-ecap2-gpio18.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO18 ecap2 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-ecap2-gpio18.kernel = __TIMESTAMP__;
++		hat-12.pin = "k3-am67a-beagley-ai-pwm-ecap2-gpio18";
++		hat-12.pin.beagle-pwm-bus = "bus@f0000";
++		hat-12.pin.beagle-pwm-address = "23120000";
++		hat-12.pin.beagle-pwm-export = "0";
++		hat-12.pin.beagle-gpio-pi = "GPIO18";
++	};
++};
++
++&main_pmx0 {
++	hat_12_pwm_ecap: hat-12-pwm-ecap-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x1A4, PIN_OUTPUT, 2) /* (D25) MCASP0_ACLKX.ECAP2_IN_APWM_OUT */
++		>;
++	};
++};
++
++&ecap2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_12_pwm_ecap>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio12.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio12.dtso
+new file mode 100644
+index 000000000000..d607c3b57cd3
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio12.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO12 epwm0 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-epwm0-gpio12.kernel = __TIMESTAMP__;
++		hat-32.pin = "k3-am67a-beagley-ai-pwm-epwm0-gpio12";
++		hat-32.pin.beagle-pwm-bus = "bus@f0000";
++		hat-32.pin.beagle-pwm-address = "23000000";
++		hat-32.pin.beagle-pwm-export = "1";
++		hat-32.pin.beagle-gpio-pi = "GPIO12";
++	};
++};
++
++&main_pmx0 {
++	hat_32_pwm: hat-32-pwm-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x1B8, PIN_OUTPUT, 2) /* (C20) SPI0_CS1.EHRPWM0_B */
++		>;
++	};
++};
++
++&epwm0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_32_pwm>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio14.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio14.dtso
+new file mode 100644
+index 000000000000..062af1e15f8f
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio14.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO14 epwm0 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-epwm0-gpio14.kernel = __TIMESTAMP__;
++		hat-08.pin = "k3-am67a-beagley-ai-pwm-epwm0-gpio14";
++		hat-08.pin.beagle-pwm-bus = "bus@f0000";
++		hat-08.pin.beagle-pwm-address = "23000000";
++		hat-08.pin.beagle-pwm-export = "1";
++		hat-08.pin.beagle-gpio-pi = "GPIO14";
++	};
++};
++
++&main_pmx0 {
++	hat_08_pwm: hat-08-pwm-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x1B0, PIN_OUTPUT, 6) /* (F24) MCASP0_ACLKR.EHRPWM0_B */
++		>;
++	};
++};
++
++&epwm0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_08_pwm>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio15.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio15.dtso
+new file mode 100644
+index 000000000000..7066ea5f6447
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio15.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO15 epwm0 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-epwm0-gpio15.kernel = __TIMESTAMP__;
++		hat-10.pin = "k3-am67a-beagley-ai-pwm-epwm0-gpio15";
++		hat-10.pin.beagle-pwm-bus = "bus@f0000";
++		hat-10.pin.beagle-pwm-address = "23000000";
++		hat-10.pin.beagle-pwm-export = "0";
++		hat-10.pin.beagle-gpio-pi = "GPIO15";
++	};
++};
++
++&main_pmx0 {
++	hat_10_pwm: hat-10-pwm-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x1AC, PIN_OUTPUT, 6) /* (C27) MCASP0_AFSR.EHRPWM0_A */
++		>;
++	};
++};
++
++&epwm0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_10_pwm>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio5.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio5.dtso
+new file mode 100644
+index 000000000000..adcc3178b6db
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm0-gpio5.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO5 epwm0 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-epwm0-gpio5.kernel = __TIMESTAMP__;
++		hat-29.pin = "k3-am67a-beagley-ai-pwm-epwm0-gpio5";
++		hat-29.pin.beagle-pwm-bus = "bus@f0000";
++		hat-29.pin.beagle-pwm-address = "23000000";
++		hat-29.pin.beagle-pwm-export = "0";
++		hat-29.pin.beagle-gpio-pi = "GPIO5";
++	};
++};
++
++&main_pmx0 {
++	hat_29_pwm: hat-29-pwm-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x1B4, PIN_OUTPUT, 2) /* (B20) SPI0_CS0.EHRPWM0_A */
++		>;
++	};
++};
++
++&epwm0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_29_pwm>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio13.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio13.dtso
+new file mode 100644
+index 000000000000..8a5d1e67c531
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio13.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO13 epwm1 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-epwm1-gpio13.kernel = __TIMESTAMP__;
++		hat-33.pin = "k3-am67a-beagley-ai-pwm-epwm1-gpio13";
++		hat-33.pin.beagle-pwm-bus = "bus@f0000";
++		hat-33.pin.beagle-pwm-address = "23010000";
++		hat-33.pin.beagle-pwm-export = "1";
++		hat-33.pin.beagle-gpio-pi = "GPIO13";
++	};
++};
++
++&main_pmx0 {
++	hat_33_pwm: hat-33-pwm-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x1C0, PIN_OUTPUT, 2) /* (E19) SPI0_D0.EHRPWM1_B */
++		>;
++	};
++};
++
++&epwm1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_33_pwm>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio20.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio20.dtso
+new file mode 100644
+index 000000000000..f55260c18be1
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio20.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO20 epwm1 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-epwm1-gpio20.kernel = __TIMESTAMP__;
++		hat-38.pin = "k3-am67a-beagley-ai-pwm-epwm1-gpio20";
++		hat-38.pin.beagle-pwm-bus = "bus@f0000";
++		hat-38.pin.beagle-pwm-address = "23010000";
++		hat-38.pin.beagle-pwm-export = "1";
++		hat-38.pin.beagle-gpio-pi = "GPIO20";
++	};
++};
++
++&main_pmx0 {
++	hat_38_pwm: hat-38-pwm-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x1A0, PIN_OUTPUT, 6) /* (F23) MCASP0_AXR0.EHRPWM1_B */
++		>;
++	};
++};
++
++&epwm1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_38_pwm>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio21.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio21.dtso
+new file mode 100644
+index 000000000000..8bedac8d49d9
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio21.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO21 epwm1 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-epwm1-gpio21.kernel = __TIMESTAMP__;
++		hat-40.pin = "k3-am67a-beagley-ai-pwm-epwm1-gpio21";
++		hat-40.pin.beagle-pwm-bus = "bus@f0000";
++		hat-40.pin.beagle-pwm-address = "23010000";
++		hat-40.pin.beagle-pwm-export = "0";
++		hat-40.pin.beagle-gpio-pi = "GPIO21";
++	};
++};
++
++&main_pmx0 {
++	hat_40_pwm: hat-40-pwm-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x19C, PIN_OUTPUT, 6) /* (B25) MCASP0_AXR1.EHRPWM1_A */
++		>;
++	};
++};
++
++&epwm1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_40_pwm>;
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio6.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio6.dtso
+new file mode 100644
+index 000000000000..d55126ae3458
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-pwm-epwm1-gpio6.dtso
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only OR MIT
++/*
++ * DT Overlay for GPIO6 epwm1 connections within the expansion header.
++ *
++ * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include "k3-pinctrl.h"
++
++/*
++ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
++*/
++&{/chosen} {
++	overlays {
++		k3-am67a-beagley-ai-pwm-epwm1-gpio6.kernel = __TIMESTAMP__;
++		hat-31.pin = "k3-am67a-beagley-ai-pwm-epwm1-gpio6";
++		hat-31.pin.beagle-pwm-bus = "bus@f0000";
++		hat-31.pin.beagle-pwm-address = "23010000";
++		hat-31.pin.beagle-pwm-export = "0";
++		hat-31.pin.beagle-gpio-pi = "GPIO6";
++	};
++};
++
++&main_pmx0 {
++	hat_31_pwm: hat-31-pwm-pins {
++		pinctrl-single,pins = <
++			J722S_IOPAD(0x1BC, PIN_OUTPUT, 2) /* (D20) SPI0_CLK.EHRPWM1_A */
++		>;
++	};
++};
++
++&epwm1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&hat_31_pwm>;
++	status = "okay";
++};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-spi0-1cs.dtso b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai-spi0-1cs.dtso
 new file mode 100644
 index 000000000000..13a05817833d
@@ -19723,10 +20153,10 @@ index 000000000000..c169e45c6a34
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
 new file mode 100644
-index 000000000000..7dd88d7e82ba
+index 000000000000..9308c4f13e6b
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
-@@ -0,0 +1,1275 @@
+@@ -0,0 +1,1281 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * https://beagley-ai.org/
@@ -20371,27 +20801,33 @@ index 000000000000..7dd88d7e82ba
 +&main_gpio0 {
 +	status = "okay";
 +	pinctrl-names = "default";
-+	/* GPIO line names can change, were mainly put in for debug purposes */
 +	gpio-line-names = "", "", "", "", "", /* 0-4 */
-+					  "", "", "", "", "", /* 5-9 */
-+					  "", "", "", "", "", /* 10-14 */
-+					  "", "", "", "", "", /* 15-19 */
-+					  "", "", "", "", "", /* 20-24 */
-+					  "", "", "", "", "", /* 25-29 */
-+					  "", "", "USB_RST", "", ""; /* 30-34 */
++			  "", "", "", "", "", /* 5-9 */
++			  "", "", "", "", "", /* 10-14 */
++			  "", "", "", "", "", /* 15-19 */
++			  "", "", "", "", "", /* 20-24 */
++			  "", "", "", "", "", /* 25-29 */
++			  "", "", "USB_RST", "GPIO27", "", /* 30-34 */
++			  "", "GPIO26", "", "GPIO4", "", /* 35-39 */
++			  "", "GPIO22", "GPIO25", "", ""; /* 40-44 */
 +};
 +
 +&main_gpio1 {
 +	status = "okay";
++	pinctrl-names = "default";
++	gpio-line-names = "", "", "", "", "", /* 0-4 */
++			  "", "", "GPIO16", "GPIO17", "GPIO21", /* 5-9 */
++			  "GPIO20", "GPIO18", "GPIO19", "GPIO15", "GPIO14", /* 10-14 */
++			  "GPIO5", "GPIO12", "GPIO6", "GPIO13", ""; /* 15-19 */
 +};
 +
 +&mcu_gpio0 {
 +	status = "okay";
 +	pinctrl-names = "default";
-+	/* GPIO line names can change, were mainly put in for debug purposes */
-+	gpio-line-names = "", "", "", "", "",
-+					  "", "", "", "", "",
-+					  "", "", "", "HDMI_RSTn", "HDMI_INTn";
++	gpio-line-names = "GPIO8", "", "GPIO11", "GPIO10", "GPIO9", /* 0-4 */
++			  "", "", "GPIO23", "", "GPIO7", /* 5-9 */
++			  "GPIO24", "", "", "HDMI_RSTn", "HDMI_INTn", /* 10-14 */
++			  "", "", "GPIO3", "GPIO2", ""; /* 15-19 */
 +};
 +
 +&main_uart0 {
@@ -23980,7 +24416,7 @@ index 000000000000..f4b5ad1136aa
 +    status = "disabled";
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-j722s.dtsi b/arch/arm64/boot/dts/ti/k3-j722s.dtsi
-index 93c62289cebb..7492f6c81fc2 100644
+index 93c62289cebb..a8cb3e9a05a2 100644
 --- a/arch/arm64/boot/dts/ti/k3-j722s.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-j722s.dtsi
 @@ -1,8 +1,8 @@
@@ -24002,14 +24438,18 @@ index 93c62289cebb..7492f6c81fc2 100644
  
  		ranges = <0x00 0x000f0000 0x00 0x000f0000 0x00 0x00030000>, /* Main MMRs */
  			 <0x00 0x00420000 0x00 0x00420000 0x00 0x00001000>, /* ESM0 */
-@@ -275,6 +276,27 @@ serdes_ln_ctrl: mux-controller@4080 {
+@@ -275,6 +276,31 @@ serdes_ln_ctrl: mux-controller@4080 {
  	};
  };
  
-+&mcu_gpio0 {
-+	gpio-ranges = <&mcu_pmx0 0 0 21>,
-+		      <&mcu_pmx0 21 23 1>,
-+		      <&mcu_pmx0 22 32 2>;
++&main_pmx0 {
++	pinctrl-single,gpio-range =
++		<&main_pmx0_range 0 32 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++		<&main_pmx0_range 33 55 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++		<&main_pmx0_range 101 25 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++		<&main_pmx0_range 137 5 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++		<&main_pmx0_range 143 3 (PIN_INPUT | PIN_GPIO_MUX_MODE)>,
++		<&main_pmx0_range 149 2 (PIN_INPUT | PIN_GPIO_MUX_MODE)>;
 +};
 +
 +&main_gpio0 {
@@ -24197,7 +24637,7 @@ index b7e9d1a57737..bb64e1b9592a 100644
  			#address-cells = <2>;
  			#size-cells = <2>;
 diff --git a/arch/arm64/boot/dts/ti/k3-pinctrl.h b/arch/arm64/boot/dts/ti/k3-pinctrl.h
-index de3f75697398..e36bce881f44 100644
+index de3f75697398..28cda865d082 100644
 --- a/arch/arm64/boot/dts/ti/k3-pinctrl.h
 +++ b/arch/arm64/boot/dts/ti/k3-pinctrl.h
 @@ -1,9 +1,9 @@
@@ -24212,6 +24652,15 @@ index de3f75697398..e36bce881f44 100644
   */
  #ifndef DTS_ARM64_TI_K3_PINCTRL_H
  #define DTS_ARM64_TI_K3_PINCTRL_H
+@@ -41,6 +41,8 @@
+ 
+ #define WKUP_EN			(1 << WKUP_EN_SHIFT)
+ 
++#define PIN_GPIO_MUX_MODE	(7)
++
+ #define AM62AX_IOPAD(pa, val, muxmode)		(((pa) & 0x1fff)) ((val) | (muxmode))
+ #define AM62AX_MCU_IOPAD(pa, val, muxmode)	(((pa) & 0x1fff)) ((val) | (muxmode))
+ 
 diff --git a/include/dt-bindings/board/am335x-bone-pins.h b/include/dt-bindings/board/am335x-bone-pins.h
 new file mode 100644
 index 000000000000..54e92664ba79
