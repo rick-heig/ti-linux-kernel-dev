@@ -1,11 +1,11 @@
-From 0230db97f38f8df7a3968baf766db5f62860e9b5 Mon Sep 17 00:00:00 2001
+From 1b93804e36924a6114a97fead4a23e6e5fe2efcc Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Fri, 14 Jun 2024 17:28:09 -0500
+Date: Tue, 18 Jun 2024 08:53:39 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/9df62e18798dcfe102da772dd3753f06605d0eee
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/bba88602530005ed58d3fca46e83d9129c5ac6cf
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -151,7 +151,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  arch/arm64/boot/dts/ti/k3-j722s-evm.dts       |   16 +-
  .../boot/dts/ti/k3-j722s-rtos-memory-map.dtsi |  175 ++
  .../boot/dts/ti/k3-j722s-vision-apps.dtso     |   35 +
- arch/arm64/boot/dts/ti/k3-j722s.dtsi          |   25 +-
+ arch/arm64/boot/dts/ti/k3-j722s.dtsi          |   26 +-
  arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi    |   18 +-
  .../boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi     |   10 +-
  arch/arm64/boot/dts/ti/k3-j784s4-thermal.dtsi |    5 +-
@@ -164,7 +164,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  include/dt-bindings/mailbox/miv-ihc.h         |   17 +
  include/dt-bindings/pinctrl/omap.h            |    8 +-
  include/uapi/linux/input-event-codes.h        |    5 +
- 156 files changed, 19207 insertions(+), 861 deletions(-)
+ 156 files changed, 19208 insertions(+), 861 deletions(-)
  create mode 100644 arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-ADC-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-BBBW-WL1835-00A0.dtso
@@ -19723,7 +19723,7 @@ index 000000000000..c169e45c6a34
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
 new file mode 100644
-index 000000000000..2c783931f37d
+index 000000000000..7dd88d7e82ba
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
 @@ -0,0 +1,1275 @@
@@ -19766,7 +19766,7 @@ index 000000000000..2c783931f37d
 +
 +	chosen {
 +		stdout-path = &main_uart0;
-+		base_dtb = "k3-j722s-beagley-ai.dts";
++		base_dtb = "k3-am67a-beagley-ai.dts";
 +		base_dtb_timestamp = __TIMESTAMP__;
 +	};
 +
@@ -22394,7 +22394,7 @@ index 154eff06e7b7..05e96924448c 100644
  #include <dt-bindings/interrupt-controller/irq.h>
 diff --git a/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts
 new file mode 100644
-index 000000000000..2d54564dbfbc
+index 000000000000..56dbb9208b62
 --- /dev/null
 +++ b/arch/arm64/boot/dts/ti/k3-j722s-beagley-ai-evt.dts
 @@ -0,0 +1,1289 @@
@@ -23240,7 +23240,7 @@ index 000000000000..2d54564dbfbc
 +	status = "okay";
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&mcu_i2c0_pins_default>;
-+	clock-frequency = <400000>;
++	clock-frequency = <100000>;
 +	bootph-all;
 +};
 +
@@ -23980,7 +23980,7 @@ index 000000000000..f4b5ad1136aa
 +    status = "disabled";
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-j722s.dtsi b/arch/arm64/boot/dts/ti/k3-j722s.dtsi
-index 93c62289cebb..e59237aa8545 100644
+index 93c62289cebb..7492f6c81fc2 100644
 --- a/arch/arm64/boot/dts/ti/k3-j722s.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-j722s.dtsi
 @@ -1,8 +1,8 @@
@@ -24002,7 +24002,7 @@ index 93c62289cebb..e59237aa8545 100644
  
  		ranges = <0x00 0x000f0000 0x00 0x000f0000 0x00 0x00030000>, /* Main MMRs */
  			 <0x00 0x00420000 0x00 0x00420000 0x00 0x00001000>, /* ESM0 */
-@@ -275,6 +276,26 @@ serdes_ln_ctrl: mux-controller@4080 {
+@@ -275,6 +276,27 @@ serdes_ln_ctrl: mux-controller@4080 {
  	};
  };
  
@@ -24024,6 +24024,7 @@ index 93c62289cebb..e59237aa8545 100644
 +		      <&main_pmx0 42 137 5>,
 +		      <&main_pmx0 47 143 3>,
 +		      <&main_pmx0 50 149 2>;
++	ti,ngpio = <73>;
 +};
 +
  &oc_sram {
