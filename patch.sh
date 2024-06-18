@@ -567,6 +567,7 @@ drivers () {
 	dir 'drivers/gasket'
 	dir 'drivers/davinci-mcasp'
 	dir 'drivers/gpio-aggregator'
+	dir 'drivers/pwm-gpio'
 
 	#cd KERNEL/
 	#git checkout v5.10-rc1 -b tmp
