@@ -299,4 +299,7 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 ./scripts/config --disable CONFIG_BT_HCIBTSDIO
 ./scripts/config --disable CONFIG_BT_TI
 
+#PCI Express Precision Time Measurement support
+./scripts/config --enable CONFIG_PCIE_PTM
+
 cd ${DIR}/
