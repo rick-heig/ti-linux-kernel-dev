@@ -2829,6 +2829,7 @@ CONFIG_WL1251_SPI=m
 CONFIG_WL1251_SDIO=m
 CONFIG_WL12XX=m
 CONFIG_WL18XX=m
+# CONFIG_CC33XX is not set
 CONFIG_WLCORE=m
 CONFIG_WLCORE_SPI=m
 CONFIG_WLCORE_SDIO=m
@@ -4423,6 +4424,10 @@ CONFIG_VIDEO_MUX=m
 
 #
 # Chips&Media media platform drivers
+#
+
+#
+# IMG media platform drivers
 #
 # CONFIG_VIDEO_E5010_JPEG_ENC is not set
 
