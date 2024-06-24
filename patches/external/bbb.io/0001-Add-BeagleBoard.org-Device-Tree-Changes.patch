@@ -1,11 +1,11 @@
-From e787bdca10e1e7dfd4db92fef3eb66504ba22468 Mon Sep 17 00:00:00 2001
+From f27fa1a7dfc4564edf55f3abd6d0ba3876448727 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Mon, 24 Jun 2024 14:52:30 -0500
+Date: Mon, 24 Jun 2024 15:44:43 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.6.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/a9cf3ea17a72ca190abd751c3ade3ebe280adbca
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/4b760568cdbf04fd28857f12a5090cf522796bd7
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  .../boot/dts/ti/omap/AM335X-PRU-UIO-00A0.dtso |   28 +
@@ -127,10 +127,9 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  include/dt-bindings/leds/common.h             |    4 +
  include/dt-bindings/mailbox/miv-ihc.h         |   17 +
  include/dt-bindings/mux/ti-serdes.h           |   39 +-
- include/dt-bindings/net/ti-dp83867.h          |    4 +-
  include/dt-bindings/pinctrl/omap.h            |    8 +-
  include/uapi/linux/input-event-codes.h        |    1 +
- 122 files changed, 13018 insertions(+), 273 deletions(-)
+ 121 files changed, 13016 insertions(+), 271 deletions(-)
  create mode 100644 arch/arm/boot/dts/ti/omap/AM335X-PRU-UIO-00A0.dtso
  create mode 100644 arch/arm/boot/dts/ti/omap/BB-ADC-00A0.dtso
  create mode 100644 arch/arm/boot/dts/ti/omap/BB-BBBW-WL1835-00A0.dtso
@@ -10423,10 +10422,10 @@ index 9d588cfaa5cb..8da969035c41 100644
  &twl {
  	compatible = "ti,twl6030";
 diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-index 0c339b5b9e84..56e29163a101 100644
+index 054d4349a2b2..1feca848c7c8 100644
 --- a/arch/arm64/boot/dts/ti/Makefile
 +++ b/arch/arm64/boot/dts/ti/Makefile
-@@ -286,6 +286,22 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
+@@ -347,6 +347,22 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
  			 k3-v3link-imx219-0-2.dtbo \
  			 k3-v3link-imx219-0-3.dtbo
  
@@ -10449,16 +10448,13 @@ index 0c339b5b9e84..56e29163a101 100644
  # Enable support for device-tree overlays
  DTC_FLAGS_k3-am625-beagleplay += -@
  DTC_FLAGS_k3-am625-sk += -@
-@@ -298,6 +314,7 @@ DTC_FLAGS_k3-am642-tqma64xxl-mbax4xxl += -@
- DTC_FLAGS_k3-am6548-iot2050-advanced-m2 += -@
- DTC_FLAGS_k3-am62p5-sk += -@
- DTC_FLAGS_k3-am68-sk-base-board += -@
+@@ -374,3 +390,4 @@ DTC_FLAGS_k3-j722s-evm += -@
+ DTC_FLAGS_k3-j722s-evm-fpdlink-fusion += -@
+ DTC_FLAGS_k3-j722s-evm-v3link-fusion += -@
+ DTC_FLAGS_k3-j784s4-evm += -@
 +DTC_FLAGS_k3-am67a-beagley-ai += -@
- DTC_FLAGS_k3-am69-sk += -@
- DTC_FLAGS_k3-j721e-beagleboneai64 += -@
- DTC_FLAGS_k3-j721e-common-proc-board += -@
 diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-index 72271d806223..f36a5f95d470 100644
+index b4bf775d58f4..83cffb18e65e 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
 @@ -1,8 +1,8 @@
@@ -10860,7 +10856,7 @@ index 4193c2b3eed6..4014add6320d 100644
  
  /dts-v1/;
 diff --git a/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi
-index 2280d751e2bc..3c2f012f1334 100644
+index ba00c1f0fb65..4d0818be78b1 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi
 @@ -1,7 +1,7 @@
@@ -10874,7 +10870,7 @@ index 2280d751e2bc..3c2f012f1334 100644
  
  &cbass_main {
 diff --git a/arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi
-index ba88af4ee1b6..79fc28a8225b 100644
+index ca413c166243..9e3533e09497 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62p-mcu.dtsi
 @@ -1,7 +1,7 @@
@@ -10915,7 +10911,7 @@ index 4f4c7e459e8d..beea34a06f4e 100644
  
  #include <dt-bindings/bus/ti-sysc.h>
 diff --git a/arch/arm64/boot/dts/ti/k3-am62p.dtsi b/arch/arm64/boot/dts/ti/k3-am62p.dtsi
-index 4bbea3fd76cf..8acebed42964 100644
+index 82a457396ec4..664798b1d2e9 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62p.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62p.dtsi
 @@ -1,8 +1,8 @@
@@ -10944,7 +10940,7 @@ index a78b8d421705..9a606489d95e 100644
   * TRM: https://www.ti.com/lit/pdf/spruj83
   */
 diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-index 55978a3489ee..dca742046249 100644
+index cf27e0674786..71ac3c689a53 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
 @@ -1,8 +1,8 @@
@@ -14418,7 +14414,7 @@ index 000000000000..e3c05c86786c
 +	rx-num-evt = <32>;
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am69-sk.dts b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
-index 5b766a6a90ef..c1757c48c0e4 100644
+index 12fe8c5c4b36..bc0b8320a41e 100644
 --- a/arch/arm64/boot/dts/ti/k3-am69-sk.dts
 +++ b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
 @@ -1,6 +1,6 @@
@@ -14510,7 +14506,7 @@ index b8aca082405c..59ca3192f0da 100644
   * Product Link: https://www.ti.com/tool/J721EXCPXEVM
   */
 diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
-index 971fe42fee69..5cb297e8daef 100644
+index dca140d2a3ed..80204a2a2941 100644
 --- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
 @@ -1,8 +1,8 @@
@@ -14594,7 +14590,7 @@ index a200810df54a..5a72c518ceb6 100644
  
  #include <dt-bindings/interrupt-controller/irq.h>
 diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
-index 8aee10eea941..0f2b731d16c9 100644
+index c16e98e80925..9b1e866adb23 100644
 --- a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
 +++ b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
 @@ -1,6 +1,6 @@
@@ -14607,7 +14603,7 @@ index 8aee10eea941..0f2b731d16c9 100644
   * EVM Board Schematics: https://www.ti.com/lit/zip/sprr458
   */
 diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
-index b09231a69003..cf3329928f54 100644
+index 5375ed9fe318..0d5c134f8f22 100644
 --- a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
 @@ -1,8 +1,8 @@
@@ -14667,7 +14663,7 @@ index 5b09c97cfa8f..b28eaf81956c 100644
   */
  
 diff --git a/arch/arm64/boot/dts/ti/k3-pinctrl.h b/arch/arm64/boot/dts/ti/k3-pinctrl.h
-index de3f75697398..e36bce881f44 100644
+index 490e5a11d1db..28cda865d082 100644
 --- a/arch/arm64/boot/dts/ti/k3-pinctrl.h
 +++ b/arch/arm64/boot/dts/ti/k3-pinctrl.h
 @@ -1,9 +1,9 @@
@@ -15080,23 +15076,6 @@ index b0b1091aad6d..cc47a0eeb6d3 100644
 +#define J722S_SERDES1_LANE0_QSGMII_LANE1	0x1
 +
  #endif /* _DT_BINDINGS_MUX_TI_SERDES */
-diff --git a/include/dt-bindings/net/ti-dp83867.h b/include/dt-bindings/net/ti-dp83867.h
-index b8a4f3ff4a3b..6fc4b445d3a1 100644
---- a/include/dt-bindings/net/ti-dp83867.h
-+++ b/include/dt-bindings/net/ti-dp83867.h
-@@ -1,10 +1,10 @@
--/* SPDX-License-Identifier: GPL-2.0-only OR MIT */
-+/* SPDX-License-Identifier: GPL-2.0-only */
- /*
-  * Device Tree constants for the Texas Instruments DP83867 PHY
-  *
-  * Author: Dan Murphy <dmurphy@ti.com>
-  *
-- * Copyright (C) 2015-2024 Texas Instruments Incorporated - https://www.ti.com/
-+ * Copyright:   (C) 2015 Texas Instruments, Inc.
-  */
- 
- #ifndef _DT_BINDINGS_TI_DP83867_H
 diff --git a/include/dt-bindings/pinctrl/omap.h b/include/dt-bindings/pinctrl/omap.h
 index f48245ff87e5..76f0d2fa5f3b 100644
 --- a/include/dt-bindings/pinctrl/omap.h

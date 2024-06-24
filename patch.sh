@@ -290,13 +290,23 @@ k3_makefile_patch_cleanup_overlays () {
 	echo "DTC_FLAGS_k3-am6548-iot2050-advanced-m2 += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-am62p5-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-am68-sk-base-board += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am67a-beagley-ai += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-am68-sk-v3link-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-am69-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-am69-sk-fpdlink-fusion-auxport += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j7200-common-proc-board += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j721e-beagleboneai64 += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j721e-evm-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j721e-common-proc-board += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j721e-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j721e-sk-fpdlink-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j721s2-common-proc-board += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j721s2-evm-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j722s-evm += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j722s-evm-fpdlink-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j722s-evm-v3link-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j784s4-evm += -@" >> arch/arm64/boot/dts/ti/Makefile
+
+	echo "DTC_FLAGS_k3-am67a-beagley-ai += -@" >> arch/arm64/boot/dts/ti/Makefile
 }
 
 beagleboard_dtbs () {
