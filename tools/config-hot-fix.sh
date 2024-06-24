@@ -292,6 +292,7 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 ./scripts/config --enable CONFIG_DYNAMIC_FTRACE
 
 ./scripts/config --enable CONFIG_GPIO_AGGREGATOR
+./scripts/config --module CONFIG_PWM_GPIO
 
 #cc33xx ble
 ./scripts/config --disable CONFIG_BT_BNEP
@@ -299,10 +300,18 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 ./scripts/config --disable CONFIG_BT_TI
 
 #Gone on Mainline, supporting 32bit only...
+./scripts/config --disable CONFIG_UIO
 ./scripts/config --disable CONFIG_UIO_PRUSS
 
 ./scripts/config --module CONFIG_VIDEO_E5010_JPEG_ENC
 ./scripts/config --module CONFIG_TI_EQEP
 ./scripts/config --enable CONFIG_CRYPTO_DEV_TI_MCRC64
+
+#PCI Express Precision Time Measurement support
+./scripts/config --enable CONFIG_PCIE_PTM
+
+./scripts/config --module CONFIG_RPMSG
+./scripts/config --module CONFIG_RPMSG_NS
+./scripts/config --module CONFIG_RPMSG_VIRTIO
 
 cd ${DIR}/

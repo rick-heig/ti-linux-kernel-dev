@@ -48,7 +48,7 @@ KERNEL_REL=6.6
 KERNEL_TAG=${KERNEL_REL}.32
 kernel_rt=".32-rt32"
 #Kernel Build
-BUILD=${build_prefix}4.1
+BUILD=${build_prefix}4.2
 
 #v6.X-rcX + upto SHA
 #prev_KERNEL_SHA=""
