@@ -1,10 +1,10 @@
-From f920709f0310e975a892baece09dd595820578c4 Mon Sep 17 00:00:00 2001
+From 453a1789e2dbf68fe080e6a73de38d83dde7eaaf Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Sat, 16 Dec 2023 16:13:03 -0600
+Date: Wed, 26 Jun 2024 14:39:06 -0500
 Subject: [PATCH] merge: wpanusb:
  https://git.beagleboard.org/beagleconnect/linux/wpanusb
 
-https://git.beagleboard.org/beagleconnect/linux/wpanusb/-/commit/6aa9bf65b9d88a2c9a111e7b4aed03de2be9413d
+https://openbeagle.org/beagleconnect/linux/wpanusb/-/commit/6aa9bf65b9d88a2c9a111e7b4aed03de2be9413d
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  drivers/net/ieee802154/wpanusb.c | 778 +++++++++++++++++++++++++++++++

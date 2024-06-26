@@ -1,6 +1,6 @@
-From fea6ccd614d0d97f206bb94adaf7ac8b772cb77f Mon Sep 17 00:00:00 2001
+From 99bd1c91d6f07d1f6c37a5ea44fe0431fefe531e Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Sat, 16 Dec 2023 16:13:34 -0600
+Date: Wed, 26 Jun 2024 14:42:51 -0500
 Subject: [PATCH] merge: bcfserial:
  https://git.beagleboard.org/beagleconnect/linux/bcfserial.git
 
