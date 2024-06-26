@@ -142,7 +142,7 @@ config="CONFIG_USB_CONFIGFS_F_PRINTER" ; config_enable
 
 # Extras
 config="CONFIG_VIDEO_OV5647" ; config_module
-config="CONFIG_LED_TRIGGER_PHY" ; config_module
+config="CONFIG_LED_TRIGGER_PHY" ; config_enable
 config="CONFIG_USB_LEDS_TRIGGER_USBPORT" ; config_module
 config="CONFIG_LEDS_TRIGGER_TRANSIENT" ; config_module
 config="CONFIG_LEDS_TRIGGER_CAMERA" ; config_module
@@ -186,5 +186,97 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 
 #removed in 6.7-rc1
 ./scripts/config --disable CONFIG_DEV_APPLETALK
+
+#TI delta 09.01.00.004:
+./scripts/config --enable CONFIG_APERTURE_HELPERS
+./scripts/config --enable CONFIG_FB_CFB_FILLRECT
+./scripts/config --enable CONFIG_FB_CFB_COPYAREA
+./scripts/config --enable CONFIG_FB_CFB_IMAGEBLIT
+./scripts/config --enable CONFIG_FB_SIMPLE
+./scripts/config --module CONFIG_TI_EQEP
+
+#TI delta 09.01.00.005:
+./scripts/config --enable CONFIG_TI_SYSC
+./scripts/config --module CONFIG_TI_CPSW_PROXY_CLIENT
+
+#TI delta 09.01.00.006:
+./scripts/config --disable CONFIG_PCIE_ALTERA
+./scripts/config --disable CONFIG_PCIE_ALTERA_MSI
+./scripts/config --disable CONFIG_PCI_HOST_THUNDER_PEM
+./scripts/config --disable CONFIG_PCI_HOST_THUNDER_ECAM
+./scripts/config --disable CONFIG_MTD_NAND_DENALI
+./scripts/config --disable CONFIG_MTD_NAND_DENALI_DT
+./scripts/config --disable CONFIG_SCSI_HISI_SAS
+./scripts/config --disable CONFIG_AHCI_CEVA
+./scripts/config --disable CONFIG_ROCKCHIP_PHY
+./scripts/config --disable CONFIG_CAN_FLEXCAN
+./scripts/config --disable CONFIG_HW_RANDOM_ARM_SMCCC_TRNG
+./scripts/config --disable CONFIG_HW_RANDOM_CN10K
+./scripts/config --disable CONFIG_SPI_PL022
+./scripts/config --disable CONFIG_GPIO_DWAPB
+./scripts/config --disable CONFIG_GPIO_PL061
+./scripts/config --disable CONFIG_ARM_SP805_WATCHDOG
+./scripts/config --disable CONFIG_ARM_SBSA_WATCHDOG
+./scripts/config --disable CONFIG_DW_WATCHDOG
+./scripts/config --disable CONFIG_MFD_SEC_CORE
+./scripts/config --disable CONFIG_MMC_ARMMMCI
+./scripts/config --disable CONFIG_MMC_SDHCI_CADENCE
+./scripts/config --disable CONFIG_MMC_SDHCI_F_SDH30
+./scripts/config --disable CONFIG_MMC_SDHCI_XENON
+./scripts/config --disable CONFIG_RTC_DRV_PL031
+./scripts/config --disable CONFIG_FSL_EDMA
+./scripts/config --disable CONFIG_MV_XOR_V2
+./scripts/config --disable CONFIG_PL330_DMA
+./scripts/config --disable CONFIG_QCOM_HIDMA_MGMT
+./scripts/config --disable CONFIG_QCOM_HIDMA
+
+#TI delta 09.01.00.007:
+./scripts/config --disable CONFIG_CRASH_DUMP
+./scripts/config --disable CONFIG_ARM64_SVE
+./scripts/config --disable CONFIG_PROC_VMCORE
+
+#TI delta 09.01.00.008:
+./scripts/config --disable CONFIG_AMPERE_ERRATUM_AC03_CPU_38
+./scripts/config --disable CONFIG_ARM64_ERRATUM_832075
+./scripts/config --disable CONFIG_ARM64_ERRATUM_1024718
+./scripts/config --disable CONFIG_ARM64_ERRATUM_1418040
+./scripts/config --disable CONFIG_ARM64_ERRATUM_1165522
+./scripts/config --disable CONFIG_ARM64_ERRATUM_1530923
+./scripts/config --disable CONFIG_ARM64_ERRATUM_2441007
+./scripts/config --disable CONFIG_ARM64_ERRATUM_1286807
+./scripts/config --disable CONFIG_ARM64_ERRATUM_1463225
+./scripts/config --disable CONFIG_ARM64_ERRATUM_1542419
+./scripts/config --disable CONFIG_ARM64_ERRATUM_1508412
+./scripts/config --disable CONFIG_ARM64_ERRATUM_2051678
+./scripts/config --disable CONFIG_ARM64_ERRATUM_2077057
+./scripts/config --disable CONFIG_ARM64_ERRATUM_2658417
+./scripts/config --disable CONFIG_ARM64_ERRATUM_2054223
+./scripts/config --disable CONFIG_ARM64_ERRATUM_2067961
+./scripts/config --disable CONFIG_ARM64_ERRATUM_2441009
+./scripts/config --disable CONFIG_CAVIUM_TX2_ERRATUM_219
+./scripts/config --disable CONFIG_FUJITSU_ERRATUM_010001
+
+#enable MIKROBUS
+./scripts/config --enable CONFIG_SPI_OMAP24XX
+./scripts/config --enable CONFIG_W1
+./scripts/config --enable CONFIG_MIKROBUS
+
+#20240305: regression on discord, some systemd can no longer load *.xz modules...
+./scripts/config --disable CONFIG_MODULE_DECOMPRESS
+
+#enable CONFIG_DYNAMIC_FTRACE
+./scripts/config --enable CONFIG_FUNCTION_TRACER
+./scripts/config --enable CONFIG_DYNAMIC_FTRACE
+
+./scripts/config --enable CONFIG_GPIO_AGGREGATOR
+./scripts/config --module CONFIG_PWM_GPIO
+
+#cc33xx ble
+./scripts/config --disable CONFIG_BT_BNEP
+./scripts/config --disable CONFIG_BT_HCIBTSDIO
+./scripts/config --disable CONFIG_BT_TI
+
+#PCI Express Precision Time Measurement support
+./scripts/config --enable CONFIG_PCIE_PTM
 
 cd ${DIR}/
