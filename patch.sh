@@ -524,7 +524,6 @@ drivers () {
 	dir 'mikrobus'
 	dir 'pcie'
 	dir 'usb'
-	#dir 'fixes'
 
 	dir 'tusb322'
 	dir 'boris'
@@ -542,7 +541,6 @@ drivers () {
 	dir 'led'
 	dir 'greybus'
 	dir 'nfc'
-#	dir 'cc33xx'
 	dir 'i2c'
 	dir 'meta-ti'
 }
