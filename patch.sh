@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2009-2023 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2009-2024 Robert Nelson <robertcnelson@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,6 @@
 shopt -s nullglob
 
 . ${DIR}/version.sh
-if [ -f ${DIR}/system.sh ] ; then
-	. ${DIR}/system.sh
-fi
 git_bin=$(which git)
 #git hard requirements:
 #git: --no-edit
@@ -35,7 +32,12 @@ git_bin=$(which git)
 git="${git_bin} am"
 #git_patchset="git://git.ti.com/ti-linux-kernel/ti-linux-kernel.git"
 git_patchset="https://github.com/RobertCNelson/ti-linux-kernel.git"
+unset git_patchset_options
 #git_opts
+
+if [ -f ${DIR}/system.sh ] ; then
+	. ${DIR}/system.sh
+fi
 
 if [ "${RUN_BISECT}" ] ; then
 	git="${git_bin} apply"
@@ -99,8 +101,8 @@ cherrypick () {
 
 external_git () {
 	git_tag="ti-linux-${KERNEL_REL}.y"
-	echo "pulling: [${git_patchset} ${git_tag}]"
-	${git_bin} pull --no-edit ${git_patchset} ${git_tag}
+	echo "pulling: [${git_patchset_options} pull --no-edit  ${git_patchset} ${git_tag}]"
+	${git_bin} ${git_patchset_options} pull --no-edit ${git_patchset} ${git_tag}
 	top_of_branch=$(${git_bin} describe)
 	if [ ! "x${ti_git_new_release}" = "x" ] ; then
 		${git_bin} checkout master -f
@@ -222,7 +224,7 @@ wpanusb () {
 			rm -rf ./wpanusb || true
 		fi
 
-		${git_bin} clone https://git.beagleboard.org/beagleconnect/linux/wpanusb --depth=1
+		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb.git --depth=1
 		cd ./wpanusb
 			wpanusb_hash=$(git rev-parse HEAD)
 		cd -
@@ -361,7 +363,7 @@ rt () {
 }
 
 wireless_regdb () {
-	#https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/
+	#https://git.kernel.org/pub/scm/linux/kernel/git/wens/wireless-regdb.git/
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
 		cd ../
@@ -369,7 +371,7 @@ wireless_regdb () {
 			rm -rf ./wireless-regdb || true
 		fi
 
-		${git_bin} clone https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git --depth=1
+		${git_bin} clone https://git.kernel.org/pub/scm/linux/kernel/git/wens/wireless-regdb.git --depth=1
 		cd ./wireless-regdb
 			wireless_regdb_hash=$(git rev-parse HEAD)
 		cd -
@@ -414,7 +416,7 @@ dtb_makefile_append () {
 
 beagleboard_dtbs () {
 	branch="v5.10.x-ti-unified"
-	https_repo="https://git.beagleboard.org/beagleboard/BeagleBoard-DeviceTrees.git"
+	https_repo="https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees.git"
 	work_dir="BeagleBoard-DeviceTrees"
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
@@ -488,17 +490,7 @@ pre_backports () {
 	${git_bin} pull --no-edit https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git master --tags
 	${git_bin} pull --no-edit https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master --tags
 	if [ ! "x${backport_tag}" = "x" ] ; then
-		${git_bin} checkout ${backport_tag} -f
-	fi
-	cd -
-}
-
-pre_rpibackports () {
-	echo "dir: backports/${subsystem}"
-
-	cd ~/linux-rpi/
-	${git_bin} fetch --tags
-	if [ ! "x${backport_tag}" = "x" ] ; then
+		echo "${git_bin} checkout ${backport_tag} -f"
 		${git_bin} checkout ${backport_tag} -f
 	fi
 	cd -
@@ -511,13 +503,25 @@ post_backports () {
 		cd -
 	fi
 
-	rm -f arch/arm/boot/dts/overlays/*.dtbo || true
 	${git_bin} add .
 	${git_bin} commit -a -m "backports: ${subsystem}: from: linux.git" -m "Reference: ${backport_tag}" -s
 	if [ ! -d ../patches/backports/${subsystem}/ ] ; then
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
+}
+
+pre_rpibackports () {
+	echo "dir: backports/${subsystem}"
+
+	cd ~/linux-rpi/
+	${git_bin} fetch --tags
+	if [ ! "x${backport_tag}" = "x" ] ; then
+		echo "${git_bin} checkout ${backport_tag} -f"
+		${git_bin} checkout ${backport_tag} -f
+	fi
+	cd -
 }
 
 post_rpibackports () {
@@ -527,13 +531,13 @@ post_rpibackports () {
 		cd -
 	fi
 
-	rm -f arch/arm/boot/dts/overlays/*.dtbo || true
 	${git_bin} add .
 	${git_bin} commit -a -m "backports: ${subsystem}: from: linux.git" -m "Reference: ${backport_tag}" -s
 	if [ ! -d ../patches/backports/${subsystem}/ ] ; then
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
 }
 
 patch_backports () {
@@ -555,7 +559,6 @@ backports () {
 		cp -rv ~/linux-src/drivers/staging/iio/* ./drivers/staging/iio/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 		${git} "${DIR}/patches/backports/${subsystem}/0002-hwmon-lm80.c-backport-amc80-support.patch"
@@ -584,7 +587,6 @@ backports () {
 		cp -v ~/linux-src/drivers/gpu/drm/bridge/ite-it66121.c ./drivers/gpu/drm/bridge/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 		${git} "${DIR}/patches/backports/${subsystem}/0002-wire-up-it66121.patch"
@@ -601,7 +603,6 @@ backports () {
 		cp -rv ~/linux-src/drivers/bluetooth/* ./drivers/bluetooth/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 	fi
@@ -616,7 +617,6 @@ backports () {
 		cp -rv ~/linux-src/drivers/net/wireless/intel/* ./drivers/net/wireless/intel/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 		${git} "${DIR}/patches/backports/${subsystem}/0002-iwlwifi-disable-pnvm-loading.patch"
@@ -632,7 +632,6 @@ backports () {
 		cp -v ~/linux-rpi/drivers/input/touchscreen/edt-ft5x06.c ./drivers/input/touchscreen/
 
 		post_rpibackports
-		exit 2
 	else
 		patch_backports
 	fi
@@ -698,7 +697,6 @@ packaging () {
 			cp -v ~/linux-src/scripts/package/* ./scripts/package/
 
 			post_backports
-			exit 2
 		else
 			patch_backports
 		fi
