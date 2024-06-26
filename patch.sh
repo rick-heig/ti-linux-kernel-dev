@@ -544,6 +544,7 @@ drivers () {
 	dir 'i2c'
 	dir 'meta-ti'
 	dir 'drivers/tidss'
+	dir 'firmware/patch'
 }
 
 ###
