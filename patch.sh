@@ -610,6 +610,7 @@ drivers () {
 ##	dir 'cc33xx'
 #	dir 'i2c'
 #	dir 'meta-ti'
+	dir 'firmware/patch'
 }
 
 ###
