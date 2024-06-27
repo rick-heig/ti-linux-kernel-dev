@@ -1,11 +1,11 @@
-From cfd651e624ec81f918b790825cbdc54c2857161d Mon Sep 17 00:00:00 2001
+From f7e7fb613dbe2a8887a59d1b27d1a321f6d12f1d Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Sat, 22 Jun 2024 19:20:47 -0500
+Date: Thu, 27 Jun 2024 12:31:19 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.1.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/cb3254597200abcc047f5801838f506f0d19bf7d
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/c6f3c238f76bbb21fc07ec83d324019a122d4c2a
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso    |   28 +
@@ -164,7 +164,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  arch/arm64/boot/dts/ti/k3-j722s-evm.dts       |   16 +-
  .../boot/dts/ti/k3-j722s-rtos-memory-map.dtsi |  175 ++
  .../boot/dts/ti/k3-j722s-vision-apps.dtso     |   35 +
- arch/arm64/boot/dts/ti/k3-j722s.dtsi          |   30 +-
+ arch/arm64/boot/dts/ti/k3-j722s.dtsi          |   22 +-
  arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi    |   18 +-
  .../boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi     |   10 +-
  arch/arm64/boot/dts/ti/k3-j784s4-thermal.dtsi |    5 +-
@@ -177,7 +177,7 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  include/dt-bindings/mailbox/miv-ihc.h         |   17 +
  include/dt-bindings/pinctrl/omap.h            |    8 +-
  include/uapi/linux/input-event-codes.h        |    5 +
- 169 files changed, 19570 insertions(+), 861 deletions(-)
+ 169 files changed, 19562 insertions(+), 861 deletions(-)
  create mode 100644 arch/arm/boot/dts/AM335X-PRU-UIO-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-ADC-00A0.dtso
  create mode 100644 arch/arm/boot/dts/BB-BBBW-WL1835-00A0.dtso
@@ -13762,10 +13762,10 @@ index 64e38c7c8be7..5730e46b0067 100644
  			OMAP4_IOPAD(0x19e, WAKEUP_EN | PIN_INPUT_PULLUP | MUX_MODE0)	/* sys_nirq1.sys_nirq1 */
  		>;
 diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-index 808d649ec243..0373ad18cefe 100644
+index 4f56baa3e8ab..b5e86bd3a5d1 100644
 --- a/arch/arm64/boot/dts/ti/Makefile
 +++ b/arch/arm64/boot/dts/ti/Makefile
-@@ -170,8 +170,57 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
+@@ -172,8 +172,57 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
  			 k3-v3link-imx219-0-2.dtbo \
  			 k3-v3link-imx219-0-3.dtbo
  
@@ -13823,7 +13823,7 @@ index 808d649ec243..0373ad18cefe 100644
  DTC_FLAGS_k3-am625-beagleplay += -@
  DTC_FLAGS_k3-am625-sk += -@
  DTC_FLAGS_k3-am625-sk-lpmdemo += -@
-@@ -196,6 +245,8 @@ DTC_FLAGS_k3-j721e-sk += -@
+@@ -198,6 +247,8 @@ DTC_FLAGS_k3-j721e-sk += -@
  DTC_FLAGS_k3-j721e-sk-fusion += -@
  DTC_FLAGS_k3-j721s2-common-proc-board += -@
  DTC_FLAGS_k3-j721s2-evm-fusion += -@
@@ -24477,7 +24477,7 @@ index 000000000000..f4b5ad1136aa
 +    status = "disabled";
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-j722s.dtsi b/arch/arm64/boot/dts/ti/k3-j722s.dtsi
-index 93c62289cebb..a8cb3e9a05a2 100644
+index 5854f5a64c23..a8cb3e9a05a2 100644
 --- a/arch/arm64/boot/dts/ti/k3-j722s.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-j722s.dtsi
 @@ -1,8 +1,8 @@
@@ -24499,7 +24499,7 @@ index 93c62289cebb..a8cb3e9a05a2 100644
  
  		ranges = <0x00 0x000f0000 0x00 0x000f0000 0x00 0x00030000>, /* Main MMRs */
  			 <0x00 0x00420000 0x00 0x00420000 0x00 0x00001000>, /* ESM0 */
-@@ -275,6 +276,31 @@ serdes_ln_ctrl: mux-controller@4080 {
+@@ -275,11 +276,28 @@ serdes_ln_ctrl: mux-controller@4080 {
  	};
  };
  
@@ -24513,24 +24513,21 @@ index 93c62289cebb..a8cb3e9a05a2 100644
 +		<&main_pmx0_range 149 2 (PIN_INPUT | PIN_GPIO_MUX_MODE)>;
 +};
 +
-+&main_gpio0 {
+ &main_gpio0 {
 +	gpio-ranges = <&main_pmx0 0 0 32>,
 +		      <&main_pmx0 32 33 38>,
 +		      <&main_pmx0 70 72 17>;
-+	ti,ngpio = <87>;
-+};
-+
-+&main_gpio1 {
+ 	ti,ngpio = <87>;
+ };
+ 
+ &main_gpio1 {
 +	gpio-ranges = <&main_pmx0 7 101 25>,
 +		      <&main_pmx0 42 137 5>,
 +		      <&main_pmx0 47 143 3>,
 +		      <&main_pmx0 50 149 2>;
-+	ti,ngpio = <73>;
-+};
-+
- &oc_sram {
- 	reg = <0x00 0x70000000 0x00 0x40000>;
- 	ranges = <0x00 0x00 0x70000000 0x40000>;
+ 	ti,ngpio = <73>;
+ };
+ 
 diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
 index 41da7c06417b..8fd09f537acb 100644
 --- a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi

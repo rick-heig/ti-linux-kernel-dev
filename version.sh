@@ -45,10 +45,10 @@ toolchain="gcc_12_aarch64"
 
 #Kernel
 KERNEL_REL=6.1
-KERNEL_TAG=${KERNEL_REL}.80
-kernel_rt=".80-rt26"
+KERNEL_TAG=${KERNEL_REL}.83
+kernel_rt=".83-rt28"
 #Kernel Build
-BUILD=${build_prefix}58.2
+BUILD=${build_prefix}58.3
 
 #v6.X-rcX + upto SHA
 #prev_KERNEL_SHA=""
@@ -59,8 +59,8 @@ BRANCH="${branch_prefix}${KERNEL_REL}${branch_postfix}"
 
 DISTRO=xross
 
-ti_git_old_release="1c154b1fe4c462d8b383515bb388e289816e4b01"
-ti_git_new_release="2e423244f8c09173a344e7069f0fe2bdf26cccee"
-TISDK="09.02.00.009"
+ti_git_old_release="2e423244f8c09173a344e7069f0fe2bdf26cccee"
+ti_git_new_release="c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
+TISDK="09.02.00.010"
 
 #
