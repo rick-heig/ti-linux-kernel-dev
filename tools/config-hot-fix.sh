@@ -299,4 +299,7 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 #PCI Express Precision Time Measurement support
 ./scripts/config --enable CONFIG_PCIE_PTM
 
+#TI delta 09.01.00.010:
+./scripts/config --module CONFIG_DRM_PANEL_ILITEK_ILI9881C
+
 cd ${DIR}/
