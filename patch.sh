@@ -391,6 +391,10 @@ beagleboard_dtbs () {
 		device="k3-am67a-beagley-ai.dtb" ; k3_dtb_makefile_append
 		device="k3-j722s-beagley-ai-evt.dtb" ; k3_dtb_makefile_append
 
+		device="BONE-I2C1" ; k3_dtbo_makefile_append
+		device="BONE-I2C2" ; k3_dtbo_makefile_append
+		device="BONE-I2C3" ; k3_dtbo_makefile_append
+
 		device="k3-am625-beaglemod-audio" ; k3_dtbo_makefile_append
 		device="k3-am625-beaglemod-can0" ; k3_dtbo_makefile_append
 		device="k3-am625-beaglemod-can1" ; k3_dtbo_makefile_append
