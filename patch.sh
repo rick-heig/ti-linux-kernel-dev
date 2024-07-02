@@ -183,7 +183,7 @@ bcfserial () {
 		cp -v ../bcfserial/bcfserial.c drivers/net/ieee802154/
 
 		${git_bin} add .
-		${git_bin} commit -a -m 'merge: bcfserial: https://git.beagleboard.org/beagleconnect/linux/bcfserial.git' -m "https://git.beagleboard.org/beagleconnect/linux/bcfserial/-/commit/${bcfserial_hash}" -s
+		${git_bin} commit -a -m 'merge: bcfserial: https://git.beagleboard.org/beagleconnect/linux/bcfserial.git' -m "https://openbeagle.org/beagleconnect/linux/bcfserial/-/commit/${bcfserial_hash}" -s
 		${git_bin} format-patch -1 -o ../patches/external/bcfserial/
 		echo "BCFSERIAL: https://openbeagle.org/beagleconnect/linux/bcfserial/-/commit/${bcfserial_hash}" > ../patches/external/git/BCFSERIAL
 
