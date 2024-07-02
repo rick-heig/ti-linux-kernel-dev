@@ -543,9 +543,6 @@ drivers () {
 	dir 'drivers/davinci-mcasp'
 	dir 'drivers/gpio-aggregator'
 
-#	dir 'tidss_wip'
-#	dir 'led'
-#	dir 'nfc'
 ##	dir 'cc33xx'
 #	dir 'i2c'
 #	dir 'meta-ti'
