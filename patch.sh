@@ -289,47 +289,6 @@ bcfserial () {
 	dir 'external/bcfserial'
 }
 
-ksmbd () {
-	#regenerate="enable"
-	if [ "x${regenerate}" = "xenable" ] ; then
-		cd ../
-		if [ -d ./ksmbd ] ; then
-			rm -rf ./ksmbd || true
-		fi
-
-		${git_bin} clone https://github.com/cifsd-team/ksmbd --depth=1
-		cd ./ksmbd
-			ksmbd_hash=$(git rev-parse HEAD)
-			rm -rf .git || true
-		cd -
-
-		cd ./KERNEL/
-
-		mkdir -p ./fs/ksmbd/
-		rsync -av --delete ../ksmbd/* fs/ksmbd/
-
-		${git_bin} add .
-		${git_bin} commit -a -m 'merge: ksmbd: https://github.com/cifsd-team/ksmbd' -m "https://github.com/cifsd-team/ksmbd/commit/${ksmbd_hash}" -s
-		${git_bin} format-patch -1 -o ../patches/external/ksmbd/
-		echo "KSMBD: https://github.com/cifsd-team/ksmbd/commit/${ksmbd_hash}" > ../patches/external/git/KSMBD
-
-		rm -rf ../ksmbd/ || true
-
-		${git_bin} reset --hard HEAD~1
-
-		start_cleanup
-
-		${git} "${DIR}/patches/external/ksmbd/0001-merge-ksmbd-https-github.com-cifsd-team-ksmbd.patch"
-
-		wdir="external/ksmbd"
-		number=1
-		cleanup
-
-		exit 2
-	fi
-	dir 'external/ksmbd'
-}
-
 rt_cleanup () {
 	echo "rt: needs fixup"
 	exit 2
@@ -484,7 +443,6 @@ external_git
 aufs
 wpanusb
 bcfserial
-ksmbd
 rt
 wireless_regdb
 beagleboard_dtbs
