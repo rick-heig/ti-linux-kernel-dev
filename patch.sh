@@ -543,11 +543,6 @@ drivers () {
 	dir 'drivers/davinci-mcasp'
 	dir 'drivers/gpio-aggregator'
 
-#	dir 'panel-simple'
-
-#	dir 'drm-bridge'
-
-#	dir 'tiam62x'
 #	dir 'ti-edgeai'
 #	dir 'lincolntech'
 #	dir 'tidss'
