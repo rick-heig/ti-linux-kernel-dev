@@ -220,7 +220,7 @@ wpanusb () {
 			rm -rf ./wpanusb || true
 		fi
 
-		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb --depth=1
+		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb.git --depth=1
 		cd ./wpanusb
 			wpanusb_hash=$(git rev-parse HEAD)
 		cd -
@@ -246,8 +246,6 @@ wpanusb () {
 		wdir="external/wpanusb"
 		number=1
 		cleanup
-
-		exit 2
 	fi
 	dir 'external/wpanusb'
 }
@@ -359,7 +357,7 @@ rt () {
 }
 
 wireless_regdb () {
-	#https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/
+	#https://git.kernel.org/pub/scm/linux/kernel/git/wens/wireless-regdb.git/
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
 		cd ../
@@ -367,7 +365,7 @@ wireless_regdb () {
 			rm -rf ./wireless-regdb || true
 		fi
 
-		${git_bin} clone https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git --depth=1
+		${git_bin} clone https://git.kernel.org/pub/scm/linux/kernel/git/wens/wireless-regdb.git --depth=1
 		cd ./wireless-regdb
 			wireless_regdb_hash=$(git rev-parse HEAD)
 		cd -
@@ -378,10 +376,10 @@ wireless_regdb () {
 		cp -v ../wireless-regdb/regulatory.db ./firmware/
 		cp -v ../wireless-regdb/regulatory.db.p7s ./firmware/
 		${git_bin} add -f ./firmware/regulatory.*
-		${git_bin} commit -a -m 'Add wireless-regdb regulatory database file' -m "https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/commit/?id=${wireless_regdb_hash}" -s
+		${git_bin} commit -a -m 'Add wireless-regdb regulatory database file' -m "https://git.kernel.org/pub/scm/linux/kernel/git/wens/wireless-regdb.git/commit/?id=${wireless_regdb_hash}" -s
 
 		${git_bin} format-patch -1 -o ../patches/external/wireless_regdb/
-		echo "WIRELESS_REGDB: https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/commit/?id=${wireless_regdb_hash}" > ../patches/external/git/WIRELESS_REGDB
+		echo "WIRELESS_REGDB: https://git.kernel.org/pub/scm/linux/kernel/git/wens/wireless-regdb.git/commit/?id=${wireless_regdb_hash}" > ../patches/external/git/WIRELESS_REGDB
 
 		rm -rf ../wireless-regdb/ || true
 
@@ -396,45 +394,6 @@ wireless_regdb () {
 		cleanup
 	fi
 	dir 'external/wireless_regdb'
-}
-
-ti_pm_firmware () {
-	#https://git.ti.com/gitweb?p=processor-firmware/ti-amx3-cm3-pm-firmware.git;a=shortlog;h=refs/heads/ti-v4.1.y
-	#regenerate="enable"
-	if [ "x${regenerate}" = "xenable" ] ; then
-		cd ../
-		if [ -d ./ti-amx3-cm3-pm-firmware ] ; then
-			rm -rf ./ti-amx3-cm3-pm-firmware || true
-		fi
-
-		${git_bin} clone -b ti-v4.1.y git://git.ti.com/processor-firmware/ti-amx3-cm3-pm-firmware.git --depth=1
-		cd ./ti-amx3-cm3-pm-firmware
-			ti_amx3_cm3_hash=$(git rev-parse HEAD)
-		cd -
-
-		cd ./KERNEL/
-
-		mkdir -p ./firmware/ || true
-		cp -v ../ti-amx3-cm3-pm-firmware/bin/am* ./firmware/
-
-		${git_bin} add -f ./firmware/am*
-		${git_bin} commit -a -m 'Add AM335x CM3 Power Managment Firmware' -m "http://git.ti.com/gitweb/?p=processor-firmware/ti-amx3-cm3-pm-firmware.git;a=commit;h=${ti_amx3_cm3_hash}" -s
-		${git_bin} format-patch -1 -o ../patches/drivers/ti/firmware/
-		echo "TI_AMX3_CM3: http://git.ti.com/gitweb/?p=processor-firmware/ti-amx3-cm3-pm-firmware.git;a=commit;h=${ti_amx3_cm3_hash}" > ../patches/external/git/TI_AMX3_CM3
-
-		rm -rf ../ti-amx3-cm3-pm-firmware/ || true
-
-		${git_bin} reset --hard HEAD^
-
-		start_cleanup
-
-		${git} "${DIR}/patches/drivers/ti/firmware/0001-Add-AM335x-CM3-Power-Managment-Firmware.patch"
-
-		wdir="drivers/ti/firmware"
-		number=1
-		cleanup
-	fi
-	dir 'drivers/ti/firmware'
 }
 
 cleanup_dts_builds () {
@@ -528,7 +487,6 @@ bcfserial
 ksmbd
 rt
 wireless_regdb
-ti_pm_firmware
 beagleboard_dtbs
 #local_patch
 
@@ -559,6 +517,35 @@ post_backports () {
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
+}
+
+pre_rpibackports () {
+	echo "dir: backports/${subsystem}"
+
+	cd ~/linux-rpi/
+	${git_bin} fetch --tags
+	if [ ! "x${backport_tag}" = "x" ] ; then
+		echo "${git_bin} checkout ${backport_tag} -f"
+		${git_bin} checkout ${backport_tag} -f
+	fi
+	cd -
+}
+
+post_rpibackports () {
+	if [ ! "x${backport_tag}" = "x" ] ; then
+		cd ~/linux-rpi/
+		${git_bin} checkout master -f
+		cd -
+	fi
+
+	${git_bin} add .
+	${git_bin} commit -a -m "backports: ${subsystem}: from: linux.git" -m "Reference: ${backport_tag}" -s
+	if [ ! -d ../patches/backports/${subsystem}/ ] ; then
+		mkdir -p ../patches/backports/${subsystem}/
+	fi
+	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
 }
 
 patch_backports () {
@@ -577,14 +564,13 @@ backports () {
 		rsync -av ~/linux-src/drivers/net/wireless/ti/* ./drivers/net/wireless/ti/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 	fi
 
 	dir 'backports/spidev'
 
-	backport_tag="v5.10.208"
+	backport_tag="v5.10.220"
 
 	subsystem="spi"
 	#regenerate="enable"
@@ -594,12 +580,11 @@ backports () {
 		cp -v ~/linux-src/drivers/spi/spi-omap2-mcspi.c ./drivers/spi/spi-omap2-mcspi.c
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 	fi
 
-	backport_tag="v5.10.208"
+	backport_tag="v5.10.220"
 
 	subsystem="iio"
 	#regenerate="enable"
@@ -612,7 +597,6 @@ backports () {
 		rsync -av ~/linux-src/drivers/staging/iio/* ./drivers/staging/iio/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 		${git} "${DIR}/patches/backports/${subsystem}/0002-hwmon-lm80.c-backport-amc80-support.patch"
@@ -628,7 +612,6 @@ backports () {
 		cp -v ~/linux-src/drivers/gpu/drm/bridge/ite-it66121.c ./drivers/gpu/drm/bridge/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 		${git} "${DIR}/patches/backports/${subsystem}/0002-wire-up-it66121.patch"
@@ -861,6 +844,7 @@ drivers () {
 	dir 'drivers/hackaday'
 	dir 'drivers/qcacld'
 	dir 'drivers/android'
+	dir 'external/ti-amx3-cm3-pm-firmware'
 }
 
 soc () {
@@ -895,7 +879,6 @@ packaging () {
 			cp -v ~/linux-src/scripts/package/* ./scripts/package/
 
 			post_backports
-			exit 2
 		else
 			patch_backports
 		fi

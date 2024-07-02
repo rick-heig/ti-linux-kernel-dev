@@ -3,8 +3,8 @@
 #
 #https://packages.debian.org/source/bullseye/linux
 #
-abi="5.10.0-27"
-kernel="5.10.205-2"
+abi="5.10.0-30"
+kernel="5.10.218-1"
 #
 
 mirror_site="http://192.168.1.10/debian/pool/main/l/linux"

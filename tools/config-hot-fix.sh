@@ -206,4 +206,18 @@ config="CONFIG_USB_TI_CPPI41_DMA" ; config_disable
 #removed in 6.7-rc1
 ./scripts/config --disable CONFIG_DEV_APPLETALK
 
+#20240305: regression on discord, some systemd can no longer load *.xz modules...
+./scripts/config --disable CONFIG_MODULE_DECOMPRESS
+
+#enable CONFIG_DYNAMIC_FTRACE
+./scripts/config --enable CONFIG_FUNCTION_TRACER
+./scripts/config --enable CONFIG_DYNAMIC_FTRACE
+
+./scripts/config --disable CONFIG_MODULE_COMPRESS_ZSTD
+./scripts/config --enable CONFIG_MODULE_COMPRESS_XZ
+./scripts/config --enable CONFIG_GPIO_AGGREGATOR
+
+#configure CONFIG_EXTRA_FIRMWARE
+./scripts/config --set-str CONFIG_EXTRA_FIRMWARE "regulatory.db regulatory.db.p7s am335x-pm-firmware.elf am335x-bone-scale-data.bin am335x-evm-scale-data.bin am43x-evm-scale-data.bin"
+
 cd ${DIR}/
