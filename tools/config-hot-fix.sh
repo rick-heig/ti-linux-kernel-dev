@@ -288,6 +288,8 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 ./scripts/config --enable CONFIG_FUNCTION_TRACER
 ./scripts/config --enable CONFIG_DYNAMIC_FTRACE
 
+./scripts/config --disable CONFIG_MODULE_COMPRESS_ZSTD
+./scripts/config --enable CONFIG_MODULE_COMPRESS_XZ
 ./scripts/config --enable CONFIG_GPIO_AGGREGATOR
 ./scripts/config --module CONFIG_PWM_GPIO
 
@@ -301,5 +303,8 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 
 #TI delta 09.01.00.010:
 ./scripts/config --module CONFIG_DRM_PANEL_ILITEK_ILI9881C
+
+#configure CONFIG_EXTRA_FIRMWARE
+./scripts/config --set-str CONFIG_EXTRA_FIRMWARE "regulatory.db regulatory.db.p7s cadence/mhdp8546.bin"
 
 cd ${DIR}/

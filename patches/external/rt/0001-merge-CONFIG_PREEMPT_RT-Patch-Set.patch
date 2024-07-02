@@ -1,6 +1,6 @@
-From 9479182ae34b624aa95783ab8901b137227002cb Mon Sep 17 00:00:00 2001
+From 63560364f5cb92f4755e5135f67abd29223a3ddc Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Thu, 27 Jun 2024 12:29:39 -0500
+Date: Tue, 2 Jul 2024 17:50:15 -0500
 Subject: [PATCH] merge: CONFIG_PREEMPT_RT Patch Set
 
 patch-6.1.83-rt28.patch.xz

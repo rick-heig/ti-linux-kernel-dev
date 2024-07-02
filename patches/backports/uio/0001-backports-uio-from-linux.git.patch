@@ -1,6 +1,6 @@
-From 03866795f24b84132aa0d80387db2d292b945227 Mon Sep 17 00:00:00 2001
+From 822af734e77e3c4c345dc2f7f3f8ee2c1b85f2b6 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Thu, 27 Jun 2024 12:32:10 -0500
+Date: Tue, 2 Jul 2024 17:54:20 -0500
 Subject: [PATCH] backports: uio: from: linux.git
 
 Reference:
