@@ -277,9 +277,10 @@ k3_makefile_patch_cleanup_overlays () {
 	rm arch/arm64/boot/dts/ti/Makefile
 	mv arch/arm64/boot/dts/ti/Makefile.bak arch/arm64/boot/dts/ti/Makefile
 	echo "" >> arch/arm64/boot/dts/ti/Makefile
-	echo "#Enable support for device-tree overlays" >> arch/arm64/boot/dts/ti/Makefile
+	echo "# Enable support for device-tree overlays" >> arch/arm64/boot/dts/ti/Makefile
 	cat arch/arm64/boot/dts/ti/Makefile.dtc >> arch/arm64/boot/dts/ti/Makefile
 	rm arch/arm64/boot/dts/ti/Makefile.dtc
+	echo "DTC_FLAGS_k3-am625-beaglemod += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-am67a-beagley-ai += -@" >> arch/arm64/boot/dts/ti/Makefile
 	echo "DTC_FLAGS_k3-j721e-beagleboneai64 += -@" >> arch/arm64/boot/dts/ti/Makefile
 }
@@ -556,7 +557,6 @@ drivers () {
 
 	dir 'drivers/ti/serial'
 	dir 'drivers/ti/tsc'
-	#dir 'drivers/ti/gpio'
 	dir 'drivers/fb_ssd1306'
 	dir 'drivers/hackaday'
 	#dir 'drivers/qcacld'
