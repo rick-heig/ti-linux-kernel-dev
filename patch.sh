@@ -543,9 +543,6 @@ drivers () {
 	dir 'drivers/davinci-mcasp'
 	dir 'drivers/gpio-aggregator'
 
-#	dir 'ti-edgeai'
-#	dir 'lincolntech'
-#	dir 'tidss'
 #	dir 'tidss_wip'
 #	dir 'led'
 #	dir 'nfc'
