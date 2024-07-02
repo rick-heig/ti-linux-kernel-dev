@@ -131,7 +131,7 @@ wpanusb () {
 			rm -rf ./wpanusb || true
 		fi
 
-		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb --depth=1
+		${git_bin} clone https://openbeagle.org/beagleconnect/linux/wpanusb.git --depth=1
 		cd ./wpanusb
 			wpanusb_hash=$(git rev-parse HEAD)
 		cd -
@@ -157,8 +157,6 @@ wpanusb () {
 		wdir="external/wpanusb"
 		number=1
 		cleanup
-
-		exit 2
 	fi
 	dir 'external/wpanusb'
 }
@@ -229,44 +227,6 @@ wireless_regdb () {
 	dir 'external/wireless_regdb'
 }
 
-ti_pm_firmware () {
-	#https://git.ti.com/gitweb?p=processor-firmware/ti-amx3-cm3-pm-firmware.git;a=shortlog;h=refs/heads/ti-v4.1.y
-	#regenerate="enable"
-	if [ "x${regenerate}" = "xenable" ] ; then
-		cd ../
-		if [ -d ./ti-amx3-cm3-pm-firmware ] ; then
-			rm -rf ./ti-amx3-cm3-pm-firmware || true
-		fi
-
-		${git_bin} clone -b ti-v4.1.y git://git.ti.com/processor-firmware/ti-amx3-cm3-pm-firmware.git --depth=1
-		cd ./ti-amx3-cm3-pm-firmware
-			ti_amx3_cm3_hash=$(git rev-parse HEAD)
-		cd -
-
-		cd ./KERNEL/
-
-		mkdir -p ./firmware/ || true
-		cp -v ../ti-amx3-cm3-pm-firmware/bin/am* ./firmware/
-
-		${git_bin} add -f ./firmware/am*
-		${git_bin} commit -a -m 'Add AM335x CM3 Power Managment Firmware' -m "http://git.ti.com/gitweb/?p=processor-firmware/ti-amx3-cm3-pm-firmware.git;a=commit;h=${ti_amx3_cm3_hash}" -s
-		${git_bin} format-patch -1 -o ../patches/drivers/ti/firmware/
-
-		rm -rf ../ti-amx3-cm3-pm-firmware/ || true
-
-		${git_bin} reset --hard HEAD^
-
-		start_cleanup
-
-		${git} "${DIR}/patches/drivers/ti/firmware/0001-Add-AM335x-CM3-Power-Managment-Firmware.patch"
-
-		wdir="drivers/ti/firmware"
-		number=1
-		cleanup
-	fi
-	dir 'drivers/ti/firmware'
-}
-
 cleanup_dts_builds () {
 	rm -rf arch/arm/boot/dts/modules.order || true
 	rm -rf arch/arm/boot/dts/.*cmd || true
@@ -303,6 +263,25 @@ arm_dtbo_makefile_append () {
 
 k3_dtb_makefile_append () {
 	echo "dtb-\$(CONFIG_ARCH_K3) += $device" >> arch/arm64/boot/dts/ti/Makefile
+}
+
+k3_dtbo_makefile_append () {
+	echo "dtb-\$(CONFIG_ARCH_K3) += $device.dtbo" >> arch/arm64/boot/dts/ti/Makefile
+	cp -v ../${work_dir}/src/arm64/overlays/${device}.dts arch/arm64/boot/dts/ti/${device}.dtso
+	sed -i -e 's:ti/k3-:k3-:g' arch/arm64/boot/dts/ti/${device}.dtso
+}
+
+k3_makefile_patch_cleanup_overlays () {
+	cat arch/arm64/boot/dts/ti/Makefile | grep -v 'DTC_FLAGS_k3' | grep -v '#Enable' > arch/arm64/boot/dts/ti/Makefile.bak
+	cat arch/arm64/boot/dts/ti/Makefile | grep 'DTC_FLAGS_k3' > arch/arm64/boot/dts/ti/Makefile.dtc
+	rm arch/arm64/boot/dts/ti/Makefile
+	mv arch/arm64/boot/dts/ti/Makefile.bak arch/arm64/boot/dts/ti/Makefile
+	echo "" >> arch/arm64/boot/dts/ti/Makefile
+	echo "#Enable support for device-tree overlays" >> arch/arm64/boot/dts/ti/Makefile
+	cat arch/arm64/boot/dts/ti/Makefile.dtc >> arch/arm64/boot/dts/ti/Makefile
+	rm arch/arm64/boot/dts/ti/Makefile.dtc
+	echo "DTC_FLAGS_k3-am67a-beagley-ai += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j721e-beagleboneai64 += -@" >> arch/arm64/boot/dts/ti/Makefile
 }
 
 beagleboard_dtbs () {
@@ -378,6 +357,61 @@ beagleboard_dtbs () {
 		#device="k3-am625-pocketbeagle2.dtb" ; k3_dtb_makefile_append
 		#device="k3-j721e-beagleboneai64-no-shared-mem.dtb" ; k3_dtb_makefile_append
 
+		device="k3-am625-beaglemod.dtb" ; k3_dtb_makefile_append
+		device="k3-am67a-beagley-ai.dtb" ; k3_dtb_makefile_append
+		device="k3-j722s-beagley-ai-evt.dtb" ; k3_dtb_makefile_append
+
+		device="BONE-I2C1" ; k3_dtbo_makefile_append
+		device="BONE-I2C2" ; k3_dtbo_makefile_append
+		device="BONE-I2C3" ; k3_dtbo_makefile_append
+
+		device="k3-am625-beaglemod-audio" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-can0" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-can1" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-csi0-ov5640" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-eeprom" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-eth" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-hdmi" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-io-expand" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-lt-lcd185" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-ospi-flash" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-rs485-1" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-rs485-2" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-rtc" ; k3_dtbo_makefile_append
+		device="k3-am625-beaglemod-wl1835" ; k3_dtbo_makefile_append
+
+		device="k3-am67a-beagley-ai-csi0-imx219" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-csi0-ov5640" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-csi1-imx219" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-dsi-rpi-7inch-panel" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-hdmi-dss0-dpi1" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-i2c1-400000" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-i2c1-ads1115" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-lincolntech-185lcd-panel" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-mikroe-eth" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-mikroe-microsd" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-ecap0-gpio12" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-ecap1-gpio16" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-ecap1-gpio21" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-ecap2-gpio17" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-ecap2-gpio18" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-epwm0-gpio12" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-epwm0-gpio14" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-epwm0-gpio15" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-epwm0-gpio5" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-epwm1-gpio13" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-epwm1-gpio20" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-epwm1-gpio21" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-pwm-epwm1-gpio6" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-spi0-1cs" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-spi0-2cs" ; k3_dtbo_makefile_append
+		device="k3-am67a-beagley-ai-spidev0" ; k3_dtbo_makefile_append
+		device="k3-j721e-edgeai-apps" ; k3_dtbo_makefile_append
+		device="k3-j721e-vision-apps" ; k3_dtbo_makefile_append
+		device="k3-j722s-edgeai-apps" ; k3_dtbo_makefile_append
+		device="k3-j722s-vision-apps" ; k3_dtbo_makefile_append
+		k3_makefile_patch_cleanup_overlays
+
 		${git_bin} add -f arch/arm/boot/dts/
 		${git_bin} add -f arch/arm64/boot/dts/
 		${git_bin} add -f include/dt-bindings/
@@ -409,7 +443,6 @@ external_git
 wpanusb
 #rt
 wireless_regdb
-ti_pm_firmware
 beagleboard_dtbs
 #local_patch
 
@@ -440,6 +473,7 @@ post_backports () {
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
 }
 
 pre_rpibackports () {
@@ -467,6 +501,7 @@ post_rpibackports () {
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
 }
 
 patch_backports () {
@@ -475,17 +510,14 @@ patch_backports () {
 }
 
 backports () {
-	backport_tag="v5.10.213"
-
 	subsystem="uio"
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
-		pre_backports
+		unset backport_tag
 
-		cp -v ~/linux-src/drivers/uio/uio_pruss.c ./drivers/uio/
+		cp -v ../patches/drivers/ti/uio/uio_pruss.c ./drivers/uio/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 		dir 'drivers/ti/uio'
@@ -501,7 +533,6 @@ backports () {
 		cp -v ~/linux-rpi/drivers/input/touchscreen/edt-ft5x06.c ./drivers/input/touchscreen/
 
 		post_rpibackports
-		exit 2
 	else
 		patch_backports
 	fi
@@ -529,6 +560,7 @@ drivers () {
 	dir 'drivers/fb_ssd1306'
 	dir 'drivers/hackaday'
 	#dir 'drivers/qcacld'
+	dir 'external/ti-amx3-cm3-pm-firmware'
 }
 
 ###
@@ -539,7 +571,7 @@ packaging () {
 	echo "Update: package scripts"
 	#do_backport="enable"
 	if [ "x${do_backport}" = "xenable" ] ; then
-		backport_tag="v6.1.82"
+		backport_tag="v6.1.96"
 
 		subsystem="bindeb-pkg"
 		#regenerate="enable"
@@ -549,7 +581,6 @@ packaging () {
 			cp -v ~/linux-src/scripts/package/* ./scripts/package/
 
 			post_backports
-			exit 2
 		else
 			patch_backports
 		fi
