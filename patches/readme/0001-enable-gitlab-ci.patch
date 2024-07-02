@@ -1,6 +1,6 @@
-From 2d5b90cae880d1fc9b8e534f1386e576369fa7e5 Mon Sep 17 00:00:00 2001
+From 40715712bc298d28646ecce2da0a7e9f7b77474f Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Wed, 28 Feb 2024 13:58:05 -0600
+Date: Tue, 2 Jul 2024 15:27:50 -0500
 Subject: [PATCH] enable: gitlab-ci
 
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
@@ -61,12 +61,12 @@ index 000000000000..94be17e338b3
 +```
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 new file mode 100644
-index 000000000000..dcfe3f8c2dc0
+index 000000000000..bb1ec3e93708
 --- /dev/null
 +++ b/.gitlab-ci.yml
 @@ -0,0 +1,29 @@
 +image: robertcnelson/beagle-devscripts-kernel-debian-12-amd64
-+# https://git.beagleboard.org/beagleboard/ci-docker-images
++# https://openbeagle.org/beagleboard/ci-docker-images
 +
 +cache:
 +  key: "$CI_PROJECT_NAME-ti-linux-rt-arm64-6.6.y"
