@@ -543,9 +543,6 @@ drivers () {
 	dir 'drivers/davinci-mcasp'
 	dir 'drivers/gpio-aggregator'
 
-#	dir 'tusb322'
-#	dir 'drivers/ti/uio'
-#	dir 'rpi-panel'
 #	dir 'panel-simple'
 
 #	dir 'drm-bridge'
