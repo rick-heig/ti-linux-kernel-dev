@@ -541,7 +541,6 @@ drivers () {
 	dir 'drivers/pcie'
 	dir 'drivers/gasket'
 	dir 'drivers/davinci-mcasp'
-	dir 'drivers/gpio-aggregator'
 	dir 'drivers/tidss'
 	dir 'external/cadence'
 }
