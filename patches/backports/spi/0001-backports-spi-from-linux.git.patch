@@ -1,9 +1,9 @@
-From c4b32e40884b9db93b20ccb7884306af9466a9a7 Mon Sep 17 00:00:00 2001
+From 72b86917954ea726245f4ad080f2e12a651bc270 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Fri, 19 Jan 2024 14:57:39 -0600
+Date: Tue, 2 Jul 2024 16:42:00 -0500
 Subject: [PATCH] backports: spi: from: linux.git
 
-Reference: v5.10.208
+Reference: v5.10.220
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  drivers/spi/spi-omap2-mcspi.c | 156 +++++++++++++++++++++++-----------
