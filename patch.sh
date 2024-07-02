@@ -543,23 +543,11 @@ drivers () {
 	dir 'boris'
 	dir 'drivers/sdhci-omap'
 	dir 'drivers/android'
-
-	#cd KERNEL/
-	#git checkout v5.10-rc1 -b tmp
-	#git pull --no-edit https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git topic/overlays-v5.10-rc1
-	#mkdir ../patches/overlays
-	#git format-patch -12 -o ../patches/overlays/
-	#https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/log/?h=topic/overlays-v5.10-rc1
-	#../
-	#dir 'overlays'
-
 	dir 'drivers/ar1021_i2c'
-
 	dir 'drivers/ti/serial'
 	dir 'drivers/ti/tsc'
 	dir 'drivers/fb_ssd1306'
 	dir 'drivers/hackaday'
-	#dir 'drivers/qcacld'
 	dir 'external/ti-amx3-cm3-pm-firmware'
 }
 
