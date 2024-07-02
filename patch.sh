@@ -542,10 +542,6 @@ drivers () {
 	dir 'drivers/gasket'
 	dir 'drivers/davinci-mcasp'
 	dir 'drivers/gpio-aggregator'
-
-##	dir 'cc33xx'
-#	dir 'i2c'
-#	dir 'meta-ti'
 	dir 'drivers/tidss'
 	dir 'external/cadence'
 }
