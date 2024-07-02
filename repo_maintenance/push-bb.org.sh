@@ -22,10 +22,6 @@ cat_files () {
 		cat ../patches/external/git/WIRELESS_REGDB >> ${wfile}
 	fi
 
-	if [ -f ../patches/external/git/KSMBD ] ; then
-		cat ../patches/external/git/KSMBD >> ${wfile}
-	fi
-
 	if [ -f ../patches/external/git/WPANUSB ] ; then
 		cat ../patches/external/git/WPANUSB >> ${wfile}
 	fi
@@ -38,7 +34,7 @@ cat_files () {
 DIR=$PWD
 git_bin=$(which git)
 
-repo_gitlab="git@git.beagleboard.org:beagleboard/linux.git"
+repo_gitlab="git@openbeagle.org:beagleboard/linux.git"
 example="bb.org"
 compare="https://github.com/RobertCNelson/ti-linux-kernel/compare"
 
