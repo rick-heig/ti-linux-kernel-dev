@@ -1,16 +1,23 @@
-From 60512ed1c054776280a4919036a5b397865b757b Mon Sep 17 00:00:00 2001
+From 1d0a66304ef5fc3e546b09a9feed876c25f237f8 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Sat, 16 Dec 2023 16:56:29 -0600
+Date: Tue, 2 Jul 2024 16:51:04 -0500
 Subject: [PATCH] backports: iio: from: linux.git
 
-Reference: v5.10.204
+Reference: v5.10.220
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  drivers/iio/Kconfig                           |   1 +
  drivers/iio/Makefile                          |   1 +
+ drivers/iio/accel/Kconfig                     |   2 +
  drivers/iio/accel/mma9551_core.c              |  10 +-
+ drivers/iio/accel/mxc4005.c                   |  24 ++-
+ drivers/iio/adc/ad7091r-base.c                | 179 +++++++++++++++++-
+ drivers/iio/adc/ad7091r-base.h                |   8 +
+ drivers/iio/adc/ad7091r5.c                    |  29 +--
  drivers/iio/adc/ad7192.c                      |   8 +-
  drivers/iio/adc/ad7791.c                      |   2 +-
+ drivers/iio/adc/ad9467.c                      | 114 +++++++----
+ drivers/iio/adc/adi-axi-adc.c                 |  74 ++------
  drivers/iio/adc/at91-sama5d2_adc.c            |   2 +-
  drivers/iio/adc/exynos_adc.c                  |  24 ++-
  drivers/iio/adc/meson_saradc.c                |   2 +-
@@ -18,23 +25,30 @@ Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
  drivers/iio/adc/palmas_gpadc.c                |   2 +-
  drivers/iio/adc/stx104.c                      |  96 +++++++---
  drivers/iio/adc/ti-ads7950.c                  |   1 +
+ drivers/iio/adc/ti_am335x_adc.c               |   4 +-
  drivers/iio/adc/xilinx-xadc-core.c            | 179 +++++++-----------
  drivers/iio/addac/Kconfig                     |   8 +
  drivers/iio/addac/Makefile                    |   6 +
  .../cros_ec_sensors/cros_ec_sensors_core.c    |   2 +-
+ .../iio/common/ms_sensors/ms_sensors_i2c.c    |   4 +-
  drivers/iio/dac/Makefile                      |   2 +-
  drivers/iio/dac/cio-dac.c                     |   4 +-
  drivers/iio/dac/mcp4725.c                     |  16 +-
+ drivers/iio/imu/adis16475.c                   |   4 +-
  .../imu/inv_icm42600/inv_icm42600_buffer.c    |  10 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    |   4 +-
  drivers/iio/light/cm32181.c                   |  12 ++
  drivers/iio/light/max44009.c                  |  13 +-
  drivers/iio/light/tsl2772.c                   |   1 +
  drivers/iio/light/vcnl4035.c                  |   3 +
+ drivers/iio/magnetometer/rm3100-core.c        |  10 +-
  drivers/iio/pressure/bmp280-core.c            |   2 +-
- drivers/iio/pressure/dps310.c                 |   8 +-
+ drivers/iio/pressure/dps310.c                 |  19 +-
  drivers/iio/pressure/ms5611_core.c            |   2 +-
+ .../staging/iio/impedance-analyzer/ad5933.c   |   2 +-
  drivers/staging/iio/resolver/ad2s1210.c       |   2 +-
- 28 files changed, 242 insertions(+), 187 deletions(-)
+ include/linux/iio/adc/adi-axi-adc.h           |   4 +
+ 42 files changed, 571 insertions(+), 331 deletions(-)
  create mode 100644 drivers/iio/addac/Kconfig
  create mode 100644 drivers/iio/addac/Makefile
 
@@ -62,6 +76,23 @@ index 1712011c0f4a..d6690e449cce 100644
  obj-y += afe/
  obj-y += amplifiers/
  obj-y += buffer/
+diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+index 8acf277b8b25..1c82840ac32a 100644
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -128,10 +128,12 @@ config BMA400
+ 
+ config BMA400_I2C
+ 	tristate
++	select REGMAP_I2C
+ 	depends on BMA400
+ 
+ config BMA400_SPI
+ 	tristate
++	select REGMAP_SPI
+ 	depends on BMA400
+ 
+ config BMC150_ACCEL
 diff --git a/drivers/iio/accel/mma9551_core.c b/drivers/iio/accel/mma9551_core.c
 index 666e7a04a7d7..9bb5c2fea08c 100644
 --- a/drivers/iio/accel/mma9551_core.c
@@ -94,6 +125,395 @@ index 666e7a04a7d7..9bb5c2fea08c 100644
  }
  EXPORT_SYMBOL(mma9551_read_status_word);
  
+diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
+index ecd9d8ad5928..e0d1491d52b0 100644
+--- a/drivers/iio/accel/mxc4005.c
++++ b/drivers/iio/accel/mxc4005.c
+@@ -27,9 +27,13 @@
+ #define MXC4005_REG_ZOUT_UPPER		0x07
+ #define MXC4005_REG_ZOUT_LOWER		0x08
+ 
++#define MXC4005_REG_INT_MASK0		0x0A
++
+ #define MXC4005_REG_INT_MASK1		0x0B
+ #define MXC4005_REG_INT_MASK1_BIT_DRDYE	0x01
+ 
++#define MXC4005_REG_INT_CLR0		0x00
++
+ #define MXC4005_REG_INT_CLR1		0x01
+ #define MXC4005_REG_INT_CLR1_BIT_DRDYC	0x01
+ 
+@@ -113,7 +117,9 @@ static bool mxc4005_is_readable_reg(struct device *dev, unsigned int reg)
+ static bool mxc4005_is_writeable_reg(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
++	case MXC4005_REG_INT_CLR0:
+ 	case MXC4005_REG_INT_CLR1:
++	case MXC4005_REG_INT_MASK0:
+ 	case MXC4005_REG_INT_MASK1:
+ 	case MXC4005_REG_CONTROL:
+ 		return true;
+@@ -334,17 +340,13 @@ static int mxc4005_set_trigger_state(struct iio_trigger *trig,
+ {
+ 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+ 	struct mxc4005_data *data = iio_priv(indio_dev);
++	unsigned int val;
+ 	int ret;
+ 
+ 	mutex_lock(&data->mutex);
+-	if (state) {
+-		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
+-				   MXC4005_REG_INT_MASK1_BIT_DRDYE);
+-	} else {
+-		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
+-				   ~MXC4005_REG_INT_MASK1_BIT_DRDYE);
+-	}
+ 
++	val = state ? MXC4005_REG_INT_MASK1_BIT_DRDYE : 0;
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, val);
+ 	if (ret < 0) {
+ 		mutex_unlock(&data->mutex);
+ 		dev_err(data->dev, "failed to update reg_int_mask1");
+@@ -386,6 +388,14 @@ static int mxc4005_chip_init(struct mxc4005_data *data)
+ 
+ 	dev_dbg(data->dev, "MXC4005 chip id %02x\n", reg);
+ 
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
++	if (ret < 0)
++		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, 0);
++	if (ret < 0)
++		return dev_err_probe(data->dev, ret, "writing INT_MASK1\n");
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+index 63b4d6ea4566..76002b91c86a 100644
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/bitops.h>
++#include <linux/bitfield.h>
+ #include <linux/iio/events.h>
+ #include <linux/iio/iio.h>
+ #include <linux/interrupt.h>
+@@ -28,6 +29,7 @@
+ #define AD7091R_REG_RESULT_CONV_RESULT(x)   ((x) & 0xfff)
+ 
+ /* AD7091R_REG_CONF */
++#define AD7091R_REG_CONF_ALERT_EN   BIT(4)
+ #define AD7091R_REG_CONF_AUTO   BIT(8)
+ #define AD7091R_REG_CONF_CMD    BIT(10)
+ 
+@@ -49,6 +51,27 @@ struct ad7091r_state {
+ 	struct mutex lock; /*lock to prevent concurent reads */
+ };
+ 
++const struct iio_event_spec ad7091r_events[] = {
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_RISING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
++				 BIT(IIO_EV_INFO_ENABLE),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_FALLING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
++				 BIT(IIO_EV_INFO_ENABLE),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_EITHER,
++		.mask_separate = BIT(IIO_EV_INFO_HYSTERESIS),
++	},
++};
++EXPORT_SYMBOL_NS_GPL(ad7091r_events, IIO_AD7091R);
++
+ static int ad7091r_set_mode(struct ad7091r_state *st, enum ad7091r_mode mode)
+ {
+ 	int ret, conf;
+@@ -168,14 +191,148 @@ static int ad7091r_read_raw(struct iio_dev *iio_dev,
+ 	return ret;
+ }
+ 
++static int ad7091r_read_event_config(struct iio_dev *indio_dev,
++				     const struct iio_chan_spec *chan,
++				     enum iio_event_type type,
++				     enum iio_event_direction dir)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++	int val, ret;
++
++	switch (dir) {
++	case IIO_EV_DIR_RISING:
++		ret = regmap_read(st->map,
++				  AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++				  &val);
++		if (ret)
++			return ret;
++		return val != AD7091R_HIGH_LIMIT;
++	case IIO_EV_DIR_FALLING:
++		ret = regmap_read(st->map,
++				  AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++				  &val);
++		if (ret)
++			return ret;
++		return val != AD7091R_LOW_LIMIT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7091r_write_event_config(struct iio_dev *indio_dev,
++				      const struct iio_chan_spec *chan,
++				      enum iio_event_type type,
++				      enum iio_event_direction dir, int state)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++
++	if (state) {
++		return regmap_set_bits(st->map, AD7091R_REG_CONF,
++				       AD7091R_REG_CONF_ALERT_EN);
++	} else {
++		/*
++		 * Set thresholds either to 0 or to 2^12 - 1 as appropriate to
++		 * prevent alerts and thus disable event generation.
++		 */
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++					    AD7091R_HIGH_LIMIT);
++		case IIO_EV_DIR_FALLING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++					    AD7091R_LOW_LIMIT);
++		default:
++			return -EINVAL;
++		}
++	}
++}
++
++static int ad7091r_read_event_value(struct iio_dev *indio_dev,
++				    const struct iio_chan_spec *chan,
++				    enum iio_event_type type,
++				    enum iio_event_direction dir,
++				    enum iio_event_info info, int *val, int *val2)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++	int ret;
++
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			ret = regmap_read(st->map,
++					  AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++					  val);
++			if (ret)
++				return ret;
++			return IIO_VAL_INT;
++		case IIO_EV_DIR_FALLING:
++			ret = regmap_read(st->map,
++					  AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++					  val);
++			if (ret)
++				return ret;
++			return IIO_VAL_INT;
++		default:
++			return -EINVAL;
++		}
++	case IIO_EV_INFO_HYSTERESIS:
++		ret = regmap_read(st->map,
++				  AD7091R_REG_CH_HYSTERESIS(chan->channel),
++				  val);
++		if (ret)
++			return ret;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7091r_write_event_value(struct iio_dev *indio_dev,
++				     const struct iio_chan_spec *chan,
++				     enum iio_event_type type,
++				     enum iio_event_direction dir,
++				     enum iio_event_info info, int val, int val2)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++					    val);
++		case IIO_EV_DIR_FALLING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++					    val);
++		default:
++			return -EINVAL;
++		}
++	case IIO_EV_INFO_HYSTERESIS:
++		return regmap_write(st->map,
++				    AD7091R_REG_CH_HYSTERESIS(chan->channel),
++				    val);
++	default:
++		return -EINVAL;
++	}
++}
++
+ static const struct iio_info ad7091r_info = {
+ 	.read_raw = ad7091r_read_raw,
++	.read_event_config = &ad7091r_read_event_config,
++	.write_event_config = &ad7091r_write_event_config,
++	.read_event_value = &ad7091r_read_event_value,
++	.write_event_value = &ad7091r_write_event_value,
+ };
+ 
+ static irqreturn_t ad7091r_event_handler(int irq, void *private)
+ {
+-	struct ad7091r_state *st = (struct ad7091r_state *) private;
+-	struct iio_dev *iio_dev = dev_get_drvdata(st->dev);
++	struct iio_dev *iio_dev = private;
++	struct ad7091r_state *st = iio_priv(iio_dev);
+ 	unsigned int i, read_val;
+ 	int ret;
+ 	s64 timestamp = iio_get_time_ns(iio_dev);
+@@ -232,9 +389,14 @@ int ad7091r_probe(struct device *dev, const char *name,
+ 	iio_dev->channels = chip_info->channels;
+ 
+ 	if (irq) {
++		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
++					 AD7091R_REG_CONF_ALERT_EN, BIT(4));
++		if (ret)
++			return ret;
++
+ 		ret = devm_request_threaded_irq(dev, irq, NULL,
+ 				ad7091r_event_handler,
+-				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, st);
++				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -243,7 +405,14 @@ int ad7091r_probe(struct device *dev, const char *name,
+ 	if (IS_ERR(st->vref)) {
+ 		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
+ 			return -EPROBE_DEFER;
++
+ 		st->vref = NULL;
++		/* Enable internal vref */
++		ret = regmap_set_bits(st->map, AD7091R_REG_CONF,
++				      AD7091R_REG_CONF_INT_VREF);
++		if (ret)
++			return dev_err_probe(st->dev, ret,
++					     "Error on enable internal reference\n");
+ 	} else {
+ 		ret = regulator_enable(st->vref);
+ 		if (ret)
+@@ -260,7 +429,7 @@ int ad7091r_probe(struct device *dev, const char *name,
+ 
+ 	return devm_iio_device_register(dev, iio_dev);
+ }
+-EXPORT_SYMBOL_GPL(ad7091r_probe);
++EXPORT_SYMBOL_NS_GPL(ad7091r_probe, IIO_AD7091R);
+ 
+ static bool ad7091r_writeable_reg(struct device *dev, unsigned int reg)
+ {
+@@ -290,7 +459,7 @@ const struct regmap_config ad7091r_regmap_config = {
+ 	.writeable_reg = ad7091r_writeable_reg,
+ 	.volatile_reg = ad7091r_volatile_reg,
+ };
+-EXPORT_SYMBOL_GPL(ad7091r_regmap_config);
++EXPORT_SYMBOL_NS_GPL(ad7091r_regmap_config, IIO_AD7091R);
+ 
+ MODULE_AUTHOR("Beniamin Bia <beniamin.bia@analog.com>");
+ MODULE_DESCRIPTION("Analog Devices AD7091Rx multi-channel converters");
+diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
+index 509748aef9b1..b9e1c8bf3440 100644
+--- a/drivers/iio/adc/ad7091r-base.h
++++ b/drivers/iio/adc/ad7091r-base.h
+@@ -8,6 +8,12 @@
+ #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+ #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+ 
++#define AD7091R_REG_CONF_INT_VREF	BIT(0)
++
++/* AD7091R_REG_CH_LIMIT */
++#define AD7091R_HIGH_LIMIT		0xFFF
++#define AD7091R_LOW_LIMIT		0x0
++
+ struct device;
+ struct ad7091r_state;
+ 
+@@ -17,6 +23,8 @@ struct ad7091r_chip_info {
+ 	unsigned int vref_mV;
+ };
+ 
++extern const struct iio_event_spec ad7091r_events[3];
++
+ extern const struct regmap_config ad7091r_regmap_config;
+ 
+ int ad7091r_probe(struct device *dev, const char *name,
+diff --git a/drivers/iio/adc/ad7091r5.c b/drivers/iio/adc/ad7091r5.c
+index 9665679c3ea6..12d475463945 100644
+--- a/drivers/iio/adc/ad7091r5.c
++++ b/drivers/iio/adc/ad7091r5.c
+@@ -12,26 +12,6 @@
+ 
+ #include "ad7091r-base.h"
+ 
+-static const struct iio_event_spec ad7091r5_events[] = {
+-	{
+-		.type = IIO_EV_TYPE_THRESH,
+-		.dir = IIO_EV_DIR_RISING,
+-		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
+-				 BIT(IIO_EV_INFO_ENABLE),
+-	},
+-	{
+-		.type = IIO_EV_TYPE_THRESH,
+-		.dir = IIO_EV_DIR_FALLING,
+-		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
+-				 BIT(IIO_EV_INFO_ENABLE),
+-	},
+-	{
+-		.type = IIO_EV_TYPE_THRESH,
+-		.dir = IIO_EV_DIR_EITHER,
+-		.mask_separate = BIT(IIO_EV_INFO_HYSTERESIS),
+-	},
+-};
+-
+ #define AD7091R_CHANNEL(idx, bits, ev, num_ev) { \
+ 	.type = IIO_VOLTAGE, \
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
+@@ -44,10 +24,10 @@ static const struct iio_event_spec ad7091r5_events[] = {
+ 	.scan_type.realbits = bits, \
+ }
+ static const struct iio_chan_spec ad7091r5_channels_irq[] = {
+-	AD7091R_CHANNEL(0, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
+-	AD7091R_CHANNEL(1, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
+-	AD7091R_CHANNEL(2, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
+-	AD7091R_CHANNEL(3, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
++	AD7091R_CHANNEL(0, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
++	AD7091R_CHANNEL(1, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
++	AD7091R_CHANNEL(2, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
++	AD7091R_CHANNEL(3, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
+ };
+ 
+ static const struct iio_chan_spec ad7091r5_channels_noirq[] = {
+@@ -111,3 +91,4 @@ module_i2c_driver(ad7091r5_driver);
+ MODULE_AUTHOR("Beniamin Bia <beniamin.bia@analog.com>");
+ MODULE_DESCRIPTION("Analog Devices AD7091R5 multi-channel ADC driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(IIO_AD7091R);
 diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
 index 1b8baba9d4d6..614c5e807bb8 100644
 --- a/drivers/iio/adc/ad7192.c
@@ -140,6 +560,316 @@ index d57ad966e17c..f3502f12653b 100644
  };
  
  static int ad7791_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index 19a45dd43796..6b9627bfebb0 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -119,9 +119,9 @@ struct ad9467_state {
+ 	struct spi_device		*spi;
+ 	struct clk			*clk;
+ 	unsigned int			output_mode;
++	unsigned int                    (*scales)[2];
+ 
+ 	struct gpio_desc		*pwrdown_gpio;
+-	struct gpio_desc		*reset_gpio;
+ };
+ 
+ static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
+@@ -163,9 +163,10 @@ static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
+ 
+ 	if (readval == NULL) {
+ 		ret = ad9467_spi_write(spi, reg, writeval);
+-		ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
+-				 AN877_ADC_TRANSFER_SYNC);
+-		return ret;
++		if (ret)
++			return ret;
++		return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
++					AN877_ADC_TRANSFER_SYNC);
+ 	}
+ 
+ 	ret = ad9467_spi_read(spi, reg);
+@@ -212,6 +213,7 @@ static void __ad9467_get_scale(struct adi_axi_adc_conv *conv, int index,
+ 	.channel = _chan,						\
+ 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
+ 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
+ 	.scan_index = _si,						\
+ 	.scan_type = {							\
+ 		.sign = _sign,						\
+@@ -273,10 +275,13 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
+ 	const struct ad9467_chip_info *info1 = to_ad9467_chip_info(info);
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+ 	unsigned int i, vref_val;
++	int ret;
+ 
+-	vref_val = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
++	ret = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
++	if (ret < 0)
++		return ret;
+ 
+-	vref_val &= info1->vref_mask;
++	vref_val = ret & info1->vref_mask;
+ 
+ 	for (i = 0; i < info->num_scales; i++) {
+ 		if (vref_val == info->scale_table[i][1])
+@@ -297,6 +302,7 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+ 	unsigned int scale_val[2];
+ 	unsigned int i;
++	int ret;
+ 
+ 	if (val != 0)
+ 		return -EINVAL;
+@@ -306,11 +312,13 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+ 		if (scale_val[0] != val || scale_val[1] != val2)
+ 			continue;
+ 
+-		ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
+-				 info->scale_table[i][1]);
+-		ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
+-				 AN877_ADC_TRANSFER_SYNC);
+-		return 0;
++		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
++				       info->scale_table[i][1]);
++		if (ret < 0)
++			return ret;
++
++		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++					AN877_ADC_TRANSFER_SYNC);
+ 	}
+ 
+ 	return -EINVAL;
+@@ -359,6 +367,26 @@ static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
+ 	}
+ }
+ 
++static int ad9467_read_avail(struct adi_axi_adc_conv *conv,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long mask)
++{
++	const struct adi_axi_adc_chip_info *info = conv->chip_info;
++	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*vals = (const int *)st->scales;
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		/* Values are stored in a 2D matrix */
++		*length = info->num_scales * 2;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+ {
+ 	int ret;
+@@ -371,6 +399,26 @@ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+ 				AN877_ADC_TRANSFER_SYNC);
+ }
+ 
++static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
++{
++	const struct adi_axi_adc_chip_info *info = conv->chip_info;
++	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	unsigned int i, val1, val2;
++
++	st->scales = devm_kmalloc_array(&st->spi->dev, info->num_scales,
++					sizeof(*st->scales), GFP_KERNEL);
++	if (!st->scales)
++		return -ENOMEM;
++
++	for (i = 0; i < info->num_scales; i++) {
++		__ad9467_get_scale(conv, i, &val1, &val2);
++		st->scales[i][0] = val1;
++		st->scales[i][1] = val2;
++	}
++
++	return 0;
++}
++
+ static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
+ {
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+@@ -378,11 +426,19 @@ static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
+ 	return ad9467_outputmode_set(st->spi, st->output_mode);
+ }
+ 
+-static void ad9467_clk_disable(void *data)
++static int ad9467_reset(struct device *dev)
+ {
+-	struct ad9467_state *st = data;
++	struct gpio_desc *gpio;
+ 
+-	clk_disable_unprepare(st->clk);
++	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR_OR_NULL(gpio))
++		return PTR_ERR_OR_ZERO(gpio);
++
++	fsleep(1);
++	gpiod_set_value_cansleep(gpio, 0);
++	fsleep(10 * USEC_PER_MSEC);
++
++	return 0;
+ }
+ 
+ static int ad9467_probe(struct spi_device *spi)
+@@ -404,40 +460,27 @@ static int ad9467_probe(struct spi_device *spi)
+ 	st = adi_axi_adc_conv_priv(conv);
+ 	st->spi = spi;
+ 
+-	st->clk = devm_clk_get(&spi->dev, "adc-clk");
++	st->clk = devm_clk_get_enabled(&spi->dev, "adc-clk");
+ 	if (IS_ERR(st->clk))
+ 		return PTR_ERR(st->clk);
+ 
+-	ret = clk_prepare_enable(st->clk);
+-	if (ret < 0)
+-		return ret;
+-
+-	ret = devm_add_action_or_reset(&spi->dev, ad9467_clk_disable, st);
+-	if (ret)
+-		return ret;
+-
+ 	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
+ 						   GPIOD_OUT_LOW);
+ 	if (IS_ERR(st->pwrdown_gpio))
+ 		return PTR_ERR(st->pwrdown_gpio);
+ 
+-	st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
+-						 GPIOD_OUT_LOW);
+-	if (IS_ERR(st->reset_gpio))
+-		return PTR_ERR(st->reset_gpio);
+-
+-	if (st->reset_gpio) {
+-		udelay(1);
+-		ret = gpiod_direction_output(st->reset_gpio, 1);
+-		if (ret)
+-			return ret;
+-		mdelay(10);
+-	}
++	ret = ad9467_reset(&spi->dev);
++	if (ret)
++		return ret;
+ 
+ 	spi_set_drvdata(spi, st);
+ 
+ 	conv->chip_info = &info->axi_adc_info;
+ 
++	ret = ad9467_scale_fill(conv);
++	if (ret)
++		return ret;
++
+ 	id = ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
+ 	if (id != conv->chip_info->id) {
+ 		dev_err(&spi->dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
+@@ -448,6 +491,7 @@ static int ad9467_probe(struct spi_device *spi)
+ 	conv->reg_access = ad9467_reg_access;
+ 	conv->write_raw = ad9467_write_raw;
+ 	conv->read_raw = ad9467_read_raw;
++	conv->read_avail = ad9467_read_avail;
+ 	conv->preenable_setup = ad9467_preenable_setup;
+ 
+ 	st->output_mode = info->default_output_mode |
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index cbe1011a2408..d721fb1bcae7 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -150,6 +150,20 @@ static int adi_axi_adc_write_raw(struct iio_dev *indio_dev,
+ 	return conv->write_raw(conv, chan, val, val2, mask);
+ }
+ 
++static int adi_axi_adc_read_avail(struct iio_dev *indio_dev,
++				  struct iio_chan_spec const *chan,
++				  const int **vals, int *type, int *length,
++				  long mask)
++{
++	struct adi_axi_adc_state *st = iio_priv(indio_dev);
++	struct adi_axi_adc_conv *conv = &st->client->conv;
++
++	if (!conv->read_avail)
++		return -EOPNOTSUPP;
++
++	return conv->read_avail(conv, chan, vals, type, length, mask);
++}
++
+ static int adi_axi_adc_update_scan_mode(struct iio_dev *indio_dev,
+ 					const unsigned long *scan_mask)
+ {
+@@ -238,69 +252,11 @@ struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+ }
+ EXPORT_SYMBOL_GPL(devm_adi_axi_adc_conv_register);
+ 
+-static ssize_t in_voltage_scale_available_show(struct device *dev,
+-					       struct device_attribute *attr,
+-					       char *buf)
+-{
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-	size_t len = 0;
+-	int i;
+-
+-	for (i = 0; i < conv->chip_info->num_scales; i++) {
+-		const unsigned int *s = conv->chip_info->scale_table[i];
+-
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-				 "%u.%06u ", s[0], s[1]);
+-	}
+-	buf[len - 1] = '\n';
+-
+-	return len;
+-}
+-
+-static IIO_DEVICE_ATTR_RO(in_voltage_scale_available, 0);
+-
+-enum {
+-	ADI_AXI_ATTR_SCALE_AVAIL,
+-};
+-
+-#define ADI_AXI_ATTR(_en_, _file_)			\
+-	[ADI_AXI_ATTR_##_en_] = &iio_dev_attr_##_file_.dev_attr.attr
+-
+-static struct attribute *adi_axi_adc_attributes[] = {
+-	ADI_AXI_ATTR(SCALE_AVAIL, in_voltage_scale_available),
+-	NULL
+-};
+-
+-static umode_t axi_adc_attr_is_visible(struct kobject *kobj,
+-				       struct attribute *attr, int n)
+-{
+-	struct device *dev = kobj_to_dev(kobj);
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-
+-	switch (n) {
+-	case ADI_AXI_ATTR_SCALE_AVAIL:
+-		if (!conv->chip_info->num_scales)
+-			return 0;
+-		return attr->mode;
+-	default:
+-		return attr->mode;
+-	}
+-}
+-
+-static const struct attribute_group adi_axi_adc_attribute_group = {
+-	.attrs = adi_axi_adc_attributes,
+-	.is_visible = axi_adc_attr_is_visible,
+-};
+-
+ static const struct iio_info adi_axi_adc_info = {
+ 	.read_raw = &adi_axi_adc_read_raw,
+ 	.write_raw = &adi_axi_adc_write_raw,
+-	.attrs = &adi_axi_adc_attribute_group,
+ 	.update_scan_mode = &adi_axi_adc_update_scan_mode,
++	.read_avail = &adi_axi_adc_read_avail,
+ };
+ 
+ static const struct adi_axi_adc_core_info adi_axi_adc_10_0_a_info = {
 diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
 index 250b78ee1625..b806c1ab9b61 100644
 --- a/drivers/iio/adc/at91-sama5d2_adc.c
@@ -523,6 +1253,22 @@ index a2b83f0bd526..d4583b76f1fe 100644
  	st->chip.base = -1;
  	st->chip.ngpio = TI_ADS7950_NUM_GPIOS;
  	st->chip.get_direction = ti_ads7950_get_direction;
+diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
+index e946903b0993..0ae57d6cfc49 100644
+--- a/drivers/iio/adc/ti_am335x_adc.c
++++ b/drivers/iio/adc/ti_am335x_adc.c
+@@ -640,8 +640,10 @@ static int tiadc_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, indio_dev);
+ 
+ 	err = tiadc_request_dma(pdev, adc_dev);
+-	if (err && err == -EPROBE_DEFER)
++	if (err && err != -ENODEV) {
++		dev_err_probe(&pdev->dev, err, "DMA request failed\n");
+ 		goto err_dma;
++	}
+ 
+ 	return 0;
+ 
 diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
 index f93c34fe5873..30b5a17ce41a 100644
 --- a/drivers/iio/adc/xilinx-xadc-core.c
@@ -873,6 +1619,21 @@ index e3f507771f17..829077bcd09d 100644
  				max((u16)sizeof(struct ec_params_motion_sense),
  				state->ec->max_response), GFP_KERNEL);
  	if (!state->msg)
+diff --git a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
+index b9e2038d05ef..74806807a071 100644
+--- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
++++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
+@@ -15,8 +15,8 @@
+ /* Conversion times in us */
+ static const u16 ms_sensors_ht_t_conversion_time[] = { 50000, 25000,
+ 						       13000, 7000 };
+-static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 3000,
+-						       5000, 8000 };
++static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 5000,
++						       3000, 8000 };
+ static const u16 ms_sensors_tp_conversion_time[] = { 500, 1100, 2100,
+ 						     4100, 8220, 16440 };
+ 
 diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
 index 2fc481167724..09506d248c9e 100644
 --- a/drivers/iio/dac/Makefile
@@ -946,6 +1707,29 @@ index beb9a15b7c74..0c0e726ae054 100644
  }
  static SIMPLE_DEV_PM_OPS(mcp4725_pm_ops, mcp4725_suspend, mcp4725_resume);
  
+diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
+index aed1cf3bfa13..88a673bc3eab 100644
+--- a/drivers/iio/imu/adis16475.c
++++ b/drivers/iio/imu/adis16475.c
+@@ -1070,6 +1070,7 @@ static int adis16475_config_sync_mode(struct adis16475 *st)
+ 	struct device *dev = &st->adis.spi->dev;
+ 	const struct adis16475_sync *sync;
+ 	u32 sync_mode;
++	u16 val;
+ 
+ 	/* default to internal clk */
+ 	st->clk_freq = st->info->int_clk * 1000;
+@@ -1155,8 +1156,9 @@ static int adis16475_config_sync_mode(struct adis16475 *st)
+ 	 * I'm keeping this for simplicity and avoiding extra variables
+ 	 * in chip_info.
+ 	 */
++	val = ADIS16475_SYNC_MODE(sync->sync_mode);
+ 	ret = __adis_update_bits(&st->adis, ADIS16475_REG_MSG_CTRL,
+-				 ADIS16475_SYNC_MODE_MASK, sync->sync_mode);
++				 ADIS16475_SYNC_MODE_MASK, val);
+ 	if (ret)
+ 		return ret;
+ 
 diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
 index 99576b2c171f..32d7f8364230 100644
 --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
@@ -994,6 +1778,26 @@ index 99576b2c171f..32d7f8364230 100644
  out_unlock:
  	mutex_unlock(&st->lock);
  
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index ae391ec4a727..533c71a0dd01 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -707,13 +707,13 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
+ 			ret = inv_mpu6050_sensor_show(st, st->reg->gyro_offset,
+ 						chan->channel2, val);
+ 			mutex_unlock(&st->lock);
+-			return IIO_VAL_INT;
++			return ret;
+ 		case IIO_ACCEL:
+ 			mutex_lock(&st->lock);
+ 			ret = inv_mpu6050_sensor_show(st, st->reg->accl_offset,
+ 						chan->channel2, val);
+ 			mutex_unlock(&st->lock);
+-			return IIO_VAL_INT;
++			return ret;
+ 
+ 		default:
+ 			return -EINVAL;
 diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
 index 97649944f1df..c14a630dd683 100644
 --- a/drivers/iio/light/cm32181.c
@@ -1101,6 +1905,35 @@ index 1bd85e21fd11..6e38a33f55c7 100644
  	if (id != VCNL4035_DEV_ID_VAL) {
  		dev_err(&data->client->dev, "Wrong id, got %x, expected %x\n",
  			id, VCNL4035_DEV_ID_VAL);
+diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
+index 720234a91db1..e7690d38621a 100644
+--- a/drivers/iio/magnetometer/rm3100-core.c
++++ b/drivers/iio/magnetometer/rm3100-core.c
+@@ -538,6 +538,7 @@ int rm3100_common_probe(struct device *dev, struct regmap *regmap, int irq)
+ 	struct rm3100_data *data;
+ 	unsigned int tmp;
+ 	int ret;
++	int samp_rate_index;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+ 	if (!indio_dev)
+@@ -596,9 +597,14 @@ int rm3100_common_probe(struct device *dev, struct regmap *regmap, int irq)
+ 	ret = regmap_read(regmap, RM3100_REG_TMRC, &tmp);
+ 	if (ret < 0)
+ 		return ret;
++
++	samp_rate_index = tmp - RM3100_TMRC_OFFSET;
++	if (samp_rate_index < 0 || samp_rate_index >=  RM3100_SAMP_NUM) {
++		dev_err(dev, "The value read from RM3100_REG_TMRC is invalid!\n");
++		return -EINVAL;
++	}
+ 	/* Initializing max wait time, which is double conversion time. */
+-	data->conversion_time = rm3100_samp_rates[tmp - RM3100_TMRC_OFFSET][2]
+-				* 2;
++	data->conversion_time = rm3100_samp_rates[samp_rate_index][2] * 2;
+ 
+ 	/* Cycle count values may not be what we want. */
+ 	if ((tmp - RM3100_TMRC_OFFSET) == 0)
 diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
 index 6b7da40f99c8..919a338d9181 100644
 --- a/drivers/iio/pressure/bmp280-core.c
@@ -1115,7 +1948,7 @@ index 6b7da40f99c8..919a338d9181 100644
  		if (ret)
  			return ret;
 diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-index cf8b92fae1b3..1b6b9530f166 100644
+index cf8b92fae1b3..7fdc7a0147f0 100644
 --- a/drivers/iio/pressure/dps310.c
 +++ b/drivers/iio/pressure/dps310.c
 @@ -57,8 +57,8 @@
@@ -1140,6 +1973,40 @@ index cf8b92fae1b3..1b6b9530f166 100644
  	return 0;
  }
  
+@@ -730,7 +730,7 @@ static int dps310_read_pressure(struct dps310_data *data, int *val, int *val2,
+ 	}
+ }
+ 
+-static int dps310_calculate_temp(struct dps310_data *data)
++static int dps310_calculate_temp(struct dps310_data *data, int *val)
+ {
+ 	s64 c0;
+ 	s64 t;
+@@ -746,7 +746,9 @@ static int dps310_calculate_temp(struct dps310_data *data)
+ 	t = c0 + ((s64)data->temp_raw * (s64)data->c1);
+ 
+ 	/* Convert to milliCelsius and scale the temperature */
+-	return (int)div_s64(t * 1000LL, kt);
++	*val = (int)div_s64(t * 1000LL, kt);
++
++	return 0;
+ }
+ 
+ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+@@ -768,11 +770,10 @@ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+ 		if (rc)
+ 			return rc;
+ 
+-		rc = dps310_calculate_temp(data);
+-		if (rc < 0)
++		rc = dps310_calculate_temp(data, val);
++		if (rc)
+ 			return rc;
+ 
+-		*val = rc;
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
 diff --git a/drivers/iio/pressure/ms5611_core.c b/drivers/iio/pressure/ms5611_core.c
 index 874a73b3ea9d..f88d8f2ce610 100644
 --- a/drivers/iio/pressure/ms5611_core.c
@@ -1153,6 +2020,19 @@ index 874a73b3ea9d..f88d8f2ce610 100644
  }
  
  static int ms5611_read_prom(struct iio_dev *indio_dev)
+diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
+index dba78896ea8f..7d91d64b26f3 100644
+--- a/drivers/staging/iio/impedance-analyzer/ad5933.c
++++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+@@ -625,7 +625,7 @@ static void ad5933_work(struct work_struct *work)
+ 		struct ad5933_state, work.work);
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(st->client);
+ 	__be16 buf[2];
+-	int val[2];
++	u16 val[2];
+ 	unsigned char status;
+ 	int ret;
+ 
 diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
 index 74adb82f37c3..a19cfb2998c9 100644
 --- a/drivers/staging/iio/resolver/ad2s1210.c
@@ -1166,6 +2046,28 @@ index 74adb82f37c3..a19cfb2998c9 100644
  };
  
  static inline void ad2s1210_set_mode(enum ad2s1210_mode mode,
+diff --git a/include/linux/iio/adc/adi-axi-adc.h b/include/linux/iio/adc/adi-axi-adc.h
+index c5d48e1c2d36..77b7f66e6fa8 100644
+--- a/include/linux/iio/adc/adi-axi-adc.h
++++ b/include/linux/iio/adc/adi-axi-adc.h
+@@ -41,6 +41,7 @@ struct adi_axi_adc_chip_info {
+  * @reg_access		IIO debugfs_reg_access hook for the client ADC
+  * @read_raw		IIO read_raw hook for the client ADC
+  * @write_raw		IIO write_raw hook for the client ADC
++ * @read_avail		IIO read_avail hook for the client ADC
+  */
+ struct adi_axi_adc_conv {
+ 	const struct adi_axi_adc_chip_info		*chip_info;
+@@ -54,6 +55,9 @@ struct adi_axi_adc_conv {
+ 	int (*write_raw)(struct adi_axi_adc_conv *conv,
+ 			 struct iio_chan_spec const *chan,
+ 			 int val, int val2, long mask);
++	int (*read_avail)(struct adi_axi_adc_conv *conv,
++			  struct iio_chan_spec const *chan,
++			  const int **val, int *type, int *length, long mask);
+ };
+ 
+ struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
 -- 
 2.39.2
 

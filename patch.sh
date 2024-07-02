@@ -161,8 +161,6 @@ wpanusb () {
 		wdir="external/wpanusb"
 		number=1
 		cleanup
-
-		exit 2
 	fi
 	dir 'external/wpanusb'
 }
@@ -414,7 +412,7 @@ patch_backports () {
 }
 
 backports () {
-	backport_tag="v5.10.204"
+	backport_tag="v5.10.220"
 
 	subsystem="iio"
 	#regenerate="enable"
@@ -544,7 +542,7 @@ drivers () {
 	dir 'i2c'
 	dir 'meta-ti'
 	dir 'drivers/tidss'
-	dir 'firmware/patch'
+	dir 'external/cadence'
 }
 
 ###
