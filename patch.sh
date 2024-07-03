@@ -227,6 +227,12 @@ wireless_regdb () {
 	dir 'external/wireless_regdb'
 }
 
+mainline_patches () {
+	#exit 2
+	dir 'rfc/beagleplay-connector'
+	#exit 2
+}
+
 cleanup_dts_builds () {
 	rm -rf arch/arm/boot/dts/modules.order || true
 	rm -rf arch/arm/boot/dts/.*cmd || true
@@ -409,6 +415,7 @@ external_git
 wpanusb
 #rt
 wireless_regdb
+mainline_patches
 beagleboard_dtbs
 #local_patch
 
