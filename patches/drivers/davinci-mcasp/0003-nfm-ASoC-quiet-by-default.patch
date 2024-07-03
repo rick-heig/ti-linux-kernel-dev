@@ -1,0 +1,54 @@
+From cf74cce181b537ecaf658b352780b53feacc7f69 Mon Sep 17 00:00:00 2001
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Tue, 2 Jul 2024 19:29:56 -0500
+Subject: [PATCH 3/3] [nfm] ASoC quiet by default
+
+Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
+---
+ sound/soc/soc-dai.c  | 2 +-
+ sound/soc/soc-link.c | 2 +-
+ sound/soc/soc-pcm.c  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
+index 9a828e55c4f9..c8866abe1c70 100644
+--- a/sound/soc/soc-dai.c
++++ b/sound/soc/soc-dai.c
+@@ -24,7 +24,7 @@ static inline int _soc_dai_ret(struct snd_soc_dai *dai,
+ 	case -ENOTSUPP:
+ 		break;
+ 	default:
+-		dev_err(dai->dev,
++		dev_dbg(dai->dev,
+ 			"ASoC: error at %s on %s: %d\n",
+ 			func, dai->name, ret);
+ 	}
+diff --git a/sound/soc/soc-link.c b/sound/soc/soc-link.c
+index 619664cc9ab9..31383b74944d 100644
+--- a/sound/soc/soc-link.c
++++ b/sound/soc/soc-link.c
+@@ -22,7 +22,7 @@ static inline int _soc_link_ret(struct snd_soc_pcm_runtime *rtd,
+ 	case -ENOTSUPP:
+ 		break;
+ 	default:
+-		dev_err(rtd->dev,
++		dev_dbg(rtd->dev,
+ 			"ASoC: error at %s on %s: %d\n",
+ 			func, rtd->dai_link->name, ret);
+ 	}
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 511446a30c05..4898f3161670 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -41,7 +41,7 @@ static inline int _soc_pcm_ret(struct snd_soc_pcm_runtime *rtd,
+ 	case -EINVAL:
+ 		break;
+ 	default:
+-		dev_err(rtd->dev,
++		dev_dbg(rtd->dev,
+ 			"ASoC: error at %s on %s: %d\n",
+ 			func, rtd->dai_link->name, ret);
+ 	}
+-- 
+2.39.2
+

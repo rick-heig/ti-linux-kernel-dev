@@ -1,0 +1,27 @@
+From 54172f3913ab3e1c4dee9bfcf4fe4f65b97241e2 Mon Sep 17 00:00:00 2001
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Tue, 2 Jul 2024 19:31:45 -0500
+Subject: [PATCH] tidss_crtc.c: quiet: tidss 4a00000.dss: CRTC0 SYNC LOST: (irq
+ 80)
+
+Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
+---
+ drivers/gpu/drm/tidss/tidss_crtc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
+index 721374c5439e..d1ef7d2190d6 100644
+--- a/drivers/gpu/drm/tidss/tidss_crtc.c
++++ b/drivers/gpu/drm/tidss/tidss_crtc.c
+@@ -75,7 +75,7 @@ void tidss_crtc_error_irq(struct drm_crtc *crtc, u64 irqstatus)
+ {
+ 	struct tidss_crtc *tcrtc = to_tidss_crtc(crtc);
+ 
+-	dev_err_ratelimited(crtc->dev->dev, "CRTC%u SYNC LOST: (irq %llx)\n",
++	dev_dbg_ratelimited(crtc->dev->dev, "CRTC%u SYNC LOST: (irq %llx)\n",
+ 			    tcrtc->hw_videoport, irqstatus);
+ }
+ 
+-- 
+2.39.2
+
