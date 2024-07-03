@@ -2416,7 +2416,6 @@ CONFIG_ALTERA_STAPL=m
 CONFIG_UACCE=m
 # CONFIG_PVPANIC is not set
 # CONFIG_GP_PCI1XXXX is not set
-CONFIG_MIKROBUS=y
 # end of Misc devices
 
 #

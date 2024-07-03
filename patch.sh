@@ -496,7 +496,6 @@ drivers () {
 
 	dir 'drivers/davinci-mcasp'
 	dir 'drivers/pcie'
-	dir 'drivers/mikrobus'
 	dir 'drivers/tidss'
 
 	dir 'external/android'
