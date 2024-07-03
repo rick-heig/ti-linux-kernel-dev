@@ -325,6 +325,10 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 ./scripts/config --module CONFIG_STAGING_GASKET_FRAMEWORK
 ./scripts/config --module CONFIG_STAGING_APEX_DRIVER
 
+#TI: 10.00.04
+./scripts/config --enable CONFIG_FB_SIMPLE
+./scripts/config --module CONFIG_RPMSG_PRU
+
 #configure CONFIG_EXTRA_FIRMWARE
 ./scripts/config --set-str CONFIG_EXTRA_FIRMWARE "regulatory.db regulatory.db.p7s cadence/mhdp8546.bin"
 
