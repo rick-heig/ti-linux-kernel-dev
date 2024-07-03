@@ -1,0 +1,46 @@
+From cf6e61bae5828854a602bbea3eaa8a81f5307a55 Mon Sep 17 00:00:00 2001
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Wed, 3 Jul 2024 13:05:44 -0500
+Subject: [PATCH] ite-it66121: [hack] consider it66122 as a it66121
+
+Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
+---
+ drivers/gpu/drm/bridge/ite-it66121.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/gpu/drm/bridge/ite-it66121.c b/drivers/gpu/drm/bridge/ite-it66121.c
+index 1cf3fb1f13dc..6b33f75a0b89 100644
+--- a/drivers/gpu/drm/bridge/ite-it66121.c
++++ b/drivers/gpu/drm/bridge/ite-it66121.c
+@@ -1618,6 +1618,12 @@ static const struct it66121_chip_info it66121_chip_info = {
+ 	.pid = 0x0612,
+ };
+ 
++static const struct it66121_chip_info it66122_chip_info = {
++	.id = ID_IT66121,
++	.vid = 0x4954,
++	.pid = 0x0622,
++};
++
+ static const struct it66121_chip_info it6610_chip_info = {
+ 	.id = ID_IT6610,
+ 	.vid = 0xca00,
+@@ -1626,6 +1632,7 @@ static const struct it66121_chip_info it6610_chip_info = {
+ 
+ static const struct of_device_id it66121_dt_match[] = {
+ 	{ .compatible = "ite,it66121", &it66121_chip_info },
++	{ .compatible = "ite,it66122", &it66122_chip_info },
+ 	{ .compatible = "ite,it6610", &it6610_chip_info },
+ 	{ }
+ };
+@@ -1633,6 +1640,7 @@ MODULE_DEVICE_TABLE(of, it66121_dt_match);
+ 
+ static const struct i2c_device_id it66121_id[] = {
+ 	{ "it66121", (kernel_ulong_t) &it66121_chip_info },
++	{ "it66122", (kernel_ulong_t) &it66122_chip_info },
+ 	{ "it6610", (kernel_ulong_t) &it6610_chip_info },
+ 	{ }
+ };
+-- 
+2.39.2
+
