@@ -157,8 +157,6 @@ wpanusb () {
 		wdir="external/wpanusb"
 		number=1
 		cleanup
-
-		exit 2
 	fi
 	dir 'external/wpanusb'
 }
@@ -274,39 +272,16 @@ k3_dtbo_makefile_append () {
 }
 
 k3_makefile_patch_cleanup_overlays () {
-	cat arch/arm64/boot/dts/ti/Makefile | grep -v 'DTC_FLAGS_k3' | grep -v '#Enable' > arch/arm64/boot/dts/ti/Makefile.bak
+	cat arch/arm64/boot/dts/ti/Makefile | grep -v 'DTC_FLAGS_k3' | grep -v '# Enable' > arch/arm64/boot/dts/ti/Makefile.bak
+	cat arch/arm64/boot/dts/ti/Makefile | grep 'DTC_FLAGS_k3' > arch/arm64/boot/dts/ti/Makefile.dtc
 	rm arch/arm64/boot/dts/ti/Makefile
 	mv arch/arm64/boot/dts/ti/Makefile.bak arch/arm64/boot/dts/ti/Makefile
 	echo "" >> arch/arm64/boot/dts/ti/Makefile
 	echo "# Enable support for device-tree overlays" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am625-beagleplay += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am625-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am62-lp-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am62x-sk-csi2-v3link-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am62a7-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am62p5-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am642-evm += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am642-tqma64xxl-mbax4xxl += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am6548-iot2050-advanced-m2 += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am62p5-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am68-sk-base-board += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am68-sk-v3link-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am69-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-am69-sk-fpdlink-fusion-auxport += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j7200-common-proc-board += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j721e-beagleboneai64 += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j721e-evm-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j721e-common-proc-board += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j721e-sk += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j721e-sk-fpdlink-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j721s2-common-proc-board += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j721s2-evm-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j722s-evm += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j722s-evm-fpdlink-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j722s-evm-v3link-fusion += -@" >> arch/arm64/boot/dts/ti/Makefile
-	echo "DTC_FLAGS_k3-j784s4-evm += -@" >> arch/arm64/boot/dts/ti/Makefile
-
+	cat arch/arm64/boot/dts/ti/Makefile.dtc >> arch/arm64/boot/dts/ti/Makefile
+	rm arch/arm64/boot/dts/ti/Makefile.dtc
 	echo "DTC_FLAGS_k3-am67a-beagley-ai += -@" >> arch/arm64/boot/dts/ti/Makefile
+	echo "DTC_FLAGS_k3-j721e-beagleboneai64 += -@" >> arch/arm64/boot/dts/ti/Makefile
 }
 
 beagleboard_dtbs () {
@@ -383,6 +358,10 @@ beagleboard_dtbs () {
 		#device="k3-j721e-beagleboneai64-no-shared-mem.dtb" ; k3_dtb_makefile_append
 
 		device="k3-am67a-beagley-ai.dtb" ; k3_dtb_makefile_append
+
+		device="BONE-I2C1" ; k3_dtbo_makefile_append
+		device="BONE-I2C2" ; k3_dtbo_makefile_append
+		device="BONE-I2C3" ; k3_dtbo_makefile_append
 
 		device="k3-am67a-beagley-ai-pwm-ecap0-gpio12" ; k3_dtbo_makefile_append
 		device="k3-am67a-beagley-ai-pwm-ecap1-gpio16" ; k3_dtbo_makefile_append
@@ -517,34 +496,10 @@ drivers () {
 	dir 'pcie'
 	dir 'mikrobus'
 	dir 'drivers/android'
-
-	#cd KERNEL/
-	#git checkout v5.10-rc1 -b tmp
-	#git pull --no-edit https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git topic/overlays-v5.10-rc1
-	#mkdir ../patches/overlays
-	#git format-patch -12 -o ../patches/overlays/
-	#https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/log/?h=topic/overlays-v5.10-rc1
-	#../
-	#dir 'overlays'
-
-#	dir 'drivers/eqep'
-
-#	dir 'tusb322'
-#	dir 'rpi-panel'
-#	dir 'panel-simple'
-
-#	dir 'drm-bridge'
-
-#	dir 'tiam62x'
-#	dir 'ti-edgeai'
-#	dir 'lincolntech'
-#	dir 'tidss'
-#	dir 'tidss_wip'
-#	dir 'led'
-#	dir 'nfc'
-##	dir 'cc33xx'
-#	dir 'i2c'
-#	dir 'meta-ti'
+	dir 'drivers/gasket'
+	dir 'drivers/davinci-mcasp'
+	dir 'drivers/tidss'
+	dir 'external/cadence'
 }
 
 ###
