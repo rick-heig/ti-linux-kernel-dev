@@ -51,7 +51,7 @@ KERNEL_REL=6.6
 KERNEL_TAG=${KERNEL_REL}.32
 kernel_rt=".32-rt32"
 #Kernel Build
-BUILD=${build_prefix}6
+BUILD=${build_prefix}6.1
 
 #v6.X-rcX + upto SHA
 #prev_KERNEL_SHA=""
@@ -62,8 +62,8 @@ BRANCH="${branch_prefix}${KERNEL_REL}${branch_postfix}"
 
 DISTRO=xross
 
-ti_git_old_release="51479baa13b77d89091fef60bac4a5707870b15a"
-ti_git_new_release="4bd0d44f69cbda913ca7fcb809ae0fa682416b14"
-TISDK="10.00.03"
+ti_git_old_release="4bd0d44f69cbda913ca7fcb809ae0fa682416b14"
+ti_git_new_release="b39a7a4a83900c5e9376663293af2aa3e0f5931a"
+TISDK="10.00.04"
 
 #

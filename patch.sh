@@ -510,7 +510,7 @@ packaging () {
 	echo "Update: package scripts"
 	#do_backport="enable"
 	if [ "x${do_backport}" = "xenable" ] ; then
-		backport_tag="v6.6.34"
+		backport_tag="v6.6.36"
 
 		subsystem="bindeb-pkg"
 		#regenerate="enable"
