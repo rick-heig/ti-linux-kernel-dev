@@ -58,20 +58,20 @@ if [ -e ${DIR}/version.sh ]; then
 		${git_bin} add arch/${KERNEL_ARCH}/configs/ti_sdk_arm64_rt_release_defconfig
 	fi
 
-	if [ "x${ti_git_old_release}" = "x${ti_git_new_release}" ] ; then
+	if [ "x${sdk_git_old_release}" = "x${sdk_git_new_release}" ] ; then
 		echo "${KERNEL_TAG}${BUILD}" > ${wfile}
 		echo "${KERNEL_TAG}${BUILD} ${example}_defconfig" >> ${wfile}
-		if [ "${TISDK}" ] ; then
-			echo "TI SDK: ${TISDK}" >> ${wfile}
+		if [ "${SDK}" ] ; then
+			echo "TI SDK: ${SDK}" >> ${wfile}
 		fi
 		cat_files
 	else
 		echo "${KERNEL_TAG}${BUILD}" > ${wfile}
 		echo "${KERNEL_TAG}${BUILD} ${example}_defconfig" >> ${wfile}
-		if [ "${TISDK}" ] ; then
-			echo "TI SDK: ${TISDK}" >> ${wfile}
+		if [ "${SDK}" ] ; then
+			echo "TI SDK: ${SDK}" >> ${wfile}
 		fi
-		echo "${KERNEL_REL} TI Delta: ${compare}/${ti_git_old_release}...${ti_git_new_release}" >> ${wfile}
+		echo "${KERNEL_REL} TI Delta: ${compare}/${sdk_git_old_release}...${sdk_git_new_release}" >> ${wfile}
 		cat_files
 	fi
 	${git_bin} commit -a -F ${wfile} -s

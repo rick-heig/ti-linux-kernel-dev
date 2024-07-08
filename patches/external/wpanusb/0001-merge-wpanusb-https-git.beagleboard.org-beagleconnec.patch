@@ -1,6 +1,6 @@
-From c91f28d6a5d543927be72c97f7672daa977319b7 Mon Sep 17 00:00:00 2001
+From 4efa6341492779eab732e2cd4f6c986612cc408b Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Wed, 3 Jul 2024 10:30:47 -0500
+Date: Mon, 8 Jul 2024 10:36:29 -0500
 Subject: [PATCH] merge: wpanusb:
  https://git.beagleboard.org/beagleconnect/linux/wpanusb
 
