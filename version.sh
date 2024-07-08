@@ -62,8 +62,8 @@ BRANCH="${branch_prefix}${KERNEL_REL}${branch_postfix}"
 
 DISTRO=xross
 
-ti_git_old_release="2e423244f8c09173a344e7069f0fe2bdf26cccee"
-ti_git_new_release="c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
-TISDK="09.02.00.010"
+sdk_git_old_release="2e423244f8c09173a344e7069f0fe2bdf26cccee"
+sdk_git_new_release="c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
+SDK="09.02.00.010"
 
 #
