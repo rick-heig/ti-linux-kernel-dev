@@ -1,11 +1,11 @@
-From 0ea6340a05e59ba6727635425236f9d5dd87635b Mon Sep 17 00:00:00 2001
+From 49bcffa49d23d6bdfc98990377d94b58ad21c738 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Wed, 3 Jul 2024 12:36:36 -0500
+Date: Mon, 8 Jul 2024 10:38:54 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.6.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/71a1da014008680675739933632b6de985fcb717
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/7844bd3a394e9553335dd252834e5ee6cf32bee7
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  .../boot/dts/ti/omap/AM335X-PRU-UIO-00A0.dtso |   28 +
@@ -10522,10 +10522,10 @@ index 000000000000..1467d8ef5581
 +	symlink = "bone/i2c/3";
 +};
 diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-index 7ebc373909e7..d69c4b8f1032 100644
+index 0899031ceeca..8e50ca3cf6a0 100644
 --- a/arch/arm64/boot/dts/ti/Makefile
 +++ b/arch/arm64/boot/dts/ti/Makefile
-@@ -353,6 +353,24 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
+@@ -355,6 +355,24 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
  			 k3-v3link-imx219-0-2.dtbo \
  			 k3-v3link-imx219-0-3.dtbo
  
@@ -10550,14 +10550,14 @@ index 7ebc373909e7..d69c4b8f1032 100644
  # Enable support for device-tree overlays
  DTC_FLAGS_k3-am625-beagleplay += -@
  DTC_FLAGS_k3-am625-sk += -@
-@@ -380,3 +398,5 @@ DTC_FLAGS_k3-j722s-evm += -@
+@@ -382,3 +400,5 @@ DTC_FLAGS_k3-j722s-evm += -@
  DTC_FLAGS_k3-j722s-evm-fpdlink-fusion += -@
  DTC_FLAGS_k3-j722s-evm-v3link-fusion += -@
  DTC_FLAGS_k3-j784s4-evm += -@
 +DTC_FLAGS_k3-am67a-beagley-ai += -@
 +DTC_FLAGS_k3-j721e-beagleboneai64 += -@
 diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-index 6ce5ef559dea..24d8b0704c9f 100644
+index 8be252991799..2b3a394e0f90 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
 @@ -1,8 +1,8 @@
@@ -10642,7 +10642,7 @@ index bfb5048e8f76..a7063aa598ca 100644
  			status = "disabled";
  		};
 diff --git a/arch/arm64/boot/dts/ti/k3-am62.dtsi b/arch/arm64/boot/dts/ti/k3-am62.dtsi
-index 78d7fce6127a..0c8422ef7d6e 100644
+index 534e8a2a0cc7..6ab96676c59a 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62.dtsi
 @@ -1,8 +1,8 @@
@@ -14400,7 +14400,7 @@ index 000000000000..e3c05c86786c
 +	rx-num-evt = <32>;
 +};
 diff --git a/arch/arm64/boot/dts/ti/k3-am69-sk.dts b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
-index 12fe8c5c4b36..bc0b8320a41e 100644
+index b590076746a7..d911196ffb34 100644
 --- a/arch/arm64/boot/dts/ti/k3-am69-sk.dts
 +++ b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
 @@ -1,6 +1,6 @@
@@ -14594,7 +14594,7 @@ index a200810df54a..5a72c518ceb6 100644
  
  #include <dt-bindings/interrupt-controller/irq.h>
 diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
-index 1adf706a5f8a..71252d29bfb7 100644
+index 84341c1e1dfb..dc4f71cc5924 100644
 --- a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
 +++ b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
 @@ -1,6 +1,6 @@
