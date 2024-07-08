@@ -104,13 +104,13 @@ external_git () {
 	echo "pulling: [${git_patchset_options} pull --no-edit  ${git_patchset} ${git_tag}]"
 	${git_bin} ${git_patchset_options} pull --no-edit ${git_patchset} ${git_tag}
 	top_of_branch=$(${git_bin} describe)
-	if [ ! "x${ti_git_new_release}" = "x" ] ; then
+	if [ ! "x${sdk_git_new_release}" = "x" ] ; then
 		${git_bin} checkout master -f
 		test_for_branch=$(${git_bin} branch --list "v${KERNEL_TAG}${BUILD}")
 		if [ "x${test_for_branch}" != "x" ] ; then
 			${git_bin} branch "v${KERNEL_TAG}${BUILD}" -D
 		fi
-		${git_bin} checkout ${ti_git_new_release} -b v${KERNEL_TAG}${BUILD} -f
+		${git_bin} checkout ${sdk_git_new_release} -b v${KERNEL_TAG}${BUILD} -f
 		current_git=$(${git_bin} describe)
 		echo "${current_git}"
 
@@ -505,13 +505,15 @@ backports () {
 }
 
 drivers () {
-	dir 'boris'
-	dir 'drivers/android'
+	dir 'branding/boris'
+
 #	dir 'drivers/ar1021_i2c'
 #	dir 'drivers/ti/serial'
 #	dir 'drivers/ti/tsc'
 #	dir 'drivers/fb_ssd1306'
 #	dir 'drivers/hackaday'
+
+	dir 'external/android'
 	dir 'external/ti-amx3-cm3-pm-firmware'
 }
 
@@ -523,7 +525,7 @@ packaging () {
 	echo "Update: package scripts"
 	#do_backport="enable"
 	if [ "x${do_backport}" = "xenable" ] ; then
-		backport_tag="v6.6.34"
+		backport_tag="v6.6.36"
 
 		subsystem="bindeb-pkg"
 		#regenerate="enable"
