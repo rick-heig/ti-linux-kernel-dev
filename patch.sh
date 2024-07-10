@@ -532,25 +532,25 @@ backports () {
 	else
 		patch_backports
 	fi
-
-	dir 'greybus/gb-beagleplay'
 }
 
 drivers () {
-	dir 'boris'
+	dir 'branding/boris'
+
 	dir 'drivers/sdhci-omap'
-	dir 'pcie'
-	dir 'mikrobus'
-	dir 'drivers/android'
-	dir 'fixes'
+	dir 'drivers/mikrobus'
+	dir 'drivers/fixes'
 	dir 'drivers/cc33xx'
-	dir 'it66121'
+	dir 'drivers/it66121'
 	dir 'drivers/ite-it66121-hpd'
 	dir 'drivers/pcie'
-	dir 'drivers/gasket'
 	dir 'drivers/davinci-mcasp'
 	dir 'drivers/tidss'
+	dir 'drivers/gb-beagleplay'
+
+	dir 'external/android'
 	dir 'external/cadence'
+	dir 'external/gasket'
 }
 
 ###
