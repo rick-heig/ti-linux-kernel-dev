@@ -326,6 +326,11 @@ config="CONFIG_UIO_PDRV_GENIRQ" ; config_module
 ./scripts/config --enable CONFIG_FB_SIMPLE
 ./scripts/config --module CONFIG_RPMSG_PRU
 
+#TI: 10.00.06
+./scripts/config --disable CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL
+./scripts/config --enable CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE
+./scripts/config --disable CONFIG_MTD_SPI_NOR_USE_4K_SECTORS
+
 #configure CONFIG_EXTRA_FIRMWARE
 ./scripts/config --set-str CONFIG_EXTRA_FIRMWARE "regulatory.db regulatory.db.p7s cadence/mhdp8546.bin"
 
