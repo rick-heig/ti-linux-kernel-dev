@@ -1,11 +1,11 @@
-From d32f4ca504227d9f2b9a87caa57df7840734f25b Mon Sep 17 00:00:00 2001
+From cc1411a0550aa2bcedc02503b0820963fb47b04c Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Tue, 2 Jul 2024 16:40:51 -0500
+Date: Mon, 22 Jul 2024 12:24:53 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v5.10.x-ti-unified
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/bd56d2fba46de8d2d258f3f3ea608e3dc01da1c9
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/ce2750aec08d859f6501978173c3ff12353e54f7
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  arch/arm/boot/dts/Makefile                    |   13 +
@@ -3334,7 +3334,7 @@ index 000000000000..7cfddada9348
 +};
 diff --git a/arch/arm/boot/dts/am335x-boneblack-uboot-univ.dts b/arch/arm/boot/dts/am335x-boneblack-uboot-univ.dts
 new file mode 100644
-index 000000000000..02ae48b05502
+index 000000000000..ab75215ee672
 --- /dev/null
 +++ b/arch/arm/boot/dts/am335x-boneblack-uboot-univ.dts
 @@ -0,0 +1,194 @@
@@ -3394,7 +3394,7 @@ index 000000000000..02ae48b05502
 +		"P9_18 [spi0_d1]",
 +		"P9_17 [spi0_cs0]",
 +		"[mmc0_cd]",
-+		"P8_42A [ecappwm0]",
++		"P9_42A [ecappwm0]",
 +		"P8_35 [lcd d12]",
 +		"P8_33 [lcd d13]",
 +		"P8_31 [lcd d14]",
@@ -3534,7 +3534,7 @@ index 000000000000..02ae48b05502
 +};
 diff --git a/arch/arm/boot/dts/am335x-boneblack-uboot.dts b/arch/arm/boot/dts/am335x-boneblack-uboot.dts
 new file mode 100644
-index 000000000000..603b5f92dfd7
+index 000000000000..bc9c2f5fe869
 --- /dev/null
 +++ b/arch/arm/boot/dts/am335x-boneblack-uboot.dts
 @@ -0,0 +1,197 @@
@@ -3597,7 +3597,7 @@ index 000000000000..603b5f92dfd7
 +		"P9_18 [spi0_d1]",
 +		"P9_17 [spi0_cs0]",
 +		"[mmc0_cd]",
-+		"P8_42A [ecappwm0]",
++		"P9_42A [ecappwm0]",
 +		"P8_35 [lcd d12]",
 +		"P8_33 [lcd d13]",
 +		"P8_31 [lcd d14]",
