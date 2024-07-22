@@ -685,6 +685,8 @@ reverts () {
 }
 
 drivers () {
+	dir 'branding/boris'
+
 	#https://github.com/raspberrypi/linux/branches
 	#exit 2
 	dir 'RPi'
@@ -711,16 +713,11 @@ drivers () {
 	dir 'drivers/fb_ssd1306'
 	dir 'drivers/hackaday'
 	dir 'drivers/qcacld'
-	dir 'drivers/android'
-	dir 'external/ti-amx3-cm3-pm-firmware'
-}
-
-soc () {
 	dir 'drivers/ti/uio'
-	dir 'boris'
-}
 
-fixes () {
+	dir 'external/android'
+	dir 'external/ti-amx3-cm3-pm-firmware'
+
 	dir 'fixes/gcc'
 	dir 'fixes/gcc/13'
 }
@@ -730,8 +727,6 @@ backports
 brcmfmac
 reverts
 drivers
-soc
-fixes
 
 packaging () {
 	echo "Update: package scripts"
