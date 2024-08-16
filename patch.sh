@@ -34,6 +34,9 @@ git_bin=$(which git)
 
 git="${git_bin} am"
 git_patchset="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
+if [ "${USE_LOCAL_GIT_MIRROR}" ] ; then
+	git_patchset="https://git.gfnd.rcn-ee.org/TexasInstruments/ti-linux-kernel.git"
+fi
 #git_opts
 
 if [ "${RUN_BISECT}" ] ; then
