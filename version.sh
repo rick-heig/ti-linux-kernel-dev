@@ -47,8 +47,14 @@ toolchain="gcc_12_arm"
 #toolchain="gcc_14_riscv64"
 
 #Kernel
+#linux_repo="https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
+#linux_stable_repo="https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux.git"
+linux_repo="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
+linux_stable_repo="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
+#
 KERNEL_REL=6.1
 KERNEL_TAG=${KERNEL_REL}.83
+#https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/6.1/
 kernel_rt=".83-rt28"
 #Kernel Build
 BUILD=${build_prefix}35
@@ -62,8 +68,8 @@ BRANCH="${branch_prefix}${KERNEL_REL}${branch_postfix}"
 
 DISTRO=xross
 
-ti_git_old_release="2e423244f8c09173a344e7069f0fe2bdf26cccee"
-ti_git_new_release="c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
-TISDK="09.02.00.010"
+sdk_git_old_release="2e423244f8c09173a344e7069f0fe2bdf26cccee"
+sdk_git_new_release="c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
+SDK="09.02.00.010"
 
 #
