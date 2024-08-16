@@ -47,8 +47,14 @@ toolchain="gcc_10_arm"
 #toolchain="gcc_14_riscv64"
 
 #Kernel
+#linux_repo="https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
+#linux_stable_repo="https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux.git"
+linux_repo="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
+linux_stable_repo="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
+#
 KERNEL_REL=5.10
 KERNEL_TAG=${KERNEL_REL}.168
+#https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/5.10/
 kernel_rt=".168-rt83"
 #Kernel Build
 BUILD=${build_prefix}79
@@ -83,7 +89,4 @@ SDK="08.06.00.007"
 #
 #https://git.ti.com/gitweb?p=ti-linux-kernel/ti-linux-kernel.git;a=tag;h=refs/tags/08.06.00.002
 #https://git.ti.com/gitweb?p=ti-linux-kernel/ti-linux-kernel.git;a=commit;h=d948fe1239aa0c754e2fb25e23bb112e29679ba3
-#
-#https://git.ti.com/gitweb?p=ti-linux-kernel/ti-linux-kernel.git;a=tag;h=refs/tags/08.06.00.001
-#https://git.ti.com/gitweb?p=ti-linux-kernel/ti-linux-kernel.git;a=shortlog;h=58c3afb61814c1271156d6ace8d0550475268d3f
 #
