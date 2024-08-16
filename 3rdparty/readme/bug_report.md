@@ -16,5 +16,5 @@ List all the steps needed to reproduce the bug
 **REQUIRED INFORMATION**
 Run this command and paste the output here:
 ```
-sudo /opt/scripts/tools/version.sh
+sudo beagle-version
 ```
