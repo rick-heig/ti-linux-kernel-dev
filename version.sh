@@ -21,6 +21,7 @@ toolchain="gcc_8_arm"
 #toolchain="gcc_11_arm"
 #toolchain="gcc_12_arm"
 #toolchain="gcc_13_arm"
+#toolchain="gcc_14_arm"
 #arm64
 #KERNEL_ARCH=arm64
 #DEBARCH=arm64
@@ -32,6 +33,7 @@ toolchain="gcc_8_arm"
 #toolchain="gcc_11_aarch64"
 #toolchain="gcc_12_aarch64"
 #toolchain="gcc_13_aarch64"
+#toolchain="gcc_14_aarch64"
 #riscv64
 #KERNEL_ARCH=riscv
 #DEBARCH=riscv64
@@ -42,10 +44,17 @@ toolchain="gcc_8_arm"
 #toolchain="gcc_11_riscv64"
 #toolchain="gcc_12_riscv64"
 #toolchain="gcc_13_riscv64"
+#toolchain="gcc_14_riscv64"
 
 #Kernel
+#linux_repo="https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
+#linux_stable_repo="https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux.git"
+linux_repo="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
+linux_stable_repo="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
+#
 KERNEL_REL=4.19
 KERNEL_TAG=${KERNEL_REL}.94
+#https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/4.19/
 kernel_rt=".94-rt39"
 #Kernel Build
 BUILD=${build_prefix}74.1
@@ -59,6 +68,6 @@ BRANCH="${branch_prefix}${KERNEL_REL}${branch_postfix}"
 
 DISTRO=xross
 
-ti_git_old_release="5a23bc00e08d26bb83952953d909c95b42fab70c"
-ti_git_new_release="5a23bc00e08d26bb83952953d909c95b42fab70c"
+sdk_git_old_release="5a23bc00e08d26bb83952953d909c95b42fab70c"
+sdk_git_new_release="5a23bc00e08d26bb83952953d909c95b42fab70c"
 #

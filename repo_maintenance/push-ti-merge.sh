@@ -52,12 +52,12 @@ if [ -e ${DIR}/version.sh ]; then
 		BRANCH="master"
 	fi
 
-	if [ "${TISDK}" ] ; then
-		echo "Merge TI Branch; TI SDK: ${TISDK}" >> ${wfile}
+	if [ "${SDK}" ] ; then
+		echo "Merge TI Branch; TI SDK: ${SDK}" >> ${wfile}
 	fi
-	echo "Merge TI Branch; ${repo}/${ti_git_old_release}...${ti_git_new_release}" > ${wfile}
-	if [ "${TISDK}" ] ; then
-		echo "TI SDK: ${TISDK}" >> ${wfile}
+	echo "Merge TI Branch; ${repo}/${sdk_git_old_release}...${sdk_git_new_release}" > ${wfile}
+	if [ "${SDK}" ] ; then
+		echo "TI SDK: ${SDK}" >> ${wfile}
 	fi
 	cat_files
 
