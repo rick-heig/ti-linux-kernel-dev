@@ -1,3 +1,3 @@
 # Gitlab CI
 
-Job Status: https://git.beagleboard.org/beagleboard/linux/-/jobs
+Job Status: https://openbeagle.org/beagleboard/linux/-/jobs

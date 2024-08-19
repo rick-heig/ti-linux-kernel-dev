@@ -151,4 +151,11 @@ config="CONFIG_W1_MASTER_GPIO" ; config_module
 config="CONFIG_W1_SLAVE_DS2430" ; config_module
 config="CONFIG_W1_SLAVE_DS2433_CRC" ; config_enable
 
+./scripts/config --disable CONFIG_MODULE_COMPRESS_ZSTD
+./scripts/config --enable CONFIG_MODULE_COMPRESS_XZ
+./scripts/config --enable CONFIG_GPIO_AGGREGATOR
+
+#configure CONFIG_EXTRA_FIRMWARE
+./scripts/config --set-str CONFIG_EXTRA_FIRMWARE "regulatory.db regulatory.db.p7s am335x-pm-firmware.elf am335x-bone-scale-data.bin am335x-evm-scale-data.bin am43x-evm-scale-data.bin"
+
 cd ${DIR}/
