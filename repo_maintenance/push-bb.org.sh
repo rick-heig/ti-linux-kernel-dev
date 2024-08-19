@@ -42,8 +42,7 @@ cat_files () {
 DIR=$PWD
 git_bin=$(which git)
 
-repo_github="git@github.com:beagleboard/linux.git"
-repo_gitlab="git@git.beagleboard.org:beagleboard/linux.git"
+repo_gitlab="git@openbeagle.org:beagleboard/linux.git"
 example="bb.org"
 compare="https://github.com/RobertCNelson/ti-linux-kernel/compare"
 
@@ -68,20 +67,20 @@ if [ -e ${DIR}/version.sh ]; then
 		${git_bin} add arch/${KERNEL_ARCH}/configs/ti_sdk_arm64_release_defconfig
 	fi
 
-	if [ "x${ti_git_old_release}" = "x${ti_git_new_release}" ] ; then
+	if [ "x${sdk_git_old_release}" = "x${sdk_git_new_release}" ] ; then
 		echo "${KERNEL_TAG}${BUILD}" > ${wfile}
 		echo "${KERNEL_TAG}${BUILD} ${example}_defconfig" >> ${wfile}
-		if [ "${TISDK}" ] ; then
-			echo "TI SDK: ${TISDK}" >> ${wfile}
+		if [ "${SDK}" ] ; then
+			echo "TI SDK: ${SDK}" >> ${wfile}
 		fi
 		cat_files
 	else
 		echo "${KERNEL_TAG}${BUILD}" > ${wfile}
 		echo "${KERNEL_TAG}${BUILD} ${example}_defconfig" >> ${wfile}
-		if [ "${TISDK}" ] ; then
-			echo "TI SDK: ${TISDK}" >> ${wfile}
+		if [ "${SDK}" ] ; then
+			echo "TI SDK: ${SDK}" >> ${wfile}
 		fi
-		echo "${KERNEL_REL} TI Delta: ${compare}/${ti_git_old_release}...${ti_git_new_release}" >> ${wfile}
+		echo "${KERNEL_REL} TI Delta: ${compare}/${sdk_git_old_release}...${sdk_git_new_release}" >> ${wfile}
 		cat_files
 	fi
 	${git_bin} commit -a -F ${wfile} -s
@@ -90,9 +89,6 @@ if [ -e ${DIR}/version.sh ]; then
 
 	#push tag
 	echo "log: git: pushing tags..."
-
-	echo "log: git push -f ${repo_github} ${KERNEL_TAG}${BUILD}"
-	${git_bin} push -f ${repo_github} "${KERNEL_TAG}${BUILD}"
 
 	echo "log: git push -f ${repo_gitlab} ${KERNEL_TAG}${BUILD}"
 	${git_bin} push -f ${repo_gitlab} "${KERNEL_TAG}${BUILD}"
@@ -105,9 +101,6 @@ if [ -e ${DIR}/version.sh ]; then
 
 	#push branch
 	echo "log: git: pushing branch v${KERNEL_TAG}${BUILD}..."
-
-	echo "log: git push -f ${repo_github} v${KERNEL_TAG}${BUILD}"
-	${git_bin} push -f ${repo_github} v${KERNEL_TAG}${BUILD}
 
 	echo "log: git push -f ${repo_gitlab} v${KERNEL_TAG}${BUILD}"
 	${git_bin} push -f ${repo_gitlab} v${KERNEL_TAG}${BUILD}
