@@ -33,8 +33,10 @@ git_bin=$(which git)
 #git: --no-edit
 
 git="${git_bin} am"
-#git_patchset="git://git.ti.com/ti-linux-kernel/ti-linux-kernel.git"
-git_patchset="https://github.com/RobertCNelson/ti-linux-kernel.git"
+git_patchset="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
+if [ "${USE_LOCAL_GIT_MIRROR}" ] ; then
+	git_patchset="https://git.gfnd.rcn-ee.org/TexasInstruments/ti-linux-kernel.git"
+fi
 #git_opts
 
 if [ "${RUN_BISECT}" ] ; then
@@ -102,13 +104,13 @@ external_git () {
 	echo "pulling: [${git_patchset} ${git_tag}]"
 	${git_bin} pull --no-edit ${git_patchset} ${git_tag}
 	top_of_branch=$(${git_bin} describe)
-	if [ ! "x${ti_git_new_release}" = "x" ] ; then
+	if [ ! "x${sdk_git_new_release}" = "x" ] ; then
 		${git_bin} checkout master -f
 		test_for_branch=$(${git_bin} branch --list "v${KERNEL_TAG}${BUILD}")
 		if [ "x${test_for_branch}" != "x" ] ; then
 			${git_bin} branch "v${KERNEL_TAG}${BUILD}" -D
 		fi
-		${git_bin} checkout ${ti_git_new_release} -b v${KERNEL_TAG}${BUILD} -f
+		${git_bin} checkout ${sdk_git_new_release} -b v${KERNEL_TAG}${BUILD} -f
 		current_git=$(${git_bin} describe)
 		echo "${current_git}"
 
@@ -254,18 +256,14 @@ wpanusb () {
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
 		cd ../
-		if [ ! -d ./wpanusb ] ; then
-			${git_bin} clone https://github.com/statropy/wpanusb --depth=1
-			cd ./wpanusb
-				wpanusb_hash=$(git rev-parse HEAD)
-			cd -
-		else
+		if [ -d ./wpanusb ] ; then
 			rm -rf ./wpanusb || true
-			${git_bin} clone https://github.com/statropy/wpanusb --depth=1
-			cd ./wpanusb
-				wpanusb_hash=$(git rev-parse HEAD)
-			cd -
 		fi
+
+		${git_bin} clone https://github.com/statropy/wpanusb --depth=1
+		cd ./wpanusb
+			wpanusb_hash=$(git rev-parse HEAD)
+		cd -
 
 		cd ./KERNEL/
 
@@ -288,8 +286,6 @@ wpanusb () {
 		wdir="wpanusb"
 		number=1
 		cleanup
-
-		exit 2
 	fi
 	dir 'wpanusb'
 }
@@ -298,18 +294,14 @@ bcfserial () {
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
 		cd ../
-		if [ ! -d ./bcfserial ] ; then
-			${git_bin} clone https://github.com/statropy/bcfserial --depth=1
-			cd ./bcfserial
-				bcfserial_hash=$(git rev-parse HEAD)
-			cd -
-		else
+		if [ -d ./bcfserial ] ; then
 			rm -rf ./bcfserial || true
-			${git_bin} clone https://github.com/statropy/bcfserial --depth=1
-			cd ./wpanusb
-				bcfserial_hash=$(git rev-parse HEAD)
-			cd -
 		fi
+
+		${git_bin} clone https://github.com/statropy/bcfserial --depth=1
+		cd ./wpanusb
+			bcfserial_hash=$(git rev-parse HEAD)
+		cd -
 
 		cd ./KERNEL/
 
@@ -349,7 +341,7 @@ rt () {
 
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
-		wget -c https://www.kernel.org/pub/linux/kernel/projects/rt/${KERNEL_REL}/older/patch-${rt_patch}.patch.xz
+		wget -c https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/${KERNEL_REL}/older/patch-${rt_patch}.patch.xz
 		xzcat patch-${rt_patch}.patch.xz | patch -p1 || rt_cleanup
 		rm -f patch-${rt_patch}.patch.xz
 		rm -f localversion-rt
@@ -360,7 +352,6 @@ rt () {
 
 		exit 2
 	fi
-
 	dir 'rt'
 }
 
@@ -596,11 +587,12 @@ pre_backports () {
 	echo "dir: backports/${subsystem}"
 
 	cd ~/linux-src/
-	${git_bin} pull --no-edit https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git master
-	${git_bin} pull --no-edit https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git master --tags
-	${git_bin} pull --no-edit https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master --tags
+	${git_bin} pull --no-edit https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux.git master
+	${git_bin} pull --no-edit https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux.git master --tags
+	${git_bin} pull --no-edit https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git master --tags
 	if [ ! "x${backport_tag}" = "x" ] ; then
-		${git_bin} checkout ${backport_tag} -b tmp
+		echo "${git_bin} checkout ${backport_tag} -f"
+		${git_bin} checkout ${backport_tag} -f
 	fi
 	cd -
 }
@@ -608,17 +600,17 @@ pre_backports () {
 post_backports () {
 	if [ ! "x${backport_tag}" = "x" ] ; then
 		cd ~/linux-src/
-		${git_bin} checkout master -f ; ${git_bin} branch -D tmp
+		${git_bin} checkout master -f
 		cd -
 	fi
 
-	rm -f arch/arm/boot/dts/overlays/*.dtbo || true
 	${git_bin} add .
 	${git_bin} commit -a -m "backports: ${subsystem}: from: linux.git" -m "Reference: ${backport_tag}" -s
 	if [ ! -d ../patches/backports/${subsystem}/ ] ; then
 		mkdir -p ../patches/backports/${subsystem}/
 	fi
 	${git_bin} format-patch -1 -o ../patches/backports/${subsystem}/
+	exit 2
 }
 
 patch_backports (){
@@ -637,7 +629,6 @@ backports () {
 		cp -rv ~/linux-src/drivers/net/wireless/ti/* ./drivers/net/wireless/ti/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 	fi
@@ -655,7 +646,6 @@ backports () {
 		cp -rv ~/linux-src/drivers/staging/iio/* ./drivers/staging/iio/
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 	fi
@@ -671,7 +661,6 @@ backports () {
 		sed -i -e 's:CONFIG_EXFAT_FS:CONFIG_STAGING_EXFAT_FS:g' ./drivers/staging/Makefile
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 	fi
@@ -687,7 +676,6 @@ backports () {
 		cp -v ~/linux-src/include/linux/usb/typec.h ./include/linux/usb/typec.h
 
 		post_backports
-		exit 2
 	else
 		patch_backports
 	fi
@@ -921,6 +909,7 @@ soc
 fixes
 
 packaging () {
+	echo "Update: package scripts"
 	do_backport="enable"
 	if [ "x${do_backport}" = "xenable" ] ; then
 		backport_tag="v5.10.111"
@@ -933,12 +922,10 @@ packaging () {
 			cp -v ~/linux-src/scripts/package/* ./scripts/package/
 
 			post_backports
-			exit 2
 		else
 			patch_backports
 		fi
 	fi
-
 	${git} "${DIR}/patches/backports/bindeb-pkg/0002-builddeb-Install-our-dtbs-under-boot-dtbs-version.patch"
 }
 
