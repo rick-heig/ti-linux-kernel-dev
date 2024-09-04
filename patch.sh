@@ -123,6 +123,13 @@ external_git () {
 	#exit 2
 }
 
+mainline_patches () {
+	#exit 2
+#	dir 'mainline/greybus'
+	dir 'rfc/mainline'
+	#exit 2
+}
+
 wpanusb () {
 	#regenerate="enable"
 	if [ "x${regenerate}" = "xenable" ] ; then
@@ -228,12 +235,6 @@ wireless_regdb () {
 		cleanup
 	fi
 	dir 'external/wireless_regdb'
-}
-
-mainline_patches () {
-	#exit 2
-	dir 'rfc/beagleplay-connector'
-	#exit 2
 }
 
 cleanup_dts_builds () {
@@ -480,10 +481,10 @@ local_patch () {
 }
 
 external_git
+mainline_patches
 wpanusb
 rt
 wireless_regdb
-mainline_patches
 beagleboard_dtbs
 #local_patch
 
