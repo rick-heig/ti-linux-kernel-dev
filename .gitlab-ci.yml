@@ -9,7 +9,7 @@ before_script:
   - cd /opt/linux-src/ ; git pull ; cd -
 
 cache:
-  key: "$CI_PROJECT_NAME-$CI_COMMIT_BRANCH"
+  key: "$CI_PROJECT_NAME-ti-linux-arm32-6.1.y"
   paths:
     - ccache.tar.lz4
 
@@ -31,6 +31,6 @@ build:
     - tar --use-compress-program=lz4 -cf ccache.tar.lz4 /root/.cache/ccache/
 #  artifacts:
 #    when: on_success
-#    name: "$CI_PROJECT_NAME-$CI_COMMIT_BRANCH-$CI_JOB_ID"
+#    name: "$CI_PROJECT_NAME-ti-linux-arm32-6.1.y-$CI_JOB_ID"
 #    paths:
 #      - "deploy/linux-image-*.deb"
