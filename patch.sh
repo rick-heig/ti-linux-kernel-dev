@@ -125,7 +125,7 @@ external_git () {
 
 mainline_patches () {
 	#exit 2
-	dir 'mainline/greybus'
+#	dir 'mainline/greybus'
 	dir 'rfc/mainline'
 	#exit 2
 }
