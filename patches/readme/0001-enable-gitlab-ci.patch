@@ -5,11 +5,11 @@ Subject: [PATCH] enable: gitlab-ci
 
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
- .github/FUNDING.yml                  | 12 ++++++++++
- .github/ISSUE_TEMPLATE/bug_report.md | 20 ++++++++++++++++
- .gitlab-ci.yml                       | 36 ++++++++++++++++++++++++++++
+ .github/FUNDING.yml                  | 12 +++++++++
+ .github/ISSUE_TEMPLATE/bug_report.md | 20 ++++++++++++++
+ .gitlab-ci.yml                       | 40 ++++++++++++++++++++++++++++
  README.md                            |  3 +++
- 4 files changed, 71 insertions(+)
+ 4 files changed, 75 insertions(+)
  create mode 100644 .github/FUNDING.yml
  create mode 100644 .github/ISSUE_TEMPLATE/bug_report.md
  create mode 100644 .gitlab-ci.yml
@@ -61,10 +61,10 @@ index 000000000000..0eee1cd1c54a
 +```
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 new file mode 100644
-index 000000000000..8bca85b66200
+index 000000000000..08694d361ae7
 --- /dev/null
 +++ b/.gitlab-ci.yml
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,40 @@
 +image: robertcnelson/beagle-devscripts-kernel-debian-12-amd64:latest
 +# https://openbeagle.org/beagleboard/ci-docker-images
 +
@@ -96,6 +96,10 @@ index 000000000000..8bca85b66200
 +    - mv ../*.deb ./
 +    - ccache -sv
 +    - tar --use-compress-program=lz4 -cf ccache.tar.lz4 /root/.cache/ccache/
++  rules:
++    - if: $CI_COMMIT_TAG
++      when: never
++    - when: always
 +  artifacts:
 +    when: on_success
 +    name: "$CI_PROJECT_NAME-ti-linux-rt-arm64-6.6.y-$CI_JOB_ID"
