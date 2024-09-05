@@ -571,7 +571,7 @@ drivers () {
 	dir 'branding/boris'
 
 	dir 'drivers/davinci-mcasp'
-	dir 'drivers/ite'
+	dir 'drivers/ite-it66121-hpd'
 	dir 'drivers/pcie'
 	dir 'drivers/tidss'
 

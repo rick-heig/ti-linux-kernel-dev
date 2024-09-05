@@ -1,15 +1,15 @@
-From 7aa957bde8b38bfdc974af72c870c157e9dbfcac Mon Sep 17 00:00:00 2001
+From 80b43752371fa8538494e770fb749423caae399f Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Wed, 4 Sep 2024 16:22:38 -0500
+Date: Thu, 5 Sep 2024 11:56:01 -0500
 Subject: [PATCH] enable: gitlab-ci
 
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
- .github/FUNDING.yml                  | 12 +++++++++
+ .github/FUNDING.yml                  | 12 ++++++++
  .github/ISSUE_TEMPLATE/bug_report.md | 20 ++++++++++++++
- .gitlab-ci.yml                       | 40 ++++++++++++++++++++++++++++
- README.md                            |  3 +++
- 4 files changed, 75 insertions(+)
+ .gitlab-ci.yml                       | 41 ++++++++++++++++++++++++++++
+ README.md                            |  3 ++
+ 4 files changed, 76 insertions(+)
  create mode 100644 .github/FUNDING.yml
  create mode 100644 .github/ISSUE_TEMPLATE/bug_report.md
  create mode 100644 .gitlab-ci.yml
@@ -61,10 +61,10 @@ index 000000000000..0eee1cd1c54a
 +```
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 new file mode 100644
-index 000000000000..08694d361ae7
+index 000000000000..4d61245a2fb7
 --- /dev/null
 +++ b/.gitlab-ci.yml
-@@ -0,0 +1,40 @@
+@@ -0,0 +1,41 @@
 +image: robertcnelson/beagle-devscripts-kernel-debian-12-amd64:latest
 +# https://openbeagle.org/beagleboard/ci-docker-images
 +
@@ -101,6 +101,7 @@ index 000000000000..08694d361ae7
 +      when: never
 +    - when: always
 +  artifacts:
++    expire_in: 28 days
 +    when: on_success
 +    name: "$CI_PROJECT_NAME-ti-linux-rt-arm64-6.6.y-$CI_JOB_ID"
 +    paths:

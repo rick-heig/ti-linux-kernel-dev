@@ -34,6 +34,7 @@ build:
       when: never
     - when: always
 #  artifacts:
+#    expire_in: 28 days
 #    when: on_success
 #    name: "$CI_PROJECT_NAME-ti-linux-rt-arm64-6.6.y-$CI_JOB_ID"
 #    paths:
