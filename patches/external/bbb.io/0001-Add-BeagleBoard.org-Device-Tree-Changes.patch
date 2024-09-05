@@ -1,11 +1,11 @@
-From 565285b08b86f0efc9cf41df406f1b20f812b0de Mon Sep 17 00:00:00 2001
+From 234c3d808b0ed069b95b1a267f4eaff7ce2663da Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Wed, 4 Sep 2024 15:10:32 -0500
+Date: Thu, 5 Sep 2024 11:03:40 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.6.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/9a1673d0e7fd3b4cd1dcdc939a0e1e73ce5bfb13
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/8e02659e24f8102969635627b7db6789e8874ee8
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  .../boot/dts/ti/omap/AM335X-PRU-UIO-00A0.dtso |   28 +
@@ -14961,7 +14961,7 @@ index a200810df54a..5a72c518ceb6 100644
  
  #include <dt-bindings/interrupt-controller/irq.h>
 diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
-index 84341c1e1dfb..dc4f71cc5924 100644
+index de256005f452..56a03753232c 100644
 --- a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
 +++ b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
 @@ -1,6 +1,6 @@
@@ -14989,7 +14989,7 @@ index a7cecbdbc766..dc267e5de615 100644
  
  #include <dt-bindings/mux/mux.h>
 diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
-index d580f9e948c2..f535b9f3ed2a 100644
+index 337122c3f402..77a8d99139ec 100644
 --- a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
 @@ -1,8 +1,8 @@
