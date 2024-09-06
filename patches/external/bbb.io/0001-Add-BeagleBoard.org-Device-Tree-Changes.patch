@@ -1,11 +1,11 @@
-From 2a68cc74dafec4048765dfd1f3684d80fe8c0879 Mon Sep 17 00:00:00 2001
+From 6efa258517900373d00add5503f494e1618cb830 Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Thu, 5 Sep 2024 14:50:47 -0500
+Date: Fri, 6 Sep 2024 12:24:56 -0500
 Subject: [PATCH] Add BeagleBoard.org Device Tree Changes
 
 https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/tree/v6.6.x-Beagle
 
-https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/f93301b40d6c9ac999d893354804531d650ae576
+https://openbeagle.org/beagleboard/BeagleBoard-DeviceTrees/-/commit/3e798c2bb88ca3be28712265769847d0fd4dd9a8
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
  .../boot/dts/ti/omap/AM335X-PRU-UIO-00A0.dtso |   28 +
@@ -10569,7 +10569,7 @@ index 000000000000..1467d8ef5581
 +	symlink = "bone/i2c/3";
 +};
 diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-index 3d96a4e81d96..448705a4e557 100644
+index c97d1383a59f..b02139eec7ff 100644
 --- a/arch/arm64/boot/dts/ti/Makefile
 +++ b/arch/arm64/boot/dts/ti/Makefile
 @@ -357,6 +357,48 @@ dtb-$(CONFIG_ARCH_K3) += k3-v3link-imx219-0-0.dtbo \
@@ -10621,10 +10621,10 @@ index 3d96a4e81d96..448705a4e557 100644
  # Enable support for device-tree overlays
  DTC_FLAGS_k3-am625-beagleplay += -@
  DTC_FLAGS_k3-am625-sk += -@
-@@ -384,3 +426,5 @@ DTC_FLAGS_k3-j722s-evm += -@
- DTC_FLAGS_k3-j722s-evm-fpdlink-fusion += -@
+@@ -385,3 +427,5 @@ DTC_FLAGS_k3-j722s-evm-fpdlink-fusion += -@
  DTC_FLAGS_k3-j722s-evm-v3link-fusion += -@
  DTC_FLAGS_k3-j784s4-evm += -@
+ DTC_FLAGS_k3-j742s2-evm += -@
 +DTC_FLAGS_k3-am67a-beagley-ai += -@
 +DTC_FLAGS_k3-j721e-beagleboneai64 += -@
 diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
@@ -10976,7 +10976,7 @@ index a484c427dfce..140587d02e88 100644
   * TRM: https://www.ti.com/lit/pdf/spruj83
   */
 diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-index 57fbcd6892fc..8fd36c91651d 100644
+index 997476c0c626..a6810c5ab02d 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
 +++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
 @@ -1,8 +1,8 @@
