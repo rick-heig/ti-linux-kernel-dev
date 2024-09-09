@@ -1,15 +1,15 @@
-From 40715712bc298d28646ecce2da0a7e9f7b77474f Mon Sep 17 00:00:00 2001
+From 80b43752371fa8538494e770fb749423caae399f Mon Sep 17 00:00:00 2001
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Tue, 2 Jul 2024 15:27:50 -0500
+Date: Thu, 5 Sep 2024 11:56:01 -0500
 Subject: [PATCH] enable: gitlab-ci
 
 Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
 ---
- .github/FUNDING.yml                  | 12 ++++++++++++
- .github/ISSUE_TEMPLATE/bug_report.md | 20 +++++++++++++++++++
- .gitlab-ci.yml                       | 29 ++++++++++++++++++++++++++++
- README.md                            |  3 +++
- 4 files changed, 64 insertions(+)
+ .github/FUNDING.yml                  | 12 ++++++++
+ .github/ISSUE_TEMPLATE/bug_report.md | 20 ++++++++++++++
+ .gitlab-ci.yml                       | 41 ++++++++++++++++++++++++++++
+ README.md                            |  3 ++
+ 4 files changed, 76 insertions(+)
  create mode 100644 .github/FUNDING.yml
  create mode 100644 .github/ISSUE_TEMPLATE/bug_report.md
  create mode 100644 .gitlab-ci.yml
@@ -35,7 +35,7 @@ index 000000000000..8b20af1e3599
 +custom: https://paypal.me/beagleboard # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']
 diff --git a/.github/ISSUE_TEMPLATE/bug_report.md b/.github/ISSUE_TEMPLATE/bug_report.md
 new file mode 100644
-index 000000000000..94be17e338b3
+index 000000000000..0eee1cd1c54a
 --- /dev/null
 +++ b/.github/ISSUE_TEMPLATE/bug_report.md
 @@ -0,0 +1,20 @@
@@ -61,15 +61,22 @@ index 000000000000..94be17e338b3
 +```
 diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
 new file mode 100644
-index 000000000000..3ef43e0efcd1
+index 000000000000..4d61245a2fb7
 --- /dev/null
 +++ b/.gitlab-ci.yml
-@@ -0,0 +1,29 @@
-+image: robertcnelson/beagle-devscripts-kernel-debian-12-amd64
+@@ -0,0 +1,41 @@
++image: robertcnelson/beagle-devscripts-kernel-debian-12-amd64:latest
 +# https://openbeagle.org/beagleboard/ci-docker-images
 +
++before_script:
++  - export PATH=/usr/lib/ccache:$PATH
++  - echo "Acquire::http::Proxy \"http://192.168.1.10:3142\";" > /etc/apt/apt.conf.d/00aptproxy
++  - apt-get update
++  - apt-get upgrade -yq
++  - cd /opt/linux-src/ ; git pull ; cd -
++
 +cache:
-+  key: "$CI_PROJECT_NAME-$CI_COMMIT_BRANCH"
++  key: "$CI_PROJECT_NAME-ti-linux-arm32-6.1.y"
 +  paths:
 +    - ccache.tar.lz4
 +
@@ -80,23 +87,28 @@ index 000000000000..3ef43e0efcd1
 +  script:
 +    - mkdir -p /root/.cache/ccache/ || true
 +    - tar --use-compress-program=lz4 -xf ccache.tar.lz4 -C / || true
-+    - ccache -s
++    - ccache -z
 +    - CORES=$(getconf _NPROCESSORS_ONLN)
-+    - make ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf- clean
-+    - make ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf- bb.org_defconfig
-+    - echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=armhf CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf- LOCALVERSION=-ti-arm32-r$CI_JOB_ID KDEB_SOURCENAME=linux-upstream KDEB_COMPRESS=xz bindeb-pkg"
-+    - make -j${CORES} ARCH=arm KBUILD_DEBARCH=armhf KDEB_PKGVERSION=1xross CROSS_COMPILE="ccache /usr/bin/arm-linux-gnueabihf-" LOCALVERSION=-ti-arm32-r$CI_JOB_ID KDEB_SOURCENAME=linux-upstream KDEB_COMPRESS=xz bindeb-pkg
++    - make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- clean
++    - make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bb.org_defconfig
++    - echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=armhf CROSS_COMPILE=arm-linux-gnueabihf- LOCALVERSION=-ti-arm32-r$CI_JOB_ID KDEB_SOURCENAME=linux-upstream KDEB_COMPRESS=xz bindeb-pkg"
++    - make -j${CORES} ARCH=arm KBUILD_DEBARCH=armhf KDEB_PKGVERSION=1xross CROSS_COMPILE=arm-linux-gnueabihf- LOCALVERSION=-ti-arm32-r$CI_JOB_ID KDEB_SOURCENAME=linux-upstream KDEB_COMPRESS=xz bindeb-pkg
 +    - mv ../*.deb ./
-+    - ccache -s
++    - ccache -sv
 +    - tar --use-compress-program=lz4 -cf ccache.tar.lz4 /root/.cache/ccache/
++  rules:
++    - if: $CI_COMMIT_TAG
++      when: never
++    - when: always
 +  artifacts:
 +    expire_in: 28 days
-+    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
++    when: on_success
++    name: "$CI_PROJECT_NAME-ti-linux-arm32-6.1.y-$CI_JOB_ID"
 +    paths:
 +      - "linux-image-*.deb"
 diff --git a/README.md b/README.md
 new file mode 100644
-index 000000000000..35f4caf8a15a
+index 000000000000..9376b7b0424b
 --- /dev/null
 +++ b/README.md
 @@ -0,0 +1,3 @@
