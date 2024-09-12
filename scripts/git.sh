@@ -22,17 +22,6 @@
 
 DIR=$PWD
 
-#For:
-#Kernel Git
-. "${DIR}/version.sh"
-
-if [ "${USE_LOCAL_GIT_MIRROR}" ] ; then
-	#linux_repo="https://git.gfnd.rcn-ee.org/kernel.org/mirror-linux-stable.git"
-	#linux_stable_repo="https://git.gfnd.rcn-ee.org/kernel.org/mirror-linux-stable.git"
-	linux_repo="https://git.gfnd.rcn-ee.org/TexasInstruments/ti-linux-kernel.git"
-	linux_stable_repo="https://git.gfnd.rcn-ee.org/TexasInstruments/ti-linux-kernel.git"
-fi
-
 CORES=$(getconf _NPROCESSORS_ONLN)
 debian_stable_git="2.20.1"
 #git hard requirements:
@@ -269,6 +258,13 @@ git_shallow () {
 
 . "${DIR}/version.sh"
 . "${DIR}/system.sh"
+
+if [ "${USE_LOCAL_GIT_MIRROR}" ] ; then
+	#linux_repo="https://git.gfnd.rcn-ee.org/kernel.org/mirror-linux-stable.git"
+	#linux_stable_repo="https://git.gfnd.rcn-ee.org/kernel.org/mirror-linux-stable.git"
+	linux_repo="https://git.gfnd.rcn-ee.org/TexasInstruments/ti-linux-kernel.git"
+	linux_stable_repo="https://git.gfnd.rcn-ee.org/TexasInstruments/ti-linux-kernel.git"
+fi
 
 git_bin=$(which git)
 
