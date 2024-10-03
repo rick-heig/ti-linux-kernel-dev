@@ -53,9 +53,9 @@ linux_repo="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
 linux_stable_repo="https://github.com/beagleboard/mirror-ti-linux-kernel.git"
 #
 KERNEL_REL=6.6
-KERNEL_TAG=${KERNEL_REL}.32
+KERNEL_TAG=${KERNEL_REL}.44
 #https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/6.6/
-kernel_rt=".32-rt32"
+kernel_rt=".44-rt39"
 #Kernel Build
 BUILD=${build_prefix}13.1
 
@@ -68,8 +68,8 @@ BRANCH="${branch_prefix}${KERNEL_REL}${branch_postfix}"
 
 DISTRO=xross
 
-sdk_git_old_release="db88712931433e92a5f73cec57c82c5c7ebee593"
-sdk_git_new_release="c0deda7906ed2661afaa841e1d822932a37f38f6"
-SDK="10.01.01"
+sdk_git_old_release="c0deda7906ed2661afaa841e1d822932a37f38f6"
+sdk_git_new_release="325ad3650d0b50a4943b9151fb43411f08ad5d0c"
+SDK="10.01.02"
 
 #
