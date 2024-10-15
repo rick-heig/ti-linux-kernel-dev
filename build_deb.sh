@@ -25,6 +25,11 @@ git_bin=$(which git)
 
 mkdir -p "${DIR}/deploy/"
 
+if [ ! -d "${DIR}/KERNEL" ]
+then
+	FULL_REBUILD=1
+fi
+
 patch_kernel () {
 	cd "${DIR}/KERNEL" || exit
 
@@ -140,8 +145,6 @@ if [ ! "${CORES}" ] ; then
 	CORES=$(getconf _NPROCESSORS_ONLN)
 fi
 
-#unset FULL_REBUILD
-FULL_REBUILD=1
 if [ "${FULL_REBUILD}" ] ; then
 	/bin/sh -e "${DIR}/scripts/git.sh" || { exit 1 ; }
 
