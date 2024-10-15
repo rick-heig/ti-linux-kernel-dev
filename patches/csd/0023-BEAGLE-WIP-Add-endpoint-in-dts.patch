@@ -1,0 +1,73 @@
+From faf4bb2d800a351ff56c3ad1b83976818d5876ee Mon Sep 17 00:00:00 2001
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Date: Mon, 14 Oct 2024 11:12:48 +0200
+Subject: [PATCH 23/23] BEAGLE WIP: Add endpoint in dts
+
+---
+ .../arm64/boot/dts/ti/k3-am67a-beagley-ai.dts | 12 +++++++++++-
+ arch/arm64/boot/dts/ti/k3-j722s-main.dtsi     | 19 +++++++++++++++++++
+ 2 files changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
+index bafadfb4b294..8b97093744aa 100644
+--- a/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
++++ b/arch/arm64/boot/dts/ti/k3-am67a-beagley-ai.dts
+@@ -1223,7 +1223,7 @@ hub_3_0: hub@2 {
+ };
+ 
+ &pcie0_rc {
+-	status = "okay";
++	status = "disabled";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pcie_pins_default>;
+ 	phys = <&serdes1_pcie_link>;
+@@ -1234,6 +1234,16 @@ &pcie0_rc {
+ 	enable-gpios = <&mcu_gpio0 8 GPIO_ACTIVE_HIGH>; /* Extra GPIO for pwr_en for BeagleY AI */
+ };
+ 
++&pcie0_ep {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&pcie_pins_default>;
++	phys = <&serdes1_pcie_link>;
++	phy-names = "pcie-phy";
++	num-lanes = <1>;
++	max-link-speed = <2>;
++};
++
+ &dss1 {
+ 	status = "okay";
+ 	pinctrl-names = "default";
+diff --git a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+index 0c2891972437..f6ce1809375c 100644
+--- a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+@@ -126,6 +126,25 @@ pcie0_rc: pcie@f102000 {
+ 		status = "disabled";
+ 	};
+ 
++	pcie0_ep: pcie-ep@f102000 {
++		compatible = "ti,j722s-pcie-ep", "ti,j721e-pcie-ep";
++		reg = <0x00 0x0f102000 0x00 0x1000>,
++		      <0x00 0x0f100000 0x00 0x400>,
++		      <0x00 0x0d000000 0x00 0x00800000>,
++		      <0x00 0x68000000 0x00 0x08000000>;
++		reg-names = "intd_cfg", "user_cfg", "reg", "mem";
++		interrupt-names = "link_state";
++		interrupts = <GIC_SPI 99 IRQ_TYPE_EDGE_RISING>;
++		ti,syscon-pcie-ctrl = <&pcie0_ctrl 0x0>;
++		max-link-speed = <3>;
++		num-lanes = <1>;
++		power-domains = <&k3_pds 259 TI_SCI_PD_EXCLUSIVE>;
++		clocks = <&k3_clks 259 0>;
++		clock-names = "fck";
++		max-functions = /bits/ 8 <1>;
++		status = "disabled";
++	};
++
+ 	usbss1: usb@f920000 {
+ 		compatible = "ti,j721e-usb";
+ 		reg = <0x00 0x0f920000 0x00 0x100>;
+-- 
+2.43.0
+

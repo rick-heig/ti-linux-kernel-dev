@@ -1,0 +1,128 @@
+From 8e0a7349da8dcfb2a52839507da7f3591ef3e15c Mon Sep 17 00:00:00 2001
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Date: Mon, 14 Oct 2024 17:38:10 +0200
+Subject: [PATCH 22/23] WIP: Cadence fix PCI Mapping
+
+---
+ .../pci/controller/cadence/pcie-cadence-ep.c  | 39 ++++++++++++++++++-
+ drivers/pci/controller/cadence/pcie-cadence.c | 15 ++++---
+ drivers/pci/controller/cadence/pcie-cadence.h |  2 +
+ 3 files changed, 48 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+index 250ad1330ff3..f999934a8d8d 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+@@ -180,6 +180,26 @@ static void cdns_pcie_ep_clear_bar(struct pci_epc *epc, u8 fn, u8 vfn,
+ 	epf->epf_bar[bar] = NULL;
+ }
+ 
++static int cdns_pcie_ep_map_info(struct pci_epc *epc, u8 fn, u8 vfn,
++				 struct pci_epc_map *map)
++{
++	struct cdns_pcie_ep *ep = epc_get_drvdata(epc);
++	phys_addr_t ofst;
++	int num_bits;
++
++	num_bits = cdns_pcie_ep_ob_atu_num_bits(&ep->pcie, map->pci_addr,
++						map->size);
++	ofst = map->pci_addr & ((1ULL << num_bits) - 1);
++	if (ofst + map->size > SZ_1M)
++		map->size = SZ_1M - ofst;
++
++	/** @todo remove magic numbers above and below */
++	map->phys_size = ALIGN(ofst + map->size, (1 << 20));
++	map->phys_ofst = ofst;
++
++	return 0;
++}
++
+ static int cdns_pcie_ep_map_addr(struct pci_epc *epc, u8 fn, u8 vfn,
+ 				 phys_addr_t addr, u64 pci_addr, size_t size)
+ {
+@@ -623,6 +643,7 @@ static const struct pci_epc_ops cdns_pcie_epc_ops = {
+ 	.write_header	= cdns_pcie_ep_write_header,
+ 	.set_bar	= cdns_pcie_ep_set_bar,
+ 	.clear_bar	= cdns_pcie_ep_clear_bar,
++	.map_info	= cdns_pcie_ep_map_info,
+ 	.map_addr	= cdns_pcie_ep_map_addr,
+ 	.unmap_addr	= cdns_pcie_ep_unmap_addr,
+ 	.set_msi	= cdns_pcie_ep_set_msi,
+@@ -645,6 +666,7 @@ int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
+ 	struct cdns_pcie_epf *epf;
+ 	struct resource *res;
+ 	struct pci_epc *epc;
++	struct pci_epc_mem_window *windows;
+ 	int ret;
+ 	int i;
+ 
+@@ -710,8 +732,21 @@ int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
+ 		}
+ 	}
+ 
+-	ret = pci_epc_mem_init(epc, pcie->mem_res->start,
+-			       resource_size(pcie->mem_res), PAGE_SIZE);
++	windows = devm_kcalloc(dev, ep->max_regions,
++			       sizeof(struct pci_epc_mem_window), GFP_KERNEL);
++	if (!windows)
++		return -ENOMEM;
++
++	/* Split the region into smaller 1MB mappable windows */
++	for (i = 0; i < ep->max_regions; i++) {
++		windows[i].phys_base = pcie->mem_res->start + (SZ_1M * i);
++		windows[i].size = SZ_1M;
++		windows[i].page_size = SZ_1M;
++	}
++
++	ret = pci_epc_multi_mem_init(epc, windows, ep->max_regions);
++	devm_kfree(dev, windows);
++
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to initialize the memory space\n");
+ 		return ret;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
+index 4251fac5e310..0d17184b4892 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.c
++++ b/drivers/pci/controller/cadence/pcie-cadence.c
+@@ -24,16 +24,19 @@ void cdns_pcie_detect_quiet_min_delay_set(struct cdns_pcie *pcie)
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_LTSSM_CONTROL_CAP, ltssm_control_cap);
+ }
+ 
++int cdns_pcie_ep_ob_atu_num_bits(struct cdns_pcie *pcie, u64 pci_addr,
++				 size_t size)
++{
++	int num_pass_bits = fls64(pci_addr ^ (pci_addr + size - 1));
++
++	return clamp(num_pass_bits, 8, 20);
++}
++
+ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 busnr, u8 fn,
+ 				   u32 r, bool is_io,
+ 				   u64 cpu_addr, u64 pci_addr, size_t size)
+ {
+-	/*
+-	 * roundup_pow_of_two() returns an unsigned long, which is not suited
+-	 * for 64bit values.
+-	 */
+-	u64 sz = 1ULL << fls64(size - 1);
+-	int nbits = ilog2(sz);
++	int nbits = cdns_pcie_ep_ob_atu_num_bits(pcie, pci_addr, size);
+ 	u32 addr0, addr1, desc0, desc1;
+ 
+ 	if (nbits < 8)
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index d55dfd173f22..e2a962a71b34 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -554,6 +554,8 @@ static inline int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
+ 
+ void cdns_pcie_detect_quiet_min_delay_set(struct cdns_pcie *pcie);
+ 
++int cdns_pcie_ep_ob_atu_num_bits(struct cdns_pcie *pcie, u64 pci_addr,
++				 size_t size);
+ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 busnr, u8 fn,
+ 				   u32 r, bool is_io,
+ 				   u64 cpu_addr, u64 pci_addr, size_t size);
+-- 
+2.43.0
+
